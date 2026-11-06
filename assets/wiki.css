@@ -203,3 +203,17 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 .rolecard{margin:.8rem 0;padding:.9rem 1.1rem;border-radius:12px;border:1px solid color-mix(in srgb,var(--sec) 55%,transparent);background:color-mix(in srgb,var(--sec) 10%,transparent);max-width:48rem}
 .rolecard h3,.rolecard h4{margin:0 0 .3rem;font-size:1.05rem} .rolecard p{margin:.35rem 0}
 .narrowtable{max-width:26rem}
+
+/* ---- equipment ---- */
+.invrow{padding:.7rem .8rem;margin:.5rem 0}
+.invhead{display:flex;gap:.7rem;align-items:baseline;flex-wrap:wrap}
+.invhead .fcost{margin-left:auto}
+.invctl{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:flex-end;margin-top:.5rem}
+.invctl .fld{margin:0}
+.invctl select{font:inherit;color:inherit;background:color-mix(in srgb,var(--sec) 10%,transparent);border:1px solid color-mix(in srgb,var(--sec) 45%,transparent);border-radius:.5rem;padding:.4rem .5rem}
+.stepper{display:inline-flex;align-items:center;gap:.4rem}
+.stepper .qty{min-width:1.8rem;text-align:center;font-weight:700}
+.chk{display:inline-flex;align-items:center;gap:.3rem;cursor:pointer}
+.slotpick{border:1px solid color-mix(in srgb,var(--sec) 35%,transparent);border-radius:.5rem;padding:.3rem .6rem;display:flex;flex-wrap:wrap;gap:.2rem .8rem}
+.linkbtn{background:none;border:none;text-decoration:underline;color:inherit;cursor:pointer;padding:.3rem;margin-left:auto}
+.guardline{margin-top:.8rem;padding-top:.6rem;border-top:1px solid color-mix(in srgb,var(--sec) 35%,transparent)}

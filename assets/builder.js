@@ -30,6 +30,7 @@
       companion: { name: "", creature: "" },
       background: { id: "", size: null, vision: [], feats: [] },
       languages: [],
+      equipment: { inventory: [] },
       stats: { mind: 0, body: 0, soul: 0 },
       feats: [],
       merit: { starting: 0, earned: 0, spent: 0, remaining: 0 }
@@ -48,6 +49,41 @@
   }
   function sizeLabel(v) { return v == null ? "" : String(v); }
   function hasFeat(id) { return C.feats.some(function (e) { return e.id === id; }); }
+
+  /* ---------- equipment rules ---------- */
+  var QUALITY_CATS = ["Weapons", "Armour", "Clothes & Other Items"], WEARABLE = ["Armour", "Clothes & Other Items"];
+  function itemById(id) { return D.items.filter(function (i) { return i.id === id; })[0]; }
+  function qualityById(id) { return D.qualities.filter(function (q) { return q.id === id; })[0] || D.qualities[1]; }
+  function qualityable(it) { return QUALITY_CATS.indexOf(it.cat) >= 0; }
+  function wearable(it) { return WEARABLE.indexOf(it.cat) >= 0; }
+  function stackable(it) { return QUALITY_CATS.indexOf(it.cat) < 0; }
+  /* price per unit in merit; Shoddy never costs more than Normal, and never less than 1 unless the base is 0 */
+  function unitPrice(it, qid) {
+    var q = qualityable(it) ? qualityById(qid) : qualityById("quality:normal");
+    if (q.id === "quality:shoddy") return it.cost <= 0 ? 0 : Math.min(it.cost, Math.max(1, it.cost + q.mod));
+    return it.cost + q.mod;
+  }
+  function entryCost(e) { var it = itemById(e.id); return it ? unitPrice(it, e.quality) * e.qty : 0; }
+  function qBonus(e, it) { return qualityable(it) ? qualityById(e.quality).bonus : 0; }
+  function isBroken(e) { return e.condition === "condition:broken"; }
+  /* Guard: only wearables that already give Guard take the quality bonus; a condition costs 1, Broken gives none */
+  function effGuard(e, it) {
+    if (!wearable(it) || !(it.guard > 0)) return it.guard || 0;
+    if (isBroken(e)) return 0;
+    return Math.max(0, it.guard + qBonus(e, it) - (e.condition ? 1 : 0));
+  }
+  function effBonus(e, it) { if (isBroken(e)) return 0; return Math.max(0, (it.bonus || 0) + qBonus(e, it) - (e.condition ? 1 : 0)); }
+  function entrySlots(e, it) { return it.slots && it.slots.indexOf("Variable") >= 0 ? e.slots : (it.slots || []); }
+  function guardInfo() {
+    var sum = 0;
+    C.equipment.inventory.forEach(function (e) {
+      var it = itemById(e.id); if (it && wearable(it) && e.equipped) sum += effGuard(e, it);
+    });
+    var other = C.background.feats.some(function (f) { return f.id === "feat:thick-skinned"; }) ? 2 : 0;
+    var capped = Math.min(D.guardCap, sum);
+    return { sum: sum, capped: capped, other: other, total: capped + other };
+  }
+  function gearCost() { var t = 0; C.equipment.inventory.forEach(function (e) { t += entryCost(e); }); return t; }
   /* movement: background modifier + Movement Expertise picks; speed = Tempo + modifier, never below 1 */
   function movement() {
     var bg = bgById(C.background.id); if (!bg) return [];
@@ -76,11 +112,11 @@
     };
   }
   function totals() {
-    var st = startType(C.start.type), stats = 0, feats = 0;
+    var st = startType(C.start.type), stats = 0, feats = 0, gear = gearCost();
     STATS.forEach(function (p) { stats += statCost(C.stats[p[0]]); });
     C.feats.forEach(function (e) { var f = featById(e.id); if (f) feats += f.cost; });
-    var total = st.merit + (C.merit.earned || 0), spent = stats + feats;
-    return { st: st, stats: stats, feats: feats, total: total, spent: spent, remaining: total - spent };
+    var total = st.merit + (C.merit.earned || 0), spent = stats + feats + gear;
+    return { st: st, stats: stats, feats: feats, gear: gear, total: total, spent: spent, remaining: total - spent };
   }
   function sync() { var t = totals(); C.merit.starting = t.st.merit; C.merit.spent = t.spent; C.merit.remaining = t.remaining; return t; }
 
@@ -115,6 +151,20 @@
       seen[key] = 1;
       if (!f.multi && have[e.id] > 1 && !seen["m" + e.id]) { seen["m" + e.id] = 1; add("feats", f.name + " can only be taken once."); }
     });
+    // equipment
+    var bySlot = {};
+    C.equipment.inventory.forEach(function (e) {
+      var it = itemById(e.id);
+      if (!it) { add("equipment", "Unknown item in the file: " + e.id + "."); return; }
+      if (!wearable(it) || !e.equipped) return;
+      var label = e.name || it.name, sl = entrySlots(e, it);
+      if (!sl.length) add("equipment", label + " is worn but fills no slot; tick the slots it covers.");
+      if (isBroken(e)) add("equipment", label + " is broken and gives no protection.");
+      sl.forEach(function (x) { if (x !== "Accessories") (bySlot[x] = bySlot[x] || []).push(label); });
+    });
+    Object.keys(bySlot).forEach(function (x) { if (bySlot[x].length > 1) add("equipment", bySlot[x].join(" and ") + " all use the " + x + " slot; only one fits."); });
+    var gi = guardInfo();
+    if (gi.sum > D.guardCap) add("equipment", "Your worn gear adds up to " + gi.sum + " Guard; the cap is " + D.guardCap + ", so only " + D.guardCap + " counts.");
     // role
     var role = roleById(C.role.id);
     if (role && role.id === "role:constable") {
@@ -159,6 +209,16 @@
     c.background.vision = Array.isArray(c.background.vision) ? c.background.vision : [];
     c.background.feats = Array.isArray(c.background.feats) ? c.background.feats : [];
     c.languages = Array.isArray(c.languages) ? c.languages : [];
+    c.equipment = c.equipment && typeof c.equipment === "object" ? c.equipment : { inventory: [] };
+    c.equipment.inventory = (Array.isArray(c.equipment.inventory) ? c.equipment.inventory : []).filter(function (e) { return e && e.id; });
+    var maxUid = 0;
+    c.equipment.inventory.forEach(function (e) { var m = /^i(\d+)$/.exec(e.uid || ""); if (m) maxUid = Math.max(maxUid, +m[1]); });
+    c.equipment.inventory.forEach(function (e) {
+      if (!e.uid) e.uid = "i" + (++maxUid);
+      e.qty = Math.max(1, parseInt(e.qty, 10) || 1);
+      e.quality = e.quality || "quality:normal"; e.condition = e.condition || ""; e.name = e.name || "";
+      e.equipped = !!e.equipped; e.slots = Array.isArray(e.slots) ? e.slots : [];
+    });
     c.merit = Object.assign(b.merit, c.merit || {});
     c.merit.earned = Math.max(0, parseInt(c.merit.earned, 10) || 0);
     return c;
@@ -198,9 +258,10 @@
     { id: "background", title: "Background", color: "#FFB48F", blurb: "Who you are, size, senses, languages" },
     { id: "stats", title: "Stats", color: "#F28AB8", blurb: "Mind, Body, Soul" },
     { id: "feats", title: "Feats", color: "#B79CF2", blurb: "Skills and talents" },
+    { id: "equipment", title: "Equipment", color: "#FF9B71", blurb: "Gear, armour, weapons" },
     { id: "info", title: "Info", color: "#E58FD0", blurb: "Looks and notes" }
   ];
-  var SOON = { feats: ["Equipment", "Spells"] };   // dim placeholder bubbles, shown after the named section
+  var SOON = { equipment: ["Spells"] };   // dim placeholder bubbles, shown after the named section
   var TREE_COLORS = ["#FF8F7E", "#FFC27A", "#F2D98A", "#F28AB8", "#B79CF2", "#FFB48F", "#E56DB1"];
   function secById(id) { return SECS.filter(function (s) { return s.id === id; })[0]; }
   function route() { var h = (location.hash || "").replace("#", ""); return secById(h) ? h : ""; }
@@ -246,12 +307,13 @@
     if (id === "role") { var r = roleById(C.role.id); return r ? r.name : "None chosen"; }
     if (id === "background") { var b = bgById(C.background.id); return b ? b.name : "Not chosen"; }
     if (id === "stats") return "M" + C.stats.mind + " · B" + C.stats.body + " · S" + C.stats.soul;
+    if (id === "equipment") { var n = C.equipment.inventory.length; return n + (n === 1 ? " item" : " items") + " · Guard " + guardInfo().total; }
     if (id === "feats") return C.feats.length + (C.feats.length === 1 ? " feat" : " feats");
     return "";
   }
   function hub(t, warns) {
     var wrap = el("div", {});
-    wrap.appendChild(el("p", { class: "hubline", text: (C.identity.name || "Your character") + " · " + t.st.name + " start. Pick a bubble to build that part." }));
+    wrap.appendChild(el("p", { class: "hubline", text: (C.identity.name || "Your character") + " · " + t.st.name + " start. Merit so far: stats " + t.stats + ", feats " + t.feats + ", gear " + t.gear + ". Pick a bubble to build that part." }));
     var ring = el("nav", { class: "hub", "aria-label": "Character sections" });
     SECS.forEach(function (s) {
       var n = warns.filter(function (w) { return w.sec === s.id; }).length;
@@ -291,7 +353,7 @@
     ]));
     var mine = warns.filter(function (w) { return w.sec === id; });
     if (mine.length) wrap.appendChild(warningList(mine, false));
-    wrap.appendChild({ start: startScreen, role: roleScreen, background: backgroundScreen, info: infoScreen, stats: statsScreen, feats: featsScreen }[id](t));
+    wrap.appendChild({ start: startScreen, role: roleScreen, background: backgroundScreen, equipment: equipmentScreen, info: infoScreen, stats: statsScreen, feats: featsScreen }[id](t));
     return wrap;
   }
   function onRoute() { render(); var h = document.getElementById("stitle"); window.scrollTo(0, 0); if (h) h.focus({ preventScroll: true }); }
@@ -405,6 +467,121 @@
     return row;
   }
 
+
+  /* ---------- equipment ---------- */
+  var eq = { cat: "Weapons", q: "", open: {} };
+  var HIDDEN_CATS = ["Property"];   // lodging is gated by total merit, not bought
+  var CAT_ORDER = ["Weapons", "Armour", "Clothes & Other Items", "Survival Equipment", "Food", "Medical", "Specialized Equipment", "Crafting Materials", "Natural Resources", "Chemicals & Other Consumables", "Illicit Materials", "Vehicle"];
+  function nextUid() { var m = 0; C.equipment.inventory.forEach(function (e) { var x = /^i(\d+)$/.exec(e.uid); if (x) m = Math.max(m, +x[1]); }); return "i" + (m + 1); }
+  function addItem(it) {
+    var inv = C.equipment.inventory;
+    if (stackable(it)) {
+      var same = inv.filter(function (e) { return e.id === it.id; })[0];
+      if (same) { same.qty++; commit(); return; }
+    }
+    inv.push({ uid: nextUid(), id: it.id, quality: "quality:normal", condition: "", name: "", qty: 1, equipped: false, slots: [] });
+    commit();
+  }
+  function removeItem(uid) { C.equipment.inventory = C.equipment.inventory.filter(function (e) { return e.uid !== uid; }); commit(); }
+  function itemFacts(it) {
+    var f = [];
+    if (it.cat === "Weapons") { f.push(it.range); f.push("+" + (it.bonus || 0) + " dice"); f.push(it.dtype); }
+    if (wearable(it) && it.guard != null) f.push("Guard " + it.guard);
+    if (it.slots && it.slots.length) f.push(it.slots.join(", "));
+    if (it.cat === "Vehicle") { f.push(it.passengers + " passengers"); f.push("handling " + it.handling); }
+    return f.filter(Boolean).join(" · ");
+  }
+  function shopRow(it) {
+    var open = !!eq.open[it.id];
+    var sum = el("button", { type: "button", class: "fsum", "aria-expanded": open ? "true" : "false", onclick: function () { var was = open; eq.open = {}; if (!was) eq.open[it.id] = true; render(); } }, [
+      el("span", { class: "fname", text: it.name }), el("span", { class: "dim", text: itemFacts(it) }), el("span", { class: "fcost", text: it.cost })
+    ]);
+    var row = el("article", { class: "frow" }, [sum]);
+    if (open) {
+      var body = el("div", { class: "fbody" }, [el("p", { class: "fdesc", text: it.desc })]);
+      (it.abilities || []).forEach(function (a) { body.appendChild(el("p", {}, [el("strong", { text: a.name + ". " }), document.createTextNode(a.text)])); });
+      if (it.effects && it.effects !== "N/A") body.appendChild(el("p", {}, [el("strong", { text: "Effects. " }), document.createTextNode(it.effects)]));
+      if (it.tags && it.tags.length) body.appendChild(el("p", { class: "ftags" }, it.tags.map(function (g) { return el("span", { class: "chip", text: g }); })));
+      body.appendChild(el("div", { class: "fact" }, [el("button", { type: "button", class: "primary", onclick: function () { addItem(it); }, text: "Add for " + it.cost })]));
+      row.appendChild(body);
+    }
+    return row;
+  }
+  function shop() {
+    var cats = CAT_ORDER.filter(function (c) { return D.items.some(function (i) { return i.cat === c; }); });
+    var tabs = el("div", { class: "tabs", role: "tablist" }, cats.map(function (c) {
+      var on = eq.cat === c && !eq.q;
+      return el("button", { type: "button", role: "tab", "aria-selected": on ? "true" : "false", class: on ? "on" : "", onclick: function () { eq.cat = c; eq.q = ""; eq.open = {}; render(); }, text: c });
+    }));
+    var search = el("label", { class: "fld", for: "eq-q" }, [el("span", { class: "sr", text: "Search items" }),
+      el("input", { id: "eq-q", type: "search", placeholder: "Search all items", value: eq.q, oninput: function (e) { eq.q = e.target.value; render(); } })]);
+    var q = eq.q.trim().toLowerCase();
+    var list = D.items.filter(function (i) { return HIDDEN_CATS.indexOf(i.cat) >= 0 ? false : q ? (i.name + " " + i.desc).toLowerCase().indexOf(q) >= 0 : i.cat === eq.cat; });
+    var out = [search, tabs];
+    if (!list.length) out.push(el("p", { class: "hint", text: "No items match." }));
+    list.forEach(function (i) { out.push(shopRow(i)); });
+    return el("section", { class: "browser" }, out);
+  }
+  function selectEl(id, label, options, value, onchange) {
+    return el("label", { class: "fld narrow", for: id }, [el("span", { text: label }),
+      el("select", { id: id, onchange: function (e) { onchange(e.target.value); } }, options.map(function (o) {
+        return el("option", { value: o[0], selected: o[0] === value ? "selected" : null, text: o[1] });
+      }))]);
+  }
+  function invRow(e) {
+    var it = itemById(e.id);
+    if (!it) return el("article", { class: "frow" }, [el("p", { class: "dim", text: "Unknown item " + e.id })]);
+    var title = e.name || it.name, bits = [];
+    if (wearable(it) && it.guard > 0) bits.push("Guard " + effGuard(e, it));
+    if (it.cat === "Weapons") bits.push("+" + effBonus(e, it) + " dice");
+    var head = el("div", { class: "invhead" }, [
+      el("strong", { text: title + (e.name ? " (" + it.name + ")" : "") + (e.qty > 1 ? " ×" + e.qty : "") }),
+      el("span", { class: "dim", text: bits.join(" · ") }), el("span", { class: "fcost", text: entryCost(e) })
+    ]);
+    var ctl = el("div", { class: "invctl" });
+    if (stackable(it)) {
+      ctl.appendChild(el("div", { class: "stepper", role: "group", "aria-label": "Quantity of " + title }, [
+        el("button", { type: "button", "aria-label": "One fewer", disabled: e.qty <= 1, onclick: function () { e.qty--; commit(); }, text: "−" }),
+        el("span", { class: "qty", text: String(e.qty) }),
+        el("button", { type: "button", "aria-label": "One more", onclick: function () { e.qty++; commit(); }, text: "+" })
+      ]));
+    }
+    if (qualityable(it)) {
+      ctl.appendChild(selectEl("q-" + e.uid, "Quality", D.qualities.map(function (q) { return [q.id, q.name + (q.mod ? " (" + (q.mod > 0 ? "+" : "") + q.mod + ")" : "")]; }), e.quality, function (v) { e.quality = v; commit(); }));
+      ctl.appendChild(selectEl("c-" + e.uid, "Condition", [["", "None"]].concat(D.conditions.map(function (c) { return [c.id, c.name]; })), e.condition, function (v) { e.condition = v; commit(); }));
+      ctl.appendChild(el("label", { class: "fld narrow", for: "n-" + e.uid }, [el("span", { text: "Custom name" }),
+        el("input", { id: "n-" + e.uid, type: "text", value: e.name, placeholder: it.name, oninput: function (ev) { e.name = ev.target.value; saveDraft(); } })]));
+    }
+    if (wearable(it)) {
+      ctl.appendChild(el("label", { class: "chk" }, [
+        el("input", { type: "checkbox", checked: e.equipped ? "checked" : null, onchange: function (ev) { e.equipped = ev.target.checked; commit(); } }), document.createTextNode(" Worn")]));
+      if (it.slots && it.slots.indexOf("Variable") >= 0) {
+        ctl.appendChild(el("fieldset", { class: "slotpick" }, [el("legend", { text: "Slots it covers" })].concat(["Head", "Torso", "Arms", "Hands", "Legs", "Feet", "Accessories", "Over", "Under"].map(function (sl) {
+          return el("label", { class: "chk" }, [el("input", { type: "checkbox", checked: e.slots.indexOf(sl) >= 0 ? "checked" : null, onchange: function (ev) {
+            e.slots = e.slots.filter(function (x) { return x !== sl; }); if (ev.target.checked) e.slots.push(sl); commit(); } }), document.createTextNode(" " + sl)]);
+        }))));
+      }
+    }
+    ctl.appendChild(el("button", { type: "button", class: "linkbtn", onclick: function () { removeItem(e.uid); }, text: "Remove" }));
+    return el("article", { class: "frow has invrow" }, [head, ctl]);
+  }
+  function equipmentScreen(t) {
+    var body = el("div", { class: "pane" }), gi = guardInfo();
+    var inv = C.equipment.inventory;
+    body.appendChild(el("p", { class: "hint", text: "Gear costs merit. Quality changes the price and, for armour and weapons, the bonus. Guard from worn gear counts up to " + D.guardCap + "." }));
+    var bx = el("section", { class: "bcard" }, [el("h3", { text: "Carried (" + t.gear + " merit)" })]);
+    if (!inv.length) bx.appendChild(el("p", { class: "dim", text: "Nothing yet. Add items from the shop below." }));
+    inv.forEach(function (e) { bx.appendChild(invRow(e)); });
+    var worn = {};
+    inv.forEach(function (e) { var it = itemById(e.id); if (it && wearable(it) && e.equipped) entrySlots(e, it).forEach(function (x) { (worn[x] = worn[x] || []).push(e.name || it.name); }); });
+    var slotLine = Object.keys(worn).map(function (x) { return x + ": " + worn[x].join(", "); }).join(" · ");
+    bx.appendChild(el("p", { class: "guardline" }, [el("strong", { text: "Guard " + gi.total }),
+      document.createTextNode(" (worn " + gi.sum + (gi.sum > gi.capped ? ", capped at " + gi.capped : "") + (gi.other ? ", plus " + gi.other + " from Thick-Skinned" : "") + ")" + (slotLine ? "  " + slotLine : ""))]));
+    body.appendChild(bx);
+    body.appendChild(el("h3", { text: "Shop" }));
+    body.appendChild(shop());
+    return body;
+  }
 
   /* ---------- role, background, languages ---------- */
   function optionsFor(featId) {
