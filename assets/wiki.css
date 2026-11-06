@@ -1,36 +1,47 @@
-/* Pastel Aurora: teal-black ground, mint ink, turquoise and lavender accents. */
+/* Ember Aurora: warm rose, coral and amber light over a deep plum ground.
+   Panels are translucent so the aurora shows through. */
 :root{
-  --bg:#F3FBF8; --panel:#E4F5EF; --panel-2:#D3EDE4; --line:#B9DDD2;
-  --ink:#10312F; --ink-dim:#3F6B66; --accent:#1F8F7A; --accent-ink:#FFFFFF; --accent-2:#6C54B8;
-  --code:#E9E4F8; --warn:#8A6A12;
+  --bg:#FFF6F1; --bg-glow-1:rgba(255,150,130,.35); --bg-glow-2:rgba(255,196,140,.35); --bg-glow-3:rgba(244,150,190,.28);
+  --panel:rgba(255,255,255,.55); --panel-solid:#FFEDE5; --panel-2:rgba(255,190,170,.38); --line:rgba(180,80,70,.28);
+  --ink:#3A1620; --ink-dim:#7A4048; --accent:#B8402F; --accent-ink:#FFF6F1; --accent-2:#A02D62;
+  --code:rgba(244,150,190,.28); --warn:#8A5A0C;
   --font:"Bitter",Georgia,"Palatino Linotype",serif; --mono:"Courier New",Consolas,monospace;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0D2A2E; --panel:#163A3A; --panel-2:#1F4A48; --line:#2F5A5A;
-  --ink:#E7FBF5; --ink-dim:#A9E8DA; --accent:#8FE3D0; --accent-ink:#0D2A2E; --accent-2:#C5B2F0;
-  --code:#1F4A48; --warn:#F0D9A0; color-scheme:dark;}}
+  --bg:#240F1B; --bg-glow-1:rgba(255,110,90,.30); --bg-glow-2:rgba(255,170,100,.22); --bg-glow-3:rgba(240,120,170,.30);
+  --panel:rgba(255,200,190,.08); --panel-solid:#34182A; --panel-2:rgba(255,160,140,.18); --line:rgba(255,170,150,.28);
+  --ink:#FFF0E8; --ink-dim:#F2BFB2; --accent:#FFB4A2; --accent-ink:#2A1018; --accent-2:#F7A8C8;
+  --code:rgba(240,120,170,.22); --warn:#FFD9A0; color-scheme:dark;}}
 :root[data-theme="dark"]{
-  --bg:#0D2A2E; --panel:#163A3A; --panel-2:#1F4A48; --line:#2F5A5A;
-  --ink:#E7FBF5; --ink-dim:#A9E8DA; --accent:#8FE3D0; --accent-ink:#0D2A2E; --accent-2:#C5B2F0;
-  --code:#1F4A48; --warn:#F0D9A0; color-scheme:dark;}
+  --bg:#240F1B; --bg-glow-1:rgba(255,110,90,.30); --bg-glow-2:rgba(255,170,100,.22); --bg-glow-3:rgba(240,120,170,.30);
+  --panel:rgba(255,200,190,.08); --panel-solid:#34182A; --panel-2:rgba(255,160,140,.18); --line:rgba(255,170,150,.28);
+  --ink:#FFF0E8; --ink-dim:#F2BFB2; --accent:#FFB4A2; --accent-ink:#2A1018; --accent-2:#F7A8C8;
+  --code:rgba(240,120,170,.22); --warn:#FFD9A0; color-scheme:dark;}
+
+/* the aurora: three soft bands of light behind everything */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+   radial-gradient(60rem 28rem at 12% -6%, var(--bg-glow-1), transparent 70%),
+   radial-gradient(52rem 26rem at 88% 8%, var(--bg-glow-3), transparent 70%),
+   radial-gradient(64rem 30rem at 50% 108%, var(--bg-glow-2), transparent 70%);}
 
 *{box-sizing:border-box}
 html{scroll-padding-top:4.5rem}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6}
+body{margin:0;position:relative;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6}
 a{color:var(--accent-2)} a:hover{text-decoration-thickness:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:1rem;
   padding:.6rem max(16px,env(safe-area-inset-right)) .6rem max(16px,env(safe-area-inset-left));
-  background:var(--panel);border-bottom:1px solid var(--line)}
+  background:var(--panel);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .brand{font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:var(--accent);text-decoration:none}
 .menu{display:none;font:inherit;background:var(--panel-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.3rem .7rem}
 .search{position:relative;margin-left:auto;width:min(26rem,100%)}
-.search input{width:100%;font:inherit;padding:.45rem .75rem;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.search input{width:100%;font:inherit;padding:.45rem .75rem;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
 .search input:focus,.menu:focus-visible,a:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
-#results{position:absolute;right:0;left:0;top:calc(100% + 6px);max-height:70vh;overflow:auto;background:var(--panel);
-  border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#results{position:absolute;right:0;left:0;top:calc(100% + 6px);max-height:70vh;overflow:auto;background:var(--panel-solid);
+  border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(40,10,20,.28)}
 #results a{display:block;padding:.6rem .85rem;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line)}
 #results a:last-child{border-bottom:0}
 #results a:hover,#results a.sel{background:var(--panel-2)}
@@ -82,3 +93,6 @@ a{color:var(--accent-2)} a:hover{text-decoration-thickness:2px}
 }
 @media (prefers-reduced-motion:no-preference){a{transition:color .15s}}
 .doc td strong,.doc td b{font-weight:inherit}
+
+.doc caption{caption-side:top;text-align:left;padding:.6rem .8rem;font-weight:700;color:var(--accent);background:var(--panel);border-bottom:1px solid var(--line);letter-spacing:.03em}
+.doc thead th{font-weight:700}
