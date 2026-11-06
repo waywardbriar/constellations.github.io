@@ -24,6 +24,27 @@ GROUPS = [
 def norm(s): return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
 def slug(s): return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
+def fix_table(t, soup):
+    """Pandoc puts every row of a Word table into <thead> as <th>. Rebuild a real
+    header: an optional title row (one wide cell), one column-header row, then body rows."""
+    thead = t.find("thead")
+    if thead is None or t.find("tbody") is not None and t.find("tbody").find("tr") is not None:
+        return
+    rows = thead.find_all("tr", recursive=False)
+    if len(rows) < 3: return
+    title = None
+    if len(rows[0].find_all(["th", "td"])) == 1:
+        title = rows.pop(0)
+    head, rest = rows[0], rows[1:]
+    tbody = soup.new_tag("tbody")
+    for r in rest:
+        for c in r.find_all("th"): c.name = "td"
+        tbody.append(r.extract())
+    if title is not None:
+        cap = soup.new_tag("caption"); cap.string = title.get_text(" ", strip=True)
+        title.decompose(); t.insert(0, cap)
+    thead.clear(); thead.append(head.extract()); thead.insert_after(tbody)
+
 def main():
     html_path = ROOT / "build" / "guide.html"
     html_path.parent.mkdir(exist_ok=True)
@@ -85,6 +106,7 @@ def main():
             if not h.get_text(strip=True): h.decompose()
         # wrap tables so wide ones scroll
         for t in body.find_all("table"):
+            fix_table(t, soup)
             w = soup.new_tag("div", attrs={"class": "tablewrap"}); t.wrap(w)
         # in-page TOC from h2/h3, and search records per h2 block
         toc = []
@@ -106,7 +128,7 @@ def main():
         prev_l = f'<a href="{flat[i-1]["slug"]}.html">&larr; {flat[i-1]["title"]}</a>' if i else "<span></span>"
         next_l = f'<a href="{flat[i+1]["slug"]}.html">{flat[i+1]["title"]} &rarr;</a>' if i < len(flat)-1 else "<span></span>"
         page = (template.replace("{{TITLE}}", s["title"]).replace("{{SIDEBAR}}", sidebar(s))
-                .replace("{{BODY}}", str(body)).replace("{{TOC}}", tochtml)
+                .replace("{{BODY}}", str(body)).replace("{{TOC}}", ('<h3>On this page</h3>' + tochtml) if tochtml else "")
                 .replace("{{PREV}}", prev_l).replace("{{NEXT}}", next_l).replace("{{ROOTPREFIX}}", ""))
         (OUT / f"{s['slug']}.html").write_text(page, encoding="utf-8")
 
