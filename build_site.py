@@ -45,6 +45,65 @@ def fix_table(t, soup):
         title.decompose(); t.insert(0, cap)
     thead.clear(); thead.append(head.extract()); thead.insert_after(tbody)
 
+def extract_data(sections, soup):
+    """Pull the numbers the builder needs out of the guide, plus hand-kept extras."""
+    extra = json.loads((ROOT / "assets" / "rules-extra.json").read_text(encoding="utf-8"))
+    fixes = extra.get("idFixes", {})
+    def fid(name):
+        sl = slug(re.sub(r" X$", "", name)); return fixes.get(sl, sl)
+    def tables_in(n):
+        if getattr(n, "name", None) == "table": return [n]
+        return n.find_all("table") if hasattr(n, "find_all") else []
+    def rows_of(table):
+        t = BeautifulSoup(str(table), "html.parser").find("table"); fix_table(t, soup)
+        cap = t.find("caption"); cap = cap.get_text(" ", strip=True) if cap else ""
+        head = [c.get_text(" ", strip=True) for c in t.find("thead").find_all(["th", "td"])] if t.find("thead") else []
+        body = [[c.get_text(" ", strip=True) for c in r.find_all(["td", "th"])] for r in (t.find("tbody") or t).find_all("tr")]
+        return cap, head, body
+    data = {"rulesVersion": extra.get("rulesVersion", "laurel"), "startTypes": [], "feats": []}
+    by = {norm(s["title"]): s for s in sections}
+    # starting merit table
+    for n in by[norm("Advancement - Merit")]["nodes"]:
+        for t in tables_in(n):
+            cap, head, body = rows_of(t)
+            if head and head[0].lower().startswith("start type"):
+                for r in body:
+                    tiers = [int(x) for x in re.findall(r"\d", r[3])]
+                    data["startTypes"].append({"id": "start:" + slug(r[0]), "name": r[0], "merit": int(r[1]),
+                                               "statCap": int(r[2]), "tiers": tiers})
+    # stat costs (level n -> merit), read from the Primary Stats table
+    costs = {}
+    for n in by[norm("Primary Stats")]["nodes"]:
+        for t in tables_in(n):
+            cap, head, body = rows_of(t)
+            if head and head[0].lower().startswith("stat level"):
+                for r in body:
+                    if r[0].isdigit(): costs[int(r[0])] = int(r[1])
+    data["statCosts"] = [costs[k] for k in sorted(costs)]
+    # feats
+    tree = None
+    for n in by[norm("Feats")]["nodes"]:
+        if getattr(n, "name", None) == "h2":
+            tree = n.get_text(" ", strip=True)
+            continue
+        if not hasattr(n, "find_all") or tree in (None, "Untrained", "Retraining"): continue
+        for t in tables_in(n):
+            cap, head, body = rows_of(t)
+            m = re.match(r"Tier (\d)", cap)
+            if not m: continue
+            for r in body:
+                if len(r) >= 3 and re.fullmatch(r"\d+", r[0]):
+                    sid = fid(r[1]); tags = [x.strip() for x in (r[3] if len(r) > 3 else "").split(",") if x.strip()]
+                    desc = r[2]
+                    multi = ("Multi-Select" in tags) or bool(re.search(r"multiple times|can be selected multiple|select this (feat|stat) multiple", desc, re.I))
+                    f = {"id": "feat:" + sid, "name": r[1], "tree": tree, "tier": int(m.group(1)), "cost": int(r[0]),
+                         "desc": desc, "tags": tags, "multi": multi}
+                    if sid in extra["choices"]: f["choice"] = extra["choices"][sid]
+                    if sid in extra["prereqs"]: f["prereqs"] = [["feat:" + x for x in grp] for grp in extra["prereqs"][sid]]
+                    if sid in extra.get("prereqNotes", {}): f["prereqNote"] = extra["prereqNotes"][sid]
+                    data["feats"].append(f)
+    return data
+
 def main():
     html_path = ROOT / "build" / "guide.html"
     html_path.parent.mkdir(exist_ok=True)
@@ -97,6 +156,7 @@ def main():
                 cls = ' class="on"' if s is active else ""
                 out.append(f'<li><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
+        out.append('<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else ""))
         return "\n".join(out)
 
     for i, s in enumerate(flat):
@@ -129,8 +189,21 @@ def main():
         next_l = f'<a href="{flat[i+1]["slug"]}.html">{flat[i+1]["title"]} &rarr;</a>' if i < len(flat)-1 else "<span></span>"
         page = (template.replace("{{TITLE}}", s["title"]).replace("{{SIDEBAR}}", sidebar(s))
                 .replace("{{BODY}}", str(body)).replace("{{TOC}}", ('<h3>On this page</h3>' + tochtml) if tochtml else "")
-                .replace("{{PREV}}", prev_l).replace("{{NEXT}}", next_l).replace("{{ROOTPREFIX}}", ""))
+                .replace("{{BODYCLASS}}", "").replace("{{PREV}}", prev_l).replace("{{NEXT}}", next_l).replace("{{ROOTPREFIX}}", ""))
         (OUT / f"{s['slug']}.html").write_text(page, encoding="utf-8")
+
+    data = extract_data(sections, soup)
+    (OUT / "data.json").write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    print(f"Data: {len(data['startTypes'])} start types, {len(data['feats'])} feats")
+
+    # builder page
+    bmark = (ROOT / "assets" / "builder.html").read_text(encoding="utf-8")
+    bpage = (template.replace("{{TITLE}}", "Character Builder").replace("{{SIDEBAR}}", sidebar("builder"))
+             .replace("{{BODY}}", bmark).replace("{{TOC}}", "").replace("{{PREV}}", "<span></span>")
+             .replace("{{NEXT}}", "<span></span>").replace("{{BODYCLASS}}", "wide")
+             .replace("<h1>Character Builder</h1>", ""))
+    (OUT / "builder.html").write_text(bpage, encoding="utf-8")
+    shutil.copy(ROOT / "assets" / "builder.js", OUT / "assets" / "builder.js")
 
     # home page
     cards = []
@@ -140,7 +213,7 @@ def main():
         cards.append(f'<section class="card"><h2>{g}</h2><ul>{lis}</ul></section>')
     home = (template.replace("{{TITLE}}", "Constellations").replace("{{SIDEBAR}}", sidebar(None))
             .replace("{{BODY}}", (ROOT / "assets" / "home.html").read_text(encoding="utf-8").replace("{{CARDS}}", "".join(cards)))
-            .replace("{{TOC}}", "").replace("{{PREV}}", "<span></span>")
+            .replace("{{TOC}}", "").replace("{{PREV}}", "<span></span>").replace("{{BODYCLASS}}", "")
             .replace("{{NEXT}}", f'<a href="{flat[0]["slug"]}.html">{flat[0]["title"]} &rarr;</a>').replace("{{ROOTPREFIX}}", ""))
     (OUT / "index.html").write_text(home, encoding="utf-8")
     (OUT / "search-index.json").write_text(json.dumps(index, ensure_ascii=False), encoding="utf-8")
