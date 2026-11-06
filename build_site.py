@@ -22,7 +22,11 @@ GROUPS = [
 ]
 
 def norm(s): return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
-def slug(s): return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+def slug(s):
+    import unicodedata
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower()
+    s = s.replace("\u2019", "").replace("'", "")
+    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
 
 def fix_table(t, soup):
     """Pandoc puts every row of a Word table into <thead> as <th>. Rebuild a real
@@ -102,6 +106,49 @@ def extract_data(sections, soup):
                     if sid in extra["prereqs"]: f["prereqs"] = [["feat:" + x for x in grp] for grp in extra["prereqs"][sid]]
                     if sid in extra.get("prereqNotes", {}): f["prereqNote"] = extra["prereqNotes"][sid]
                     data["feats"].append(f)
+    # roles
+    data["roles"] = []
+    for n in by[norm("Senexoth Role Feats")]["nodes"]:
+        for t in tables_in(n):
+            cap, head, body = rows_of(t)
+            if head and head[0].lower().startswith("feat"):
+                for r in body:
+                    if len(r) >= 3:
+                        data["roles"].append({"id": "role:" + slug(r[1]), "name": r[1], "feat": r[0], "featId": "feat:" + fid(r[0]), "desc": r[2]})
+    # languages, backgrounds
+    data["languages"] = []; data["backgrounds"] = []
+    def nums(txt):
+        txt = re.sub(r"\s+", "", txt)
+        return [float(x) for x in re.findall(r"\d*\.?\d+", txt)]
+    for n in by[norm("Building a Character")]["nodes"]:
+        for t in tables_in(n):
+            cap, head, body = rows_of(t)
+            if head and head[0].lower().startswith("language"):
+                for r in body:
+                    if len(r) >= 2:
+                        data["languages"].append({"id": "language:" + slug(r[0].split("(")[0]), "name": r[0], "spoken": r[1]})
+                continue
+            fields = {}
+            for r in body:
+                if len(r) == 2: fields[r[0].strip().lower()] = r[1]
+            if "size class" not in fields: continue
+            sz = fields["size class"]; vals = nums(sz)
+            if "variable" in sz.lower() or not vals: rng = None
+            else: rng = [min(vals), max(vals)]
+            vis = re.sub(r"^vision:\s*", "", fields.get("vision", ""), flags=re.I)
+            if re.search(r"\bor\b", vis): vmode, vopts = "choose", [x.strip() for x in re.split(r"\bor\b", vis)]
+            else: vmode, vopts = "all", [x.strip() for x in vis.split(",") if x.strip()]
+            mob = [[m.group(1), int(m.group(2))] for m in re.finditer(r"(Walk|Swim|Climb|Burrow|Aerial):\s*([+-]?\d+)", fields.get("mobility", ""))]
+            feats = []
+            for r in body:
+                if len(r) == 3 and r[1] == "Background":
+                    sid = fid(r[0]); f = {"id": "feat:" + sid, "name": r[0], "desc": r[2]}
+                    if sid in extra.get("bgChoices", {}): f["choice"] = extra["bgChoices"][sid]
+                    feats.append(f)
+            data["backgrounds"].append({"id": "background:" + slug(cap), "name": cap, "about": head[0] if head else "",
+                "naming": fields.get("naming", ""), "appearance": fields.get("appearance", ""), "sizeText": sz, "sizeRange": rng,
+                "visionMode": vmode, "vision": vopts, "mobility": mob, "feats": feats})
+    data["choiceOptions"] = extra.get("choiceOptions", {})
     return data
 
 def main():
