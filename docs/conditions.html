@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditions · Constellations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="assets/wiki.css">
+</head>
+<body>
+<header class="top">
+  <button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="side">Menu</button>
+  <a class="brand" href="index.html">Constellations</a>
+  <div class="search">
+    <label class="sr" for="q">Search the guide</label>
+    <input id="q" type="search" placeholder="Search the guide" autocomplete="off">
+    <div id="results" hidden></div>
+  </div>
+</header>
+<div class="layout">
+  <nav id="side" class="side" aria-label="Guide contents">
+<div class="grp"><h3>Start Here</h3><ul>
+<li><a href="preamble.html">Preamble</a></li>
+</ul></div>
+<div class="grp"><h3>The Game Core</h3><ul>
+<li><a href="stamina-the-bidding-system.html">Stamina & The Bidding System</a></li>
+<li><a href="primary-stats.html">Primary Stats</a></li>
+<li><a href="stability.html">Stability</a></li>
+<li><a href="health-injury-slots.html">Health - Injury Slots</a></li>
+<li><a class="on" href="conditions.html">Conditions</a></li>
+<li><a href="disease.html">Disease</a></li>
+<li><a href="resistance.html">Resistance</a></li>
+<li><a href="immunity.html">Immunity</a></li>
+</ul></div>
+<div class="grp"><h3>Character Creation</h3><ul>
+<li><a href="advancement-merit.html">Advancement - Merit</a></li>
+<li><a href="senexoth-role-feats.html">Senexoth Role Feats</a></li>
+<li><a href="building-a-character.html">Building a Character</a></li>
+<li><a href="feats.html">Feats</a></li>
+<li><a href="equipment.html">Equipment</a></li>
+</ul></div>
+<div class="grp"><h3>Gameplay & Magic</h3><ul>
+<li><a href="scenes.html">Scenes</a></li>
+<li><a href="spells.html">Spells</a></li>
+</ul></div>
+  </nav>
+  <main class="main">
+    <article class="doc">
+      <h1>Conditions</h1>
+<p>There are a wide number of conditions in the game that can afflict the player, party, or NPCs. You do not need to be familiar with all of them, but they are listed below for convenience’s sake. They can affect you in any type of scene across the entirety of gameplay.</p><p>You may notice X’s next to some of these in a similar fashion as injuries, these represent magnitude, or severity.</p><div class="tablewrap"><table>
+<colgroup>
+<col style="width: 17%"/>
+<col style="width: 27%"/>
+<col style="width: 24%"/>
+<col style="width: 31%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Description</th>
+<th>Effect</th>
+<th>Resolves</th>
+</tr>
+<tr class="odd">
+<th><strong>Duress X</strong></th>
+<th>You feel threatened - there is an undercurrent of anxiety to everything you do.</th>
+<th>You take an additional 1 strain for each count of tax any time you would bid.</th>
+<th>You take an action to steady yourself, remove a counter of X.</th>
+</tr>
+<tr class="header">
+<th><strong>Unsteady</strong></th>
+<th>Your stance is compromised somehow; it is harder to balance.</th>
+<th>You are unable to move unless you take an action to find your footing.</th>
+<th>Using a movement action to steady yourself.</th>
+</tr>
+<tr class="odd">
+<th><strong>Exposed</strong></th>
+<th>You lack proper protection in a scenario against an outside threat.</th>
+<th>For any bid against an environmental factor, you face increased difficulty to resist injury. This means that bids will incur a penalty until Exposed is resolved.</th>
+<th>Upon finding shelter, putting on protective gear or being prepared for specific environmental conditions.</th>
+</tr>
+<tr class="header">
+<th><strong>Fatigue</strong></th>
+<th>You have utilized all of your energy. You need rest.</th>
+<th>You can continue to bid, but may only use up to 2 die to do so</th>
+<th>Rest.</th>
+</tr>
+<tr class="odd">
+<th><strong>Immobilized</strong></th>
+<th>Your movement has been limited.</th>
+<th>You are unable to move or make ranged attacks without first freeing yourself.</th>
+<th>You must take an action to bid to free yourself from what is holding you.</th>
+</tr>
+<tr class="header">
+<th><strong>Conspicuous</strong></th>
+<th>You are unable to hide; people notice you and your every action.</th>
+<th>You are more readily targeted and noticed; you easily raise suspicion.</th>
+<th>You must make a bid to make yourself less conspicuous or hide.</th>
+</tr>
+<tr class="odd">
+<th><strong>Concealed</strong></th>
+<th>You are well disguised; others are unlikely to notice you.</th>
+<th>You can move and take actions without being noticed.</th>
+<th>Ends if you attack or draw attention to yourself.</th>
+</tr>
+<tr class="header">
+<th><strong>Slowed X</strong></th>
+<th>Your movement has somehow been restricted. It is more difficult to move.</th>
+<th>Your Tempo is halved, rounded down for the duration.</th>
+<th>Condition clears after X turns or leaving an area.</th>
+</tr>
+<tr class="odd">
+<th><strong>Stunned X</strong></th>
+<th>The number of actions you can take next turn is reduced.</th>
+<th>Your action points are reduced by X during your next turn.</th>
+<th>After a turn has passed, this condition resolves.</th>
+</tr>
+<tr class="header">
+<th><strong>Impulsed</strong></th>
+<th>You are compelled to take a specific action.</th>
+<th>The GM suggests an action; you may take it, or receive the Duress Condition. If you already are afflicted by duress and choose to resist the impulse, you take an additional magnitude of duress.</th>
+<th>After action is taken or Duress is applied.</th>
+</tr>
+<tr class="odd">
+<th><strong>Quickened X</strong></th>
+<th>You become faster, able to react quicker.</th>
+<th>You gain an additional action point to utilize during your next turn.</th>
+<th>Condition clears after the next turn.</th>
+</tr>
+<tr class="header">
+<th><strong>Fear X</strong></th>
+<th>You become scared, and feel the urge to hide and run.</th>
+<th>You cannot move closer to the afflicter of this condition.</th>
+<th>Condition clears after X turns.</th>
+</tr>
+<tr class="odd">
+<th><strong>Blinded X</strong></th>
+<th>You are unable to see.</th>
+<th>Your Exertion is reduced by 2 for any action that requires sight.</th>
+<th>Condition clears after X turns</th>
+</tr>
+<tr class="header">
+<th><strong>Silenced X</strong></th>
+<th>You cannot cast or use magic.</th>
+<th>You cannot use spells for the duration of this condition.</th>
+<th>Condition clears after X turns.</th>
+</tr>
+<tr class="odd">
+<th><strong>Infected</strong></th>
+<th>You have some kind of infection, bacterial, viral, or magical.</th>
+<th>Dependent on illness.</th>
+<th>After being treated or resting.</th>
+</tr>
+<tr class="header">
+<th><strong>Poisoned</strong></th>
+<th>You are suffering the effects of a poison</th>
+<th>You suffer additional strain when rolling an 8.</th>
+<th>After treatment or rest.</th>
+</tr>
+<tr class="odd">
+<th><strong>Embarrassed</strong></th>
+<th>You feel a twinge of awkwardness from a social faux pas or other action.</th>
+<th>You cannot reroll social actions.</th>
+<th>After a positive interaction.</th>
+</tr>
+<tr class="header">
+<th><strong>Resentful</strong></th>
+<th>You feel strong negative feelings towards another person or party.</th>
+<th>Harder to build rapport with others.</th>
+<th>Improve sentiment, or have higher leverage.</th>
+</tr>
+<tr class="odd">
+<th><strong>Convivial</strong></th>
+<th>You are more likely to believe and get along with others.</th>
+<th>The first social complication of each scene is softened.</th>
+<th></th>
+</tr>
+<tr class="header">
+<th><strong>Reverent</strong></th>
+<th>You are awed by someone and are unable to act against them.</th>
+<th>You cannot harm the person unless the stakes are high.</th>
+<th>The entity does something negative towards you.</th>
+</tr>
+<tr class="odd">
+<th><strong>Suspicious</strong></th>
+<th>You are deeply unsure of someone and their motives.</th>
+<th>It is easier to read motives but more difficult to build rapport.</th>
+<th></th>
+</tr>
+<tr class="header">
+<th><strong>Fortified X</strong></th>
+<th>You are steeled against any incoming attack or thing targeting you.</th>
+<th>Your guard for any bid to defend yourself is counted X higher instead.</th>
+<th>Spell ends or is dispelled.</th>
+</tr>
+<tr class="odd">
+<th><strong>Vulnerable X</strong></th>
+<th>You are in a weakened state.</th>
+<th>For each count of X, any bid to resist a damage type specified by the inflicter's choice during an opposing bid has an - X penalty.</th>
+<th>The condition or injury is applied, or the effect is dispelled.</th>
+</tr>
+<tr class="header">
+<th><strong>Starving X</strong></th>
+<th>You haven’t consumed adequate nutrients, it has left you weakened.</th>
+<th>For each count of X, all bids you make are penalized by - X.</th>
+<th>You consume food or nutrients.</th>
+</tr>
+<tr class="odd">
+<th><strong>Dehydration X</strong></th>
+<th>You haven’t had fluid or water for an extended period.</th>
+<th>For each count of X, all bids you make are penalized by - X.</th>
+<th>You intake fluid.</th>
+</tr>
+<tr class="header">
+<th><strong>Sharpened X</strong></th>
+<th>You feel an acute awareness for even the smallest details; not much will go without your notice.</th>
+<th>Any bid that requires your senses gains X bonus dice.</th>
+<th>The effect wears off.</th>
+</tr>
+<tr class="odd">
+<th><strong>Dulled X</strong></th>
+<th>You have something clouding your perception; you notice less.</th>
+<th>Any bid that requires your senses gains an - X penalty.</th>
+<th>The effect wears off.</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table></div>
+    </article>
+    <div class="pager"><a href="health-injury-slots.html">&larr; Health - Injury Slots</a><a href="disease.html">Disease &rarr;</a></div>
+  </main>
+  <aside class="toc" aria-label="On this page">
+    <h3>On this page</h3>
+    
+  </aside>
+</div>
+<script src="assets/wiki.js"></script>
+</body>
+</html>

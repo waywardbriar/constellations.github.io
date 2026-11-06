@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} · Constellations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="assets/wiki.css">
+</head>
+<body>
+<header class="top">
+  <button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="side">Menu</button>
+  <a class="brand" href="index.html">Constellations</a>
+  <div class="search">
+    <label class="sr" for="q">Search the guide</label>
+    <input id="q" type="search" placeholder="Search the guide" autocomplete="off">
+    <div id="results" hidden></div>
+  </div>
+</header>
+<div class="layout">
+  <nav id="side" class="side" aria-label="Guide contents">
+{{SIDEBAR}}
+  </nav>
+  <main class="main">
+    <article class="doc">
+      <h1>{{TITLE}}</h1>
+{{BODY}}
+    </article>
+    <div class="pager">{{PREV}}{{NEXT}}</div>
+  </main>
+  <aside class="toc" aria-label="On this page">
+    <h3>On this page</h3>
+    {{TOC}}
+  </aside>
+</div>
+<script src="assets/wiki.js"></script>
+</body>
+</html>
