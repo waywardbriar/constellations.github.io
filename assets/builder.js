@@ -1,4 +1,4 @@
-/* Constellations character builder, slice 1: bubble hub, start, info, stats, feats, save/load.
+/* Constellations character builder, slice 2: hub, start, role, background, stats, feats, info, save/load.
    Stores choices only; every derived number is recalculated (see Character File Specification). */
 (function () {
   "use strict";
@@ -26,6 +26,10 @@
       file: { schemaVersion: SCHEMA, rulesVersion: D.rulesVersion },
       identity: { name: "", appearance: "", notes: "" },
       start: { type: "start:average" },
+      role: { id: "", styles: ["", ""] },
+      companion: { name: "", creature: "" },
+      background: { id: "", size: null, vision: [], feats: [] },
+      languages: [],
       stats: { mind: 0, body: 0, soul: 0 },
       feats: [],
       merit: { starting: 0, earned: 0, spent: 0, remaining: 0 }
@@ -33,6 +37,33 @@
   }
   function startType(id) { return D.startTypes.filter(function (s) { return s.id === id; })[0] || D.startTypes[0]; }
   function featById(id) { return D.feats.filter(function (f) { return f.id === id; })[0]; }
+  function bgById(id) { return D.backgrounds.filter(function (b) { return b.id === id; })[0]; }
+  function roleById(id) { return D.roles.filter(function (r) { return r.id === id; })[0]; }
+  function langById(id) { return D.languages.filter(function (l) { return l.id === id; })[0]; }
+  var SIZES = [0.25, 0.5, 0.75, 1, 2, 3];
+  function sizeChoices(bg) {
+    if (!bg) return [];
+    if (!bg.sizeRange) return SIZES.slice();
+    return SIZES.filter(function (v) { return v >= bg.sizeRange[0] && v <= bg.sizeRange[1]; });
+  }
+  function sizeLabel(v) { return v == null ? "" : String(v); }
+  function hasFeat(id) { return C.feats.some(function (e) { return e.id === id; }); }
+  /* movement: background modifier + Movement Expertise picks; speed = Tempo + modifier, never below 1 */
+  function movement() {
+    var bg = bgById(C.background.id); if (!bg) return [];
+    var tempo = 2 + Math.ceil(C.stats.body / 2);
+    return bg.mobility.map(function (m) {
+      var extra = C.feats.filter(function (e) { return e.id === "feat:movement-expertise" && (e.choice || "").trim().toLowerCase() === m[0].toLowerCase(); }).length;
+      var mod = m[1] + extra;
+      return { type: m[0], mod: mod, extra: extra, speed: Math.max(1, tempo + mod) };
+    });
+  }
+  function visionList() {
+    var bg = bgById(C.background.id), v = [];
+    if (bg) v = bg.visionMode === "all" ? bg.vision.slice() : C.background.vision.slice();
+    if (hasFeat("feat:third-eye")) v.push("Aethersight (Third Eye)");
+    return v;
+  }
 
   /* ---------- rules math ---------- */
   function statCost(level) { var t = 0; for (var i = 0; i < level; i++) t += D.statCosts[i] != null ? D.statCosts[i] : 3 * (i + 1); return t; }
@@ -84,6 +115,28 @@
       seen[key] = 1;
       if (!f.multi && have[e.id] > 1 && !seen["m" + e.id]) { seen["m" + e.id] = 1; add("feats", f.name + " can only be taken once."); }
     });
+    // role
+    var role = roleById(C.role.id);
+    if (role && role.id === "role:constable") {
+      C.role.styles.forEach(function (x, i) { if (!(x || "").trim()) add("role", "Constable: name fighting style " + (i + 1) + " of 2 (free Combat Expertise)."); });
+    }
+    // background
+    var bg = bgById(C.background.id);
+    if (!bg) add("background", "Choose a background.");
+    else {
+      var sz = C.background.size;
+      if (sz == null) add("background", "Choose a size class for " + bg.name + " (" + bg.sizeText + ").");
+      else if (bg.sizeRange && (sz < bg.sizeRange[0] || sz > bg.sizeRange[1])) add("background", "Size class " + sz + " is outside the " + bg.name + " range (" + bg.sizeText + ").");
+      if (bg.visionMode === "choose" && !C.background.vision.length) add("background", "Choose a vision: " + bg.vision.join(" or ") + ".");
+      bg.feats.forEach(function (f) {
+        var mine = C.background.feats.filter(function (e) { return e.id === f.id; })[0];
+        if (!mine) add("background", f.name + " is missing from your background feats.");
+        else if (f.choice && !(mine.choice || "").trim()) add("background", f.name + " needs a choice (" + f.choice.toLowerCase() + ").");
+      });
+    }
+    var nl = C.languages.length;
+    if (nl !== 2) add("background", nl < 2 ? "Choose two starting languages (" + nl + " so far)." : "You chose " + nl + " starting languages; the guide says two.");
+    C.languages.forEach(function (id) { if (!langById(id)) add("background", "Unknown language in the file: " + id + "."); });
     return w;
   }
 
@@ -100,6 +153,12 @@
     c.stats = Object.assign(b.stats, c.stats || {});
     STATS.forEach(function (p) { c.stats[p[0]] = Math.max(0, Math.min(99, parseInt(c.stats[p[0]], 10) || 0)); });
     c.feats = (c.feats || []).filter(function (e) { return e && e.id; });
+    c.role = Object.assign(b.role, c.role || {}); c.role.styles = [(c.role.styles || [])[0] || "", (c.role.styles || [])[1] || ""];
+    c.companion = Object.assign(b.companion, c.companion || {});
+    c.background = Object.assign(b.background, c.background || {});
+    c.background.vision = Array.isArray(c.background.vision) ? c.background.vision : [];
+    c.background.feats = Array.isArray(c.background.feats) ? c.background.feats : [];
+    c.languages = Array.isArray(c.languages) ? c.languages : [];
     c.merit = Object.assign(b.merit, c.merit || {});
     c.merit.earned = Math.max(0, parseInt(c.merit.earned, 10) || 0);
     return c;
@@ -135,11 +194,13 @@
   /* ---------- sections, colors, routing ---------- */
   var SECS = [
     { id: "start", title: "Start", color: "#FF9E8F", blurb: "Merit start and name" },
-    { id: "info", title: "Info", color: "#FFC27A", blurb: "Looks and notes" },
+    { id: "role", title: "Role", color: "#F2D98A", blurb: "Your place in the household" },
+    { id: "background", title: "Background", color: "#FFB48F", blurb: "Who you are, size, senses, languages" },
     { id: "stats", title: "Stats", color: "#F28AB8", blurb: "Mind, Body, Soul" },
-    { id: "feats", title: "Feats", color: "#B79CF2", blurb: "Skills and talents" }
+    { id: "feats", title: "Feats", color: "#B79CF2", blurb: "Skills and talents" },
+    { id: "info", title: "Info", color: "#E58FD0", blurb: "Looks and notes" }
   ];
-  var SOON = ["Role", "Background", "Equipment", "Spells"];
+  var SOON = { feats: ["Equipment", "Spells"] };   // dim placeholder bubbles, shown after the named section
   var TREE_COLORS = ["#FF8F7E", "#FFC27A", "#F2D98A", "#F28AB8", "#B79CF2", "#FFB48F", "#E56DB1"];
   function secById(id) { return SECS.filter(function (s) { return s.id === id; })[0]; }
   function route() { var h = (location.hash || "").replace("#", ""); return secById(h) ? h : ""; }
@@ -181,7 +242,9 @@
   /* ----- hub ----- */
   function bubbleStatus(id, t) {
     if (id === "start") return t.st.name + " · " + t.st.merit;
-    if (id === "info") return C.identity.name ? C.identity.name : "Unnamed";
+    if (id === "info") return C.identity.appearance || C.identity.notes ? "Filled in" : "Empty";
+    if (id === "role") { var r = roleById(C.role.id); return r ? r.name : "None chosen"; }
+    if (id === "background") { var b = bgById(C.background.id); return b ? b.name : "Not chosen"; }
     if (id === "stats") return "M" + C.stats.mind + " · B" + C.stats.body + " · S" + C.stats.soul;
     if (id === "feats") return C.feats.length + (C.feats.length === 1 ? " feat" : " feats");
     return "";
@@ -196,9 +259,9 @@
         el("span", { class: "bt", text: s.title }), el("span", { class: "bs", text: bubbleStatus(s.id, t) }),
         n ? el("span", { class: "bw", "aria-label": n + " warnings", text: String(n) }) : null
       ]));
-    });
-    SOON.forEach(function (name) {
-      ring.appendChild(el("span", { class: "bub soon", "aria-disabled": "true" }, [el("span", { class: "bt", text: name }), el("span", { class: "bs", text: "Coming soon" })]));
+      (SOON[s.id] || []).forEach(function (name) {
+        ring.appendChild(el("span", { class: "bub soon", "aria-disabled": "true" }, [el("span", { class: "bt", text: name }), el("span", { class: "bs", text: "Coming soon" })]));
+      });
     });
     wrap.appendChild(ring);
     if (warns.length) wrap.appendChild(warningList(warns, true));
@@ -228,7 +291,7 @@
     ]));
     var mine = warns.filter(function (w) { return w.sec === id; });
     if (mine.length) wrap.appendChild(warningList(mine, false));
-    wrap.appendChild({ start: startScreen, info: infoScreen, stats: statsScreen, feats: featsScreen }[id](t));
+    wrap.appendChild({ start: startScreen, role: roleScreen, background: backgroundScreen, info: infoScreen, stats: statsScreen, feats: featsScreen }[id](t));
     return wrap;
   }
   function onRoute() { render(); var h = document.getElementById("stitle"); window.scrollTo(0, 0); if (h) h.focus({ preventScroll: true }); }
@@ -257,7 +320,6 @@
       body.appendChild(el("label", { class: "fld", for: "info-" + p[0] }, [el("span", { text: p[1] }),
         el("textarea", { id: "info-" + p[0], rows: "6", placeholder: p[2], oninput: function (e) { C.identity[p[0]] = e.target.value; saveDraft(); } }, [C.identity[p[0]] || ""])]));
     });
-    body.appendChild(el("p", { class: "hint", text: "Role, background, size class and languages will live here once those slices are built." }));
     return body;
   }
 
@@ -291,7 +353,7 @@
     var items = C.feats.map(function (e, i) {
       var f = featById(e.id), name = f ? f.name : e.id;
       var kids = [el("span", { class: "fn", text: name }), el("span", { class: "dim", text: f ? "Tier " + f.tier + " " + f.tree + " · " + f.cost : "unknown" })];
-      if (f && f.choice) kids.push(el("input", { id: "fc-" + i, type: "text", class: "fchoice", placeholder: f.choice, "aria-label": name + ": " + f.choice, value: e.choice || "", oninput: function (ev) { e.choice = ev.target.value; saveDraft(); updateTotalsOnly(); refreshWarnings(); } }));
+      if (f && f.choice) kids.push(el("input", Object.assign({ id: "fc-" + i, type: "text", class: "fchoice", placeholder: f.choice, "aria-label": name + ": " + f.choice, value: e.choice || "", oninput: function (ev) { e.choice = ev.target.value; saveDraft(); updateTotalsOnly(); refreshWarnings(); } }, choiceAttrs(f.id))));
       kids.push(el("button", { type: "button", class: "x", "aria-label": "Remove " + name, onclick: function () { removeFeat(i); }, text: "Remove" }));
       return el("li", {}, kids);
     });
@@ -335,7 +397,7 @@
       if (f.tags.length) body.appendChild(el("p", { class: "ftags" }, f.tags.map(function (g) { return el("span", { class: "chip", text: g }); })));
       if (f.prereqNote) body.appendChild(el("p", { class: "dim", text: f.prereqNote }));
       var act = el("div", { class: "fact" });
-      var inp = f.choice ? el("input", { id: cid, type: "text", placeholder: f.choice, "aria-label": f.name + ": " + f.choice }) : null;
+      var inp = f.choice ? el("input", Object.assign({ id: cid, type: "text", placeholder: f.choice, "aria-label": f.name + ": " + f.choice }, choiceAttrs(f.id))) : null;
       if (inp) act.appendChild(inp);
       act.appendChild(el("button", { type: "button", class: "primary", disabled: taken, onclick: function () { addFeat(f, inp ? inp.value : ""); }, text: taken ? "Taken" : "Add for " + f.cost }));
       body.appendChild(act); row.appendChild(body);
@@ -343,10 +405,127 @@
     return row;
   }
 
+
+  /* ---------- role, background, languages ---------- */
+  function optionsFor(featId) {
+    var key = featId.replace("feat:", "");
+    if (key === "polyglot") return D.languages.map(function (l) { return l.name.split("(")[0].trim(); });
+    return (D.choiceOptions || {})[key] || null;
+  }
+  function dlId(featId) { return "opts-" + featId.replace(/\W/g, "-"); }
+  function mountDatalists() {
+    var old = document.getElementById("builder-lists"); if (old) old.remove();
+    var box = el("div", { id: "builder-lists", hidden: true });
+    var ids = ["feat:polyglot"].concat(Object.keys(D.choiceOptions || {}).map(function (k) { return "feat:" + k; }));
+    ids.forEach(function (id) { var o = optionsFor(id); if (o) box.appendChild(el("datalist", { id: dlId(id) }, o.map(function (v) { return el("option", { value: v }); }))); });
+    document.body.appendChild(box);
+  }
+  function choiceAttrs(featId) { return optionsFor(featId) ? { list: dlId(featId) } : {}; }
+
+  function setRole(id) { C.role.id = id; if (id !== "role:constable") C.role.styles = ["", ""]; commit(); }
+  function setBackground(id) {
+    var bg = bgById(id); if (!bg) return;
+    var keep = {}; C.background.feats.forEach(function (e) { keep[e.id] = e.choice; });
+    var sc = sizeChoices(bg);
+    C.background = { id: id, size: sc.length ? sc[0] : null, vision: [],
+      feats: bg.feats.map(function (f) { var e = { id: f.id }; if (f.choice) e.choice = keep[f.id] || ""; return e; }) };
+    commit();
+  }
+  function toggleLanguage(id) {
+    var i = C.languages.indexOf(id); if (i >= 0) C.languages.splice(i, 1); else C.languages.push(id); commit();
+  }
+  function pill(label, on, onclick, extra) {
+    return el("button", { type: "button", class: "pillbtn" + (on ? " on" : ""), "aria-pressed": on ? "true" : "false", title: extra || null, onclick: onclick, text: label });
+  }
+
+  function roleScreen() {
+    var cur = roleById(C.role.id), body = el("div", { class: "pane" });
+    body.appendChild(el("p", { class: "hint", text: "You may pick one role. Roles cannot overlap between players, so talk it over with your group. The role feat is free." }));
+    var list = el("div", { class: "pills", role: "group", "aria-label": "Roles" }, [pill("No role", !cur, function () { setRole(""); })]);
+    D.roles.forEach(function (r) { list.appendChild(pill(r.name, cur && cur.id === r.id, function () { setRole(r.id); })); });
+    body.appendChild(list);
+    if (cur) {
+      body.appendChild(el("article", { class: "rolecard" }, [el("h3", { text: cur.feat }), el("p", { class: "dim", text: cur.name + " role feat · free" }), el("p", { text: cur.desc })]));
+      if (cur.id === "role:constable") {
+        body.appendChild(el("p", { class: "hint", text: "Name the two different fighting styles you get as free Combat Expertise." }));
+        [0, 1].forEach(function (i) {
+          body.appendChild(el("label", { class: "fld narrow", for: "role-style-" + i }, [el("span", { text: "Fighting style " + (i + 1) }),
+            el("input", Object.assign({ id: "role-style-" + i, type: "text", value: C.role.styles[i], placeholder: "e.g. Melee", oninput: function (e) { C.role.styles[i] = e.target.value; saveDraft(); refreshWarnings(); } }, choiceAttrs("feat:combat-expertise")))]));
+        });
+      }
+      if (cur.id === "role:falconer") {
+        body.appendChild(el("p", { class: "hint", text: "Your companion: a creature of your choosing, within reason." }));
+        [["name", "Companion name"], ["creature", "Kind of creature"]].forEach(function (p) {
+          body.appendChild(el("label", { class: "fld narrow", for: "comp-" + p[0] }, [el("span", { text: p[1] }),
+            el("input", { id: "comp-" + p[0], type: "text", value: C.companion[p[0]], oninput: function (e) { C.companion[p[0]] = e.target.value; saveDraft(); } })]));
+        });
+      }
+    }
+    return body;
+  }
+
+  function backgroundScreen(t) {
+    var bg = bgById(C.background.id), body = el("div", { class: "pane" });
+    body.appendChild(el("h3", { text: "Background" }));
+    var list = el("div", { class: "pills", role: "group", "aria-label": "Backgrounds" });
+    D.backgrounds.forEach(function (b) { list.appendChild(pill(b.name, bg && bg.id === b.id, function () { setBackground(b.id); })); });
+    body.appendChild(list);
+    if (bg) {
+      body.appendChild(el("article", { class: "rolecard" }, [el("h3", { text: bg.name }), el("p", { text: bg.about }),
+        el("p", {}, [el("strong", { text: "Naming. " }), document.createTextNode(bg.naming)]),
+        el("p", {}, [el("strong", { text: "Appearance. " }), document.createTextNode(bg.appearance)])]));
+
+      body.appendChild(el("h3", { text: "Size class" }));
+      body.appendChild(el("p", { class: "hint", text: "Your background's range is " + bg.sizeText + ". Size class 1 fills one 5-foot square; 2 fills four." }));
+      body.appendChild(el("div", { class: "pills", role: "group", "aria-label": "Size class" }, sizeChoices(bg).map(function (v) {
+        return pill(sizeLabel(v), C.background.size === v, function () { C.background.size = v; commit(); });
+      })));
+
+      body.appendChild(el("h3", { text: "Vision" }));
+      if (bg.visionMode === "choose") {
+        body.appendChild(el("p", { class: "hint", text: "Choose one." }));
+        body.appendChild(el("div", { class: "pills", role: "group", "aria-label": "Vision" }, bg.vision.map(function (v) {
+          return pill(v, C.background.vision[0] === v, function () { C.background.vision = [v]; commit(); });
+        })));
+      } else {
+        body.appendChild(el("p", { class: "ftags" }, bg.vision.map(function (v) { return el("span", { class: "chip", text: v }); })));
+      }
+      if (hasFeat("feat:third-eye")) body.appendChild(el("p", { class: "ftags" }, [el("span", { class: "chip", text: "Aethersight (Third Eye)" })]));
+
+      body.appendChild(el("h3", { text: "Movement" }));
+      var tempo = 2 + Math.ceil(C.stats.body / 2);
+      var mv = movement();
+      body.appendChild(el("div", { class: "tablewrap narrowtable" }, [el("table", { class: "dtable" }, [
+        el("thead", {}, [el("tr", {}, ["Type", "Modifier", "Speed"].map(function (h) { return el("th", { text: h }); }))]),
+        el("tbody", {}, mv.map(function (m) {
+          return el("tr", {}, [el("td", { text: m.type }), el("td", { text: (m.mod >= 0 ? "+" : "") + m.mod + (m.extra ? " (Movement Expertise +" + m.extra + ")" : "") }), el("td", { class: "num", text: String(m.speed) })]);
+        }))]), ]));
+      body.appendChild(el("p", { class: "hint", text: "Speed is Tempo (" + tempo + ") plus the modifier, never below 1. Jump is half your Tempo, rounded down, minimum 1." }));
+
+      body.appendChild(el("h3", { text: "Background feats (free)" }));
+      bg.feats.forEach(function (f) {
+        var mine = C.background.feats.filter(function (e) { return e.id === f.id; })[0];
+        var kids = [el("h4", { text: f.name }), el("p", { text: f.desc })];
+        if (f.choice && mine) kids.push(el("label", { class: "fld narrow", for: "bgf-" + f.id.replace(/\W/g, "-") }, [el("span", { text: f.choice }),
+          el("input", Object.assign({ id: "bgf-" + f.id.replace(/\W/g, "-"), type: "text", value: mine.choice || "", oninput: function (e) { mine.choice = e.target.value; saveDraft(); refreshWarnings(); } }, choiceAttrs(f.id)))]));
+        body.appendChild(el("article", { class: "rolecard" }, kids));
+      });
+    }
+
+    body.appendChild(el("h3", { text: "Languages" }));
+    body.appendChild(el("p", { class: "hint", text: "Choose two to start (" + C.languages.length + " chosen). Each Polyglot feat adds one more; pick that one on the feat." }));
+    body.appendChild(el("div", { class: "pills", role: "group", "aria-label": "Languages" }, D.languages.map(function (l) {
+      return pill(l.name, C.languages.indexOf(l.id) >= 0, function () { toggleLanguage(l.id); }, "Spoken by: " + l.spoken);
+    })));
+    var poly = C.feats.filter(function (e) { return e.id === "feat:polyglot" && (e.choice || "").trim(); }).map(function (e) { return e.choice.trim(); });
+    if (poly.length) body.appendChild(el("p", { class: "hint", text: "From Polyglot: " + poly.join(", ") + "." }));
+    return body;
+  }
+
   /* ---------- start ---------- */
   window.addEventListener("hashchange", function () { if (D) onRoute(); });
   fetch("data.json").then(function (r) { return r.json(); }).then(function (d) {
-    D = d; C = normalize(loadDraft() || blank());
+    D = d; mountDatalists(); C = normalize(loadDraft() || blank());
     if (loadDraft()) ui.notice = "Restored your last draft from this browser. Save a file to keep it safe.";
     render();
   }).catch(function () { app.textContent = "The rules data could not be loaded."; });

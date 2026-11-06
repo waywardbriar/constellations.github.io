@@ -194,3 +194,12 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 .chosen .fn{font-weight:700} .chosen .fchoice{flex:1 1 8rem;width:auto;padding:.3rem .5rem} .chosen .x{margin-left:auto;padding:.15rem .6rem;font-size:.85rem}
 @media (max-width:62rem){.fgrid{grid-template-columns:minmax(0,1fr)} .chosenpanel{position:static;max-height:none;order:-1}
   .builder .bsum{top:7.2rem;border-radius:18px} .bub:nth-child(even){margin-top:0}}
+
+/* role and background screens */
+.pane h3{margin:1.6rem 0 .4rem;font-size:1.05rem}
+.pills{display:flex;flex-wrap:wrap;gap:.45rem;margin:.5rem 0 .8rem}
+.builder .pillbtn{background:color-mix(in srgb,var(--sec) 14%,transparent)}
+.builder .pillbtn.on{background:color-mix(in srgb,var(--sec) 55%,transparent);border-color:var(--sec);font-weight:700;box-shadow:0 0 1.2rem color-mix(in srgb,var(--sec) 38%,transparent)}
+.rolecard{margin:.8rem 0;padding:.9rem 1.1rem;border-radius:12px;border:1px solid color-mix(in srgb,var(--sec) 55%,transparent);background:color-mix(in srgb,var(--sec) 10%,transparent);max-width:48rem}
+.rolecard h3,.rolecard h4{margin:0 0 .3rem;font-size:1.05rem} .rolecard p{margin:.35rem 0}
+.narrowtable{max-width:26rem}

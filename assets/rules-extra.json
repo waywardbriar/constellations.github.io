@@ -1,7 +1,13 @@
 {
   "_note": "Hand-kept facts the builder needs that the guide does not state as data. Edit freely; ids are feat:<slug>.",
   "rulesVersion": "laurel",
-  "idFixes": {"dual-weilding": "dual-wielding", "pyrotecnics": "pyrotechnics", "ironclad-compsure": "ironclad-composure", "adverse-adaption": "adverse-adaptation", "miniscule": "minuscule"},
+  "idFixes": {
+    "dual-weilding": "dual-wielding",
+    "pyrotecnics": "pyrotechnics",
+    "ironclad-compsure": "ironclad-composure",
+    "adverse-adaption": "adverse-adaptation",
+    "miniscule": "minuscule"
+  },
   "choices": {
     "combat-expertise": "Fighting style",
     "weapons-training-i": "Weapon or style",
@@ -23,15 +29,62 @@
     "pack-habits": "Group or alone"
   },
   "prereqs": {
-    "weapons-mastery": [["weapons-training-i"], ["weapons-training-ii"]],
-    "spell-control-ii": [["spell-control-i"]],
-    "spell-control-iii": [["spell-control-i"], ["spell-control-ii"]],
-    "mote-of-power-ii": [["mote-of-power-i"]],
-    "mote-of-power-iii": [["mote-of-power-i"], ["mote-of-power-ii"]]
+    "weapons-mastery": [
+      [
+        "weapons-training-i"
+      ],
+      [
+        "weapons-training-ii"
+      ]
+    ],
+    "spell-control-ii": [
+      [
+        "spell-control-i"
+      ]
+    ],
+    "spell-control-iii": [
+      [
+        "spell-control-i"
+      ],
+      [
+        "spell-control-ii"
+      ]
+    ],
+    "mote-of-power-ii": [
+      [
+        "mote-of-power-i"
+      ]
+    ],
+    "mote-of-power-iii": [
+      [
+        "mote-of-power-i"
+      ],
+      [
+        "mote-of-power-ii"
+      ]
+    ]
   },
   "prereqNotes": {
     "weighted-ballistics": "Needs Ranged Weapons and/or Firearms training.",
     "poisoned-ballistics": "Needs Ranged Weapons and/or Firearms training.",
     "poisoned-edge": "Needs Melee, Reach and/or Improvised training."
+  },
+  "bgChoices": {
+    "specialist": "Skill",
+    "pack-habits": "Group or alone"
+  },
+  "choiceOptions": {
+    "as-above-as-below": [
+      "Above",
+      "Below"
+    ],
+    "pack-habits": [
+      "Group",
+      "Alone"
+    ],
+    "lion-lamb": [
+      "Innocent",
+      "Imposing"
+    ]
   }
 }
