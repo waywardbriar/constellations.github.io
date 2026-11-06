@@ -148,6 +148,68 @@ def extract_data(sections, soup):
             data["backgrounds"].append({"id": "background:" + slug(cap), "name": cap, "about": head[0] if head else "",
                 "naming": fields.get("naming", ""), "appearance": fields.get("appearance", ""), "sizeText": sz, "sizeRange": rng,
                 "visionMode": vmode, "vision": vopts, "mobility": mob, "feats": feats})
+    # equipment
+    cats = []
+    def add_item(cat, kind, r, **kw):
+        sid = fid(r[1] if kind != "gear3" else r[1])
+        pass
+    eq = by[norm("Equipment")]["nodes"]
+    items = []; qualities = []; conditions = []
+    def slots_of(txt):
+        return [x for x in re.findall(r"Head|Torso|Arms|Hands|Legs|Feet|Accessories|Over|Under|Variable", txt)]
+    def money(txt):
+        m = re.search(r"-?\d+", txt); return int(m.group()) if m else None
+    seen_ids = set()
+    def push(it):
+        base = it["id"]; n = 2
+        while it["id"] in seen_ids: it["id"] = base + "-" + str(n); n += 1
+        seen_ids.add(it["id"]); items.append(it)
+    for n in eq:
+        for t in tables_in(n):
+            cap, head, body = rows_of(t)
+            hd = [h.lower() for h in head]
+            if hd[:1] == ["quality"]:
+                for r in body:
+                    mod = money(r[1]) if r[1].strip("- ") else 0
+                    qualities.append({"id": "quality:" + slug(r[0]), "name": r[0], "mod": mod or 0, "bonus": money(r[2]) or 0, "bids": r[3]})
+                continue
+            if hd[:1] == ["condition"]:
+                for r in body:
+                    conditions.append({"id": "condition:" + slug(r[0]), "name": r[0], "desc": r[1], "penalty": r[2]})
+                continue
+            if not cap and hd and re.fullmatch(r"\d+", head[0]): continue
+            # tables whose first body row got swallowed as the header (Food)
+            if head and re.fullmatch(r"\d+", head[0]):
+                body = [head] + body; hd = ["cost", "name", "description"]
+            if cap in ("Historical Items & Artifacts", "Travel") or not cap: continue
+            if cap == "Weapons":
+                cur = None
+                for r in body:
+                    if len(r) >= 6 and re.fullmatch(r"\d+", r[0]):
+                        cur = {"id": "item:" + fid(r[1]), "name": r[1], "cat": "Weapons", "cost": int(r[0]), "range": r[2],
+                               "bonus": money(r[3]) or 0, "dtype": r[4], "tags": [x.strip() for x in r[5].split(",") if x.strip()], "desc": ""}
+                        push(cur)
+                    elif cur is not None and len(r) == 1: cur["desc"] = (cur["desc"] + " " + r[0]).strip()
+                continue
+            for r in body:
+                if not r or not re.fullmatch(r"\d+", r[0]): continue
+                it = {"cost": int(r[0]), "cat": cap}
+                if cap == "Armour":
+                    it.update({"id": "item:" + fid(r[1]), "name": r[1], "guard": money(r[2]) or 0, "desc": r[3], "effects": r[4], "slots": slots_of(r[5])})
+                elif cap == "Clothes & Other Items":
+                    it.update({"id": "item:" + fid(r[1]), "name": r[1], "guard": money(r[2]) or 0, "desc": r[3], "slots": slots_of(r[4])})
+                elif cap == "Property":
+                    it.update({"id": "item:" + fid(r[1]), "name": r[1], "desc": r[2]})
+                elif cap == "Vehicle":
+                    it.update({"id": "item:" + fid(r[1]), "name": r[1], "passengers": r[2] if len(r) > 3 else "", "handling": r[3] if len(r) > 4 else "", "desc": r[-1]})
+                else:
+                    it.update({"id": "item:" + fid(r[1]), "name": r[1], "desc": r[2] if len(r) > 2 else ""})
+                push(it)
+    for it in items:
+        if it["cat"] == "Weapons":
+            it["abilities"] = [{"name": a.split(":")[0].strip(), "text": a.split(":", 1)[1].strip() if ":" in a else ""} for a in re.findall(r"\[([^\]]+)\]", it["desc"])]
+    data["items"] = items; data["qualities"] = qualities; data["conditions"] = conditions
+    data["guardCap"] = 6
     data["choiceOptions"] = extra.get("choiceOptions", {})
     return data
 
