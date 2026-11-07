@@ -31,6 +31,7 @@
       background: { id: "", size: null, vision: [], feats: [] },
       languages: [],
       equipment: { inventory: [] },
+      spells: { foci: [], known: [] },
       stats: { mind: 0, body: 0, soul: 0 },
       feats: [],
       merit: { starting: 0, earned: 0, spent: 0, remaining: 0 }
@@ -83,6 +84,31 @@
     var capped = Math.min(D.guardCap, sum);
     return { sum: sum, capped: capped, other: other, total: capped + other };
   }
+  function spd() { return D.spells; }
+  /* ---------- spell rules ---------- */
+  var SP_LISTS = ["shapes", "ranges", "elements", "durations", "augments", "afflictions"];
+  var SP_DEFAULTS = { shape: "shape:shapeless", target: "target:self", element: "element:untyped" };
+  function partById(id) { var r = null; SP_LISTS.forEach(function (k) { spd()[k].forEach(function (p) { if (p.id === id) r = p; }); }); return r; }
+  function fociById(id) { return spd().foci.filter(function (f) { return f.id === id; })[0] || spd().foci[2]; }
+  function fociUser(uid) { return C.spells.foci.filter(function (f) { return f.uid === uid; })[0]; }
+  function scope() { return 1 + C.stats.mind; }
+  function componentCap() { return hasFeat("feat:spell-control-iii") ? 16 : hasFeat("feat:spell-control-ii") ? 8 : hasFeat("feat:spell-control-i") ? 6 : 4; }
+  function magCap() { return hasFeat("feat:mote-of-power-iii") ? 5 : hasFeat("feat:mote-of-power-ii") ? 4 : hasFeat("feat:mote-of-power-i") ? 3 : 2; }
+  function magCapped(id) { return id.indexOf("affliction:") === 0 || id === "addl:corrupting" || id === "addl:bonus-damage"; }
+  function partCost(x) { var p = partById(x.id); return p ? p.cost * (p.mag ? x.x : 1) : 0; }
+  function spellCost(k) {
+    var c = 0; k.parts.forEach(function (x) { c += partCost(x); });
+    if (k.duration) { var d = partById(k.duration.id); if (d) c += d.cost * k.duration.count; }
+    return c;
+  }
+  function spellComponents(k) {
+    var n = k.parts.length + (k.duration ? 1 : 0), have = {};
+    k.parts.forEach(function (x) { have[x.id.split(":")[0]] = 1; });
+    Object.keys(SP_DEFAULTS).forEach(function (kind) { if (!have[kind]) n++; });
+    return n;
+  }
+  function fociCost() { var t = 0; C.spells.foci.forEach(function (f) { t += fociById(f.quality).cost; }); return t; }
+  function spellsCost() { var t = 0; C.spells.known.forEach(function (k) { t += spellCost(k); }); return t + fociCost(); }
   function gearCost() { var t = 0; C.equipment.inventory.forEach(function (e) { t += entryCost(e); }); return t; }
   /* movement: background modifier + Movement Expertise picks; speed = Tempo + modifier, never below 1 */
   function movement() {
@@ -112,7 +138,7 @@
     };
   }
   function totals() {
-    var st = startType(C.start.type), stats = 0, feats = 0, gear = gearCost();
+    var st = startType(C.start.type), stats = 0, feats = 0, gear = gearCost() + spellsCost();
     STATS.forEach(function (p) { stats += statCost(C.stats[p[0]]); });
     C.feats.forEach(function (e) { var f = featById(e.id); if (f) feats += f.cost; });
     var total = st.merit + (C.merit.earned || 0), spent = stats + feats + gear;
@@ -165,6 +191,26 @@
     Object.keys(bySlot).forEach(function (x) { if (bySlot[x].length > 1) add("equipment", bySlot[x].join(" and ") + " all use the " + x + " slot; only one fits."); });
     var gi = guardInfo();
     if (gi.sum > D.guardCap) add("equipment", "Your worn gear adds up to " + gi.sum + " Guard; the cap is " + D.guardCap + ", so only " + D.guardCap + " counts.");
+    // spells
+    var sc = scope(), cap = componentCap(), mc = magCap(), spCount = C.spells.known.length;
+    if (spCount > sc) add("spells", "You know " + spCount + " spells; your Scope allows " + sc + ".");
+    C.spells.foci.forEach(function (f) {
+      var held = C.spells.known.filter(function (k) { return k.foci === f.uid; }).length, room = hasFeat("feat:gemini") ? sc : 1;
+      if (held > room) add("spells", (f.name || "A foci") + " holds " + held + " spells; it can hold " + room + (room === 1 ? " (the Gemini feat raises this to your Scope)." : "."));
+    });
+    C.spells.known.forEach(function (k) {
+      var label = k.name || "A spell", ids = k.parts.map(function (x) { return x.id; });
+      if (!k.foci || !fociUser(k.foci)) add("spells", label + " has no foci; casting without one is a -" + spd().foci[0].penalty + " to any bid.");
+      var n = spellComponents(k);
+      if (n > cap) add("spells", label + " has " + n + " components; you can cast " + cap + " as an action (Spell Control feats raise this).");
+      if (ids.indexOf("element:untyped") >= 0 && ids.some(function (i) { return i.indexOf("element:") === 0 && i !== "element:untyped"; })) add("spells", label + " is Untyped as well as elemental; Untyped is for minor spells.");
+      k.parts.forEach(function (x) {
+        var p = partById(x.id);
+        if (!p) { add("spells", label + " has an unknown part: " + x.id + "."); return; }
+        if (p.requires && !hasFeat(p.requires)) add("spells", label + " uses " + p.name + ", which needs the " + (featById(p.requires) ? featById(p.requires).name : p.requires) + " feat.");
+        if (magCapped(x.id) && p.mag && x.x > mc) add("spells", label + ": " + p.name + " " + x.x + " is above the magnitude limit of " + mc + " (Mote of Power raises it).");
+      });
+    });
     // role
     var role = roleById(C.role.id);
     if (role && role.id === "role:constable") {
@@ -219,6 +265,15 @@
       e.quality = e.quality || "quality:normal"; e.condition = e.condition || ""; e.name = e.name || "";
       e.equipped = !!e.equipped; e.slots = Array.isArray(e.slots) ? e.slots : [];
     });
+    c.spells = c.spells && typeof c.spells === "object" ? c.spells : { foci: [], known: [] };
+    c.spells.foci = (Array.isArray(c.spells.foci) ? c.spells.foci : []).filter(function (f) { return f && f.uid; });
+    c.spells.foci.forEach(function (f) { f.name = f.name || ""; f.quality = f.quality || "foci:normal"; });
+    c.spells.known = (Array.isArray(c.spells.known) ? c.spells.known : []).filter(function (k) { return k && k.uid; });
+    c.spells.known.forEach(function (k) {
+      k.name = k.name || ""; k.foci = k.foci || ""; k.notes = k.notes || "";
+      k.parts = (Array.isArray(k.parts) ? k.parts : []).filter(function (x) { return x && x.id; }).map(function (x) { return { id: x.id, x: Math.max(1, parseInt(x.x, 10) || 1) }; });
+      k.duration = k.duration && k.duration.id ? { id: k.duration.id, count: Math.max(1, parseInt(k.duration.count, 10) || 1) } : null;
+    });
     c.merit = Object.assign(b.merit, c.merit || {});
     c.merit.earned = Math.max(0, parseInt(c.merit.earned, 10) || 0);
     return c;
@@ -259,9 +314,10 @@
     { id: "stats", title: "Stats", color: "#F28AB8", blurb: "Mind, Body, Soul" },
     { id: "feats", title: "Feats", color: "#B79CF2", blurb: "Skills and talents" },
     { id: "equipment", title: "Equipment", color: "#FF9B71", blurb: "Gear, armour, weapons" },
+    { id: "spells", title: "Spells", color: "#8FC9F2", blurb: "Foci and spell building" },
     { id: "info", title: "Info", color: "#E58FD0", blurb: "Looks and notes" }
   ];
-  var SOON = { equipment: ["Spells"] };   // dim placeholder bubbles, shown after the named section
+  var SOON = {};   // dim placeholder bubbles, shown after the named section
   var TREE_COLORS = ["#FF8F7E", "#FFC27A", "#F2D98A", "#F28AB8", "#B79CF2", "#FFB48F", "#E56DB1"];
   function secById(id) { return SECS.filter(function (s) { return s.id === id; })[0]; }
   function route() { var h = (location.hash || "").replace("#", ""); return secById(h) ? h : ""; }
@@ -307,6 +363,7 @@
     if (id === "role") { var r = roleById(C.role.id); return r ? r.name : "None chosen"; }
     if (id === "background") { var b = bgById(C.background.id); return b ? b.name : "Not chosen"; }
     if (id === "stats") return "M" + C.stats.mind + " · B" + C.stats.body + " · S" + C.stats.soul;
+    if (id === "spells") { var nk = C.spells.known.length; return nk + (nk === 1 ? " spell" : " spells") + " · " + C.spells.foci.length + " foci"; }
     if (id === "equipment") { var n = C.equipment.inventory.length; return n + (n === 1 ? " item" : " items") + " · Guard " + guardInfo().total; }
     if (id === "feats") return C.feats.length + (C.feats.length === 1 ? " feat" : " feats");
     return "";
@@ -353,7 +410,7 @@
     ]));
     var mine = warns.filter(function (w) { return w.sec === id; });
     if (mine.length) wrap.appendChild(warningList(mine, false));
-    wrap.appendChild({ start: startScreen, role: roleScreen, background: backgroundScreen, equipment: equipmentScreen, info: infoScreen, stats: statsScreen, feats: featsScreen }[id](t));
+    wrap.appendChild({ start: startScreen, role: roleScreen, background: backgroundScreen, equipment: equipmentScreen, spells: spellsScreen, info: infoScreen, stats: statsScreen, feats: featsScreen }[id](t));
     return wrap;
   }
   function onRoute() { render(); var h = document.getElementById("stitle"); window.scrollTo(0, 0); if (h) h.focus({ preventScroll: true }); }
@@ -580,6 +637,111 @@
     body.appendChild(bx);
     body.appendChild(el("h3", { text: "Shop" }));
     body.appendChild(shop());
+    return body;
+  }
+
+  /* ---------- spells ---------- */
+  var spUi = { open: "", cat: "shapes" };
+  var SP_CATS = [["shapes", "Shape"], ["ranges", "Range"], ["elements", "Element"], ["durations", "Duration"], ["augments", "Augments"], ["afflictions", "Afflictions"]];
+  function nextId(prefix, list) { var m = 0; list.forEach(function (e) { var x = new RegExp("^" + prefix + "(\\d+)$").exec(e.uid); if (x) m = Math.max(m, +x[1]); }); return prefix + (m + 1); }
+  function addFoci() { C.spells.foci.push({ uid: nextId("f", C.spells.foci), name: "", quality: "foci:normal" }); commit(); }
+  function removeFoci(uid) { C.spells.foci = C.spells.foci.filter(function (f) { return f.uid !== uid; }); C.spells.known.forEach(function (k) { if (k.foci === uid) k.foci = ""; }); commit(); }
+  function addSpell() {
+    var k = { uid: nextId("s", C.spells.known), name: "", foci: C.spells.foci.length ? C.spells.foci[0].uid : "", notes: "", parts: [], duration: null };
+    C.spells.known.push(k); spUi.open = k.uid; commit();
+  }
+  function removeSpell(uid) { C.spells.known = C.spells.known.filter(function (k) { return k.uid !== uid; }); if (spUi.open === uid) spUi.open = ""; commit(); }
+  function partNames(k) {
+    var out = k.parts.map(function (x) { var p = partById(x.id); return p ? p.name + (p.mag ? " " + x.x : "") : x.id; });
+    if (k.duration) { var d = partById(k.duration.id); if (d) out.push(d.name + (k.duration.count > 1 ? " ×" + k.duration.count : "")); }
+    return out;
+  }
+  function fociCard(f) {
+    var q = fociById(f.quality);
+    return el("article", { class: "frow has invrow" }, [
+      el("div", { class: "invhead" }, [el("strong", { text: f.name || "Foci" }),
+        el("span", { class: "dim", text: q.bonus ? "+" + q.bonus + " to casting bids" : q.penalty ? "−" + q.penalty + " to any bid" : "no bonus" }), el("span", { class: "fcost", text: q.cost })]),
+      el("div", { class: "invctl" }, [
+        el("label", { class: "fld narrow", for: "fn-" + f.uid }, [el("span", { text: "What is it?" }),
+          el("input", { id: "fn-" + f.uid, type: "text", value: f.name, placeholder: "e.g. a silver ring", oninput: function (e) { f.name = e.target.value; saveDraft(); } })]),
+        selectEl("fq-" + f.uid, "Quality", spd().foci.filter(function (x) { return x.id !== "foci:none"; }).map(function (x) { return [x.id, x.name + (x.cost ? " (" + x.cost + ")" : "")]; }), f.quality, function (v) { f.quality = v; commit(); }),
+        el("button", { type: "button", class: "linkbtn", onclick: function () { removeFoci(f.uid); }, text: "Remove" })
+      ]),
+      q.time ? el("p", { class: "dim", text: "Build time: " + q.time + (q.bids ? " · " + q.bids : "") }) : null
+    ]);
+  }
+  function partRow(k, p) {
+    var sel = k.parts.filter(function (x) { return x.id === p.id; })[0], isDur = p.id.indexOf("duration:") === 0;
+    var on = isDur ? (k.duration && k.duration.id === p.id) : !!sel, ent = isDur ? k.duration : sel;
+    var cap = magCapped(p.id) ? magCap() : 9;
+    function toggle() {
+      if (isDur) k.duration = on ? null : { id: p.id, count: 1 };
+      else if (on) k.parts = k.parts.filter(function (x) { return x.id !== p.id; });
+      else k.parts.push({ id: p.id, x: 1 });
+      commit();
+    }
+    var row = el("article", { class: "frow" + (on ? " has" : "") }, [
+      el("button", { type: "button", class: "fsum", "aria-pressed": on ? "true" : "false", onclick: toggle }, [
+        el("span", { class: "fname", text: (on ? "✓ " : "") + p.name }), p.mag ? el("span", { class: "dim", text: "X" }) : null,
+        p.requires ? el("span", { class: "dim", text: "needs " + (featById(p.requires) ? featById(p.requires).name : p.requires) }) : null,
+        el("span", { class: "fcost", text: p.cost })])
+    ]);
+    var body = el("div", { class: "fbody" }, [el("p", { class: "fdesc", text: p.desc })]);
+    if (p.effect) body.appendChild(el("p", {}, [el("strong", { text: "Effect. " }), document.createTextNode(p.effect)]));
+    if (p.resolves) body.appendChild(el("p", { class: "dim", text: "Resolves: " + p.resolves }));
+    if (ent && (p.mag || isDur)) {
+      var key = isDur ? "count" : "x";
+      body.appendChild(el("div", { class: "stepper", role: "group", "aria-label": p.name + (isDur ? " count" : " magnitude") }, [
+        el("span", { class: "dim", text: isDur ? "How many " : "X = " }),
+        el("button", { type: "button", "aria-label": "Lower", disabled: ent[key] <= 1, onclick: function () { ent[key]--; commit(); }, text: "−" }),
+        el("span", { class: "qty", text: String(ent[key]) }),
+        el("button", { type: "button", "aria-label": "Raise", disabled: ent[key] >= cap, onclick: function () { ent[key]++; commit(); }, text: "+" }),
+        el("span", { class: "dim", text: " = " + (p.cost * ent[key]) + " merit" })]));
+    }
+    row.appendChild(body);
+    return row;
+  }
+  function spellEditor(k) {
+    var box = el("div", { class: "spedit" });
+    box.appendChild(el("p", { class: "hint", text: "Every spell starts as Shapeless, Self and Untyped. Pick parts below to change that; each part you add replaces its default." }));
+    var chosen = partNames(k);
+    box.appendChild(el("p", { class: "ftags" }, (chosen.length ? chosen : ["Shapeless · Self · Untyped"]).map(function (n) { return el("span", { class: "chip", text: n }); })));
+    box.appendChild(el("div", { class: "tabs", role: "tablist" }, SP_CATS.map(function (c) {
+      var on = spUi.cat === c[0];
+      return el("button", { type: "button", role: "tab", "aria-selected": on ? "true" : "false", class: on ? "on" : "", onclick: function () { spUi.cat = c[0]; render(); }, text: c[1] });
+    })));
+    spd()[spUi.cat].filter(function (p) { return !SP_DEFAULTS[p.id.split(":")[0]] || SP_DEFAULTS[p.id.split(":")[0]] !== p.id; }).forEach(function (p) { box.appendChild(partRow(k, p)); });
+    box.appendChild(el("label", { class: "fld", for: "sn-" + k.uid }, [el("span", { text: "Notes: what it looks like, how it is used" }),
+      el("textarea", { id: "sn-" + k.uid, rows: "3", oninput: function (e) { k.notes = e.target.value; saveDraft(); } }, [k.notes || ""])]));
+    return box;
+  }
+  function spellCard(k) {
+    var open = spUi.open === k.uid, n = spellComponents(k), cap = componentCap();
+    var card = el("section", { class: "bcard spcard" + (open ? " open" : "") });
+    card.appendChild(el("button", { type: "button", class: "fsum", "aria-expanded": open ? "true" : "false", onclick: function () { spUi.open = open ? "" : k.uid; render(); } }, [
+      el("span", { class: "fname", text: k.name || "Unnamed spell" }),
+      el("span", { class: "dim", text: n + "/" + cap + " components" }), el("span", { class: "fcost", text: spellCost(k) })]));
+    if (!open) { card.appendChild(el("p", { class: "dim", text: partNames(k).join(" · ") || "Shapeless · Self · Untyped" })); return card; }
+    card.appendChild(el("div", { class: "invctl" }, [
+      el("label", { class: "fld narrow", for: "spn-" + k.uid }, [el("span", { text: "Spell name" }),
+        el("input", { id: "spn-" + k.uid, type: "text", value: k.name, placeholder: "e.g. Illuminate", oninput: function (e) { k.name = e.target.value; saveDraft(); } })]),
+      selectEl("spf-" + k.uid, "Foci", [["", "No foci"]].concat(C.spells.foci.map(function (f) { return [f.uid, f.name || "Foci " + f.uid]; })), k.foci, function (v) { k.foci = v; commit(); }),
+      el("button", { type: "button", class: "linkbtn", onclick: function () { removeSpell(k.uid); }, text: "Remove spell" })]));
+    card.appendChild(spellEditor(k));
+    return card;
+  }
+  function spellsScreen(t) {
+    var body = el("div", { class: "pane" });
+    body.appendChild(el("p", { class: "hint", text: "Scope lets you know " + scope() + (scope() === 1 ? " spell" : " spells") + ". A foci holds one spell (Gemini lets it hold up to your Scope). Spells and foci cost merit." }));
+    var fc = el("section", { class: "bcard" }, [el("h3", { text: "Foci (" + fociCost() + " merit)" })]);
+    if (!C.spells.foci.length) fc.appendChild(el("p", { class: "dim", text: "No foci yet. Casting without one is a −" + spd().foci[0].penalty + " to any bid." }));
+    C.spells.foci.forEach(function (f) { fc.appendChild(fociCard(f)); });
+    fc.appendChild(el("button", { type: "button", onclick: addFoci, text: "Add a foci" }));
+    body.appendChild(fc);
+    body.appendChild(el("h3", { text: "Spells" }));
+    if (!C.spells.known.length) body.appendChild(el("p", { class: "dim", text: "No spells yet." }));
+    C.spells.known.forEach(function (k) { body.appendChild(spellCard(k)); });
+    body.appendChild(el("button", { type: "button", class: "primary", onclick: addSpell, text: "Add a spell" }));
     return body;
   }
 

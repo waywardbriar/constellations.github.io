@@ -217,3 +217,8 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 .slotpick{border:1px solid color-mix(in srgb,var(--sec) 35%,transparent);border-radius:.5rem;padding:.3rem .6rem;display:flex;flex-wrap:wrap;gap:.2rem .8rem}
 .linkbtn{background:none;border:none;text-decoration:underline;color:inherit;cursor:pointer;padding:.3rem;margin-left:auto}
 .guardline{margin-top:.8rem;padding-top:.6rem;border-top:1px solid color-mix(in srgb,var(--sec) 35%,transparent)}
+
+/* ---- spells ---- */
+.spcard{margin:.7rem 0}
+.spedit{margin-top:.6rem}
+.fsum[aria-pressed=true]{background:color-mix(in srgb,var(--sec) 22%,transparent)}
