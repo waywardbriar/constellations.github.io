@@ -16,7 +16,7 @@ WORLDS = [
     {"name": "Senexoth",
      "blurb": "A medium to small world of continents and tight archipelagos, circled by a ring of ancient debris.",
      "pages": ["The World At Large", "Settlements & Civilizations"],
-     "files": ["senexoth-calendar.docx"]},
+     "files": ["senexoth-maps.docx", "senexoth-calendar.docx"]},
     # A world with "hidden": True stays in source/worlds but is not built or shown (delete that flag to publish it).
     # Worlds below keep their pages in their own files in source/worlds/. Every H1 in a file is a
     # page. To add or change a world, edit its .docx there (the order of the files is the order here).
@@ -315,6 +315,8 @@ def main():
                 src = img.get("src", "")
                 i = src.find("media/")
                 if i >= 0: img["src"] = "media/" + stem + "/" + src[i + 6:]
+                if img.parent.name != "a":      # click an image to open it full size
+                    lk = wsoup.new_tag("a", href=img["src"], target="_blank", rel="noopener"); img.wrap(lk)
             wc = None
             for el in list(wsoup.body.children if wsoup.body else wsoup.children):
                 if getattr(el, "name", None) == "h1":
