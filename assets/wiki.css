@@ -271,3 +271,6 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 
 /* short centered divider line (a paragraph of underscores in the guide) */
 .doc hr.half{width:40%;margin:1.6rem auto;border:0;border-top:1px solid currentColor;opacity:.45}
+
+/* maps fill the page width; click one to open it full size */
+.doc img[alt*="Map"],.doc img[alt*="map"]{width:100%!important;height:auto!important;max-height:none!important;cursor:zoom-in;image-rendering:pixelated}
