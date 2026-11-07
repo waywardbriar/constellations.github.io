@@ -301,6 +301,13 @@ def main():
     guide_sections = list(sections)
 
     # world files: each H1 in source/worlds/<file> becomes a page of that world
+    # a file named like "<world>-something.docx" in source/worlds joins that world automatically
+    _listed = {f for w in WORLDS for f in w.get("files", [])}
+    for w in WORLDS:
+        pre = re.sub(r"[^a-z0-9]+", "-", w["name"].lower()).strip("-") + "-"
+        for f in sorted((ROOT / "source" / "worlds").glob(pre + "*.docx")) if (ROOT / "source" / "worlds").exists() else []:
+            if f.name not in _listed:
+                w.setdefault("files", []).append(f.name); _listed.add(f.name)
     for w in WORLDS:
         for fn in w.get("files", []):
             p = ROOT / "source" / "worlds" / fn
