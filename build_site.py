@@ -282,6 +282,17 @@ def extract_data(sections, soup):
     data["choiceOptions"] = extra.get("choiceOptions", {})
     return data
 
+REPORT = []
+def _find_world_file(fn):
+    """find a world file by name; forgiving about folder, capitals and browser renames like 'name (1).docx'"""
+    want = re.sub(r"\s*\(\d+\)", "", fn).lower()
+    for d in (ROOT / "source" / "worlds", ROOT / "source"):
+        if not d.exists(): continue
+        for f in sorted(d.glob("*.docx")):
+            if re.sub(r"\s*\(\d+\)", "", f.name).lower() == want: return f
+    return None
+
+
 def main():
     html_path = ROOT / "build" / "guide.html"
     html_path.parent.mkdir(exist_ok=True)
@@ -310,9 +321,9 @@ def main():
                 w.setdefault("files", []).append(f.name); _listed.add(f.name)
     for w in WORLDS:
         for fn in w.get("files", []):
-            p = ROOT / "source" / "worlds" / fn
-            if not p.exists(): p = ROOT / "source" / fn      # also accept files put straight in source/
-            if not p.exists(): print("  note: missing world file", fn); continue
+            p = _find_world_file(fn)
+            if p is None: print("  WARNING: world file not found:", fn); REPORT.append("NOT FOUND: " + fn); continue
+            REPORT.append("found: %s (%d bytes) for world %s" % (p.relative_to(ROOT), p.stat().st_size, w["name"]))
             stem = p.stem
             wdir = ROOT / "build" / ("w_" + stem); wdir.mkdir(parents=True, exist_ok=True)
             whtml = wdir / (stem + ".html")
@@ -480,6 +491,28 @@ def main():
             .replace("{{NEXT}}", f'<a href="{flat[0]["slug"]}.html">{flat[0]["title"]} &rarr;</a>').replace("{{ROOTPREFIX}}", ""))
     (OUT / "index.html").write_text(home, encoding="utf-8")
     (OUT / "search-index.json").write_text(json.dumps(index, ensure_ascii=False), encoding="utf-8")
+    # build-report.txt: a plain-text record of what this build saw (open /build-report.txt on the site)
+    try:
+        import platform, bs4, datetime
+        pv = subprocess.run(["pandoc", "--version"], capture_output=True, text=True).stdout.splitlines()[0]
+        L = ["Build report", "python " + platform.python_version(), pv, "beautifulsoup4 " + bs4.__version__, ""]
+        L.append("source files:")
+        for d in (ROOT / "source", ROOT / "source" / "worlds"):
+            if d.exists():
+                for f in sorted(d.glob("*.docx")): L.append("  %s  %d bytes" % (f.relative_to(ROOT), f.stat().st_size))
+        L += ["", "world files:"] + ["  " + r for r in REPORT]
+        L += ["", "worlds:"]
+        for w in WORLDS:
+            L.append("  %s%s: %s" % (w["name"], " (hidden)" if w.get("hidden") else "", ", ".join(w.get("pages", [])) or "(no pages)"))
+        L += ["", "pages built: %d" % len(flat)]
+        for s_ in flat:
+            if s_.get("world"):
+                L.append("  %s.html  [%s]  images: %d" % (s_["slug"], s_["world"], sum(len(n.find_all("img")) for n in s_["nodes"] if hasattr(n, "find_all"))))
+        mdir = OUT / "media"
+        L += ["", "media files: " + (", ".join(sorted(str(p.relative_to(mdir)) for p in mdir.rglob("*") if p.is_file())) if mdir.exists() else "none")]
+        (OUT / "build-report.txt").write_text("\n".join(L) + "\n", encoding="utf-8")
+    except Exception as e:
+        print("  note: could not write build report:", e)
     print(f"Built {len(flat)} pages, {len(index)} search records -> {OUT}")
 
 if __name__ == "__main__":
