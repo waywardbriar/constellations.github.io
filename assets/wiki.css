@@ -249,3 +249,8 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 }
 .invrow .invtoggle{background:none !important;border:none !important;box-shadow:none !important;border-radius:0 !important;padding:.15rem 0 !important;display:flex;gap:.2rem .7rem;align-items:baseline;flex-wrap:wrap;text-align:left}
 .invrow .invtoggle::before{margin-right:.1rem}
+
+.builder .bnote{margin:0;flex:1 1 12rem;font-size:.82rem;color:var(--ink-dim);min-width:0}
+.navtoggle{padding:.3rem .5rem;line-height:0} .navtoggle svg{width:1.15rem;height:1.15rem;display:block}
+.builder .bsum{border-radius:16px;padding:.5rem 1.4rem}
+@media (max-width:62rem){.builder .bsum{padding:.5rem 1.1rem}}

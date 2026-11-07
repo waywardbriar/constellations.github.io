@@ -352,6 +352,11 @@
     bar.appendChild(cell("Spent", t.spent));
     bar.appendChild(cell("Remaining", t.remaining, t.remaining < 0 ? "bad" : ""));
     bar.appendChild(cell("Warnings", warns.length, warns.length ? "warn" : ""));
+    if (ui.notice) {
+      bar.appendChild(el("p", { class: "bnote", role: "status", text: ui.notice }));
+      clearTimeout(ui.noteTimer);
+      ui.noteTimer = setTimeout(function () { ui.notice = ""; ui.confirmReset = false; var b = document.querySelector(".bsum"); if (b) b.replaceWith(summaryBar(totals(), warnings())); }, 5000);
+    }
     bar.appendChild(el("div", { class: "btools" }, [
       el("button", { type: "button", class: "primary", onclick: download, text: "Save file" }),
       el("label", { class: "btn", for: "loadfile", text: "Load file" }),
@@ -362,7 +367,6 @@
           else { ui.confirmReset = true; ui.notice = "Press Start over again to clear this character."; render(); }
         }, text: ui.confirmReset ? "Really start over?" : "Start over" })])])
     ]));
-    if (ui.notice) bar.appendChild(el("p", { class: "bnote", text: ui.notice }));
     return bar;
   }
   function updateTotalsOnly() { sync(); var b = document.querySelector(".bsum"); if (b) b.replaceWith(summaryBar(totals(), warnings())); }
