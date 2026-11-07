@@ -15,11 +15,23 @@ INCLUDE_WORLD = True    # the Worlds section (set False to hide it from the site
 WORLDS = [
     {"name": "Senexoth",
      "blurb": "A medium to small world of continents and tight archipelagos, circled by a ring of ancient debris.",
-     "pages": ["The World At Large", "Settlements & Civilizations"]},
+     "pages": ["The World At Large", "Settlements & Civilizations"],
+     "files": ["senexoth-calendar.docx"]},
+    # Worlds below keep their pages in their own files in source/worlds/. Every H1 in a file is a
+    # page. To add or change a world, edit its .docx there (the order of the files is the order here).
+    {"name": "Pri-Domhem",
+     "blurb": "The homeworld of the Verge: its history, philosophy, peoples, culture and magic.",
+     "files": ["pri-domhem.docx"]},
+    {"name": "Fulcinis",
+     "blurb": "The Weather Planet, and Anchor, the city built from the lands that were moved to its bay.",
+     "files": ["fulcinis.docx"]},
+    {"name": "The Verge",
+     "blurb": "The wider setting: the planets and systems, and the language and terms used across them.",
+     "files": ["the-verge-planets.docx", "the-verge-language.docx"]},
 ]
 # Text on the Worlds pages that the public site leaves out: a paragraph that starts with one of
 # these, plus the list straight after it. (GM-only material that should not be on a public page.)
-HIDE_AFTER = ["Three truths known to the Ecclesia"]
+HIDE_AFTER = []
 # Alt text for pictures, by page slug, in the order they appear.
 IMAGE_ALT = {"the-world-at-large": ["Map of Senexoth: its continents, island chains and star-marked settlements."]}
 
@@ -44,6 +56,12 @@ def fix_table(t, soup):
     """Pandoc puts every row of a Word table into <thead> as <th>. Rebuild a real
     header: an optional title row (one wide cell), one column-header row, then body rows."""
     thead = t.find("thead")
+    # a table with no real header (its first row is data, e.g. "21 % | Human"): make every row a body row
+    if thead is not None and t.find("tbody") is not None:
+        hr = thead.find_all("tr", recursive=False)
+        if len(hr) == 1 and re.fullmatch(r"\d+\s*%", hr[0].get_text(" ", strip=True).split(" ")[0] + (" %" if "%" in hr[0].get_text() and not hr[0].get_text(" ", strip=True).split(" ")[0].endswith("%") else "")):
+            for c in hr[0].find_all("th"): c.name = "td"
+            t.find("tbody").insert(0, hr[0].extract()); thead.decompose(); return
     if thead is None or t.find("tbody") is not None and t.find("tbody").find("tr") is not None:
         return
     rows = thead.find_all("tr", recursive=False)
@@ -276,6 +294,36 @@ def main():
         elif cur is not None and getattr(el, "name", None):
             cur["nodes"].append(el)
     by_norm = {norm(s["title"]): s for s in sections}
+    guide_sections = list(sections)
+
+    # world files: each H1 in source/worlds/<file> becomes a page of that world
+    for w in WORLDS:
+        for fn in w.get("files", []):
+            p = ROOT / "source" / "worlds" / fn
+            if not p.exists(): print("  note: missing world file", fn); continue
+            stem = p.stem
+            wdir = ROOT / "build" / ("w_" + stem); wdir.mkdir(parents=True, exist_ok=True)
+            whtml = wdir / (stem + ".html")
+            subprocess.run(["pandoc", str(p), "-t", "html", "--wrap=none", "--extract-media", str(wdir), "-o", str(whtml)], check=True)
+            wsoup = BeautifulSoup(whtml.read_text(encoding="utf-8"), "html.parser")
+            for img in wsoup.find_all("img"):
+                src = img.get("src", "")
+                i = src.find("media/")
+                if i >= 0: img["src"] = "media/" + stem + "/" + src[i + 6:]
+            wc = None
+            for el in list(wsoup.body.children if wsoup.body else wsoup.children):
+                if getattr(el, "name", None) == "h1":
+                    wc = {"title": el.get_text(" ", strip=True), "nodes": []}
+                    sections.append(wc); w.setdefault("pages", []).append(wc["title"])
+                elif wc is not None and getattr(el, "name", None):
+                    wc["nodes"].append(el)
+            if (wdir / "media").exists():
+                shutil.copytree(wdir / "media", ROOT / "build" / "_wmedia" / stem, dirs_exist_ok=True)
+    by_norm = {}
+    for s_ in sections:
+        k = norm(s_["title"])
+        if k and k in by_norm and k != "table of contents": sys.exit("Two pages share the title: " + s_["title"])
+        by_norm[k] = s_
 
     nav = []
     for g, titles in GROUPS:
@@ -312,6 +360,8 @@ def main():
     (OUT / "assets").mkdir(parents=True)
     if (html_path.parent / "media").exists():
         shutil.copytree(html_path.parent / "media", OUT / "media")
+    if (ROOT / "build" / "_wmedia").exists():
+        shutil.copytree(ROOT / "build" / "_wmedia", OUT / "media", dirs_exist_ok=True)
     shutil.copy(ROOT / "assets" / "wiki.css", OUT / "assets" / "wiki.css")
     shutil.copy(ROOT / "assets" / "wiki.js", OUT / "assets" / "wiki.js")
     (OUT / ".nojekyll").write_text("")
@@ -376,7 +426,7 @@ def main():
                 .replace("{{BODYCLASS}}", "").replace("{{PREV}}", prev_l).replace("{{NEXT}}", next_l).replace("{{ROOTPREFIX}}", ""))
         (OUT / f"{s['slug']}.html").write_text(page, encoding="utf-8")
 
-    data = extract_data(sections, soup)
+    data = extract_data(guide_sections, soup)
     (OUT / "data.json").write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     print(f"Data: {len(data['startTypes'])} start types, {len(data['feats'])} feats")
 
