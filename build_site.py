@@ -401,6 +401,10 @@ def main():
 
     for i, s in enumerate(flat):
         body = BeautifulSoup("".join(str(n) for n in s["nodes"]), "html.parser")
+        # a paragraph of only underscores is a divider line
+        for para in body.find_all("p"):
+            if re.fullmatch(r"_{4,}", para.get_text(strip=True)):
+                hr = soup.new_tag("hr", attrs={"class": "half"}); para.replace_with(hr)
         # drop empty headings (empty "section" anchors from the docx)
         for h in body.find_all(re.compile("^h[1-6]$")):
             if not h.get_text(strip=True): h.decompose()
