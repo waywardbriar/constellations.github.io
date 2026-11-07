@@ -300,6 +300,7 @@ def main():
     for w in WORLDS:
         for fn in w.get("files", []):
             p = ROOT / "source" / "worlds" / fn
+            if not p.exists(): p = ROOT / "source" / fn      # also accept files put straight in source/
             if not p.exists(): print("  note: missing world file", fn); continue
             stem = p.stem
             wdir = ROOT / "build" / ("w_" + stem); wdir.mkdir(parents=True, exist_ok=True)
