@@ -24,7 +24,7 @@
   function blank() {
     return {
       file: { schemaVersion: SCHEMA, rulesVersion: D.rulesVersion },
-      identity: { name: "", appearance: "", notes: "", portrait: "" },
+      identity: { name: "", height: "", hair: "", eyes: "", features: "", notes: "", portrait: "" },
       start: { type: "start:average" },
       role: { id: "", styles: ["", ""] },
       companion: { name: "", creature: "" },
@@ -191,6 +191,8 @@
     Object.keys(bySlot).forEach(function (x) { if (bySlot[x].length > 1) add("equipment", bySlot[x].join(" and ") + " all use the " + x + " slot; only one fits."); });
     var gi = guardInfo();
     if (gi.sum > D.guardCap) add("equipment", "Your worn gear adds up to " + gi.sum + " Guard; the cap is " + D.guardCap + ", so only " + D.guardCap + " counts.");
+    // info
+    [["height", "height"], ["hair", "hair color"], ["eyes", "eye color"]].forEach(function (p) { if (!(C.identity[p[0]] || "").trim()) add("info", "Describe your character's " + p[1] + "."); });
     // spells
     var sc = scope(), cap = componentCap(), mc = magCap(), spCount = C.spells.known.length;
     if (spCount > sc) add("spells", "You know " + spCount + " spells; your Scope allows " + sc + ".");
@@ -244,6 +246,10 @@
     var c = JSON.parse(JSON.stringify(o));               // keeps unknown blocks (role, background, equipment, ...) for later slices
     c.file = c.file || {}; c.file.schemaVersion = SCHEMA; c.file.rulesVersion = c.file.rulesVersion || D.rulesVersion;
     c.identity = Object.assign(b.identity, c.identity || {});
+    /* older files had one free-text appearance box; keep what it said under features */
+    if (c.identity.appearance) { if (!c.identity.features) c.identity.features = c.identity.appearance; }
+    delete c.identity.appearance;
+    ["height", "hair", "eyes", "features", "notes"].forEach(function (k) { if (typeof c.identity[k] !== "string") c.identity[k] = ""; });
     if (typeof c.identity.portrait !== "string" || c.identity.portrait.indexOf("data:image/") !== 0) c.identity.portrait = "";
     c.start = Object.assign(b.start, c.start || {});
     if (!D.startTypes.some(function (s) { return s.id === c.start.type; })) c.start.type = b.start.type;
@@ -360,7 +366,7 @@
   /* ----- hub ----- */
   function bubbleStatus(id, t) {
     if (id === "start") return t.st.name + " · " + t.st.merit;
-    if (id === "info") return C.identity.appearance || C.identity.notes || C.identity.portrait ? "Filled in" : "Empty";
+    if (id === "info") { var n = ["height", "hair", "eyes"].filter(function (k) { return (C.identity[k] || "").trim(); }).length; return n === 3 ? "Described" : n + " of 3 described"; }
     if (id === "role") { var r = roleById(C.role.id); return r ? r.name : "None chosen"; }
     if (id === "background") { var b = bgById(C.background.id); return b ? b.name : "Not chosen"; }
     if (id === "stats") return "M" + C.stats.mind + " · B" + C.stats.body + " · S" + C.stats.soul;
@@ -484,9 +490,15 @@
   function infoScreen() {
     var body = el("div", { class: "pane" });
     body.appendChild(portraitBox());
-    [["appearance", "Appearance", "Height, build, eyes, anything people notice."], ["notes", "Notes", "Anything else about your character."]].forEach(function (p) {
+    body.appendChild(el("h3", { text: "Appearance" }));
+    body.appendChild(el("p", { class: "hint", text: "Think about how people first see your character." }));
+    [["height", "Height", "e.g. 6'3\""], ["hair", "Hair color", "e.g. sheer black"], ["eyes", "Eye color", "e.g. soft sage green"]].forEach(function (p) {
+      body.appendChild(el("label", { class: "fld narrow", for: "info-" + p[0] }, [el("span", { text: p[1] }),
+        el("input", { id: "info-" + p[0], type: "text", value: C.identity[p[0]], placeholder: p[2], oninput: function (e) { C.identity[p[0]] = e.target.value; saveDraft(); updateTotalsOnly(); refreshWarnings(); } })]));
+    });
+    [["features", "Scars and unique features", "Scars, marks, tattoos, a missing finger, a way of standing. Anything people remember.", 4], ["notes", "Additional info", "Anything else about your character.", 6]].forEach(function (p) {
       body.appendChild(el("label", { class: "fld", for: "info-" + p[0] }, [el("span", { text: p[1] }),
-        el("textarea", { id: "info-" + p[0], rows: "6", placeholder: p[2], oninput: function (e) { C.identity[p[0]] = e.target.value; saveDraft(); } }, [C.identity[p[0]] || ""])]));
+        el("textarea", { id: "info-" + p[0], rows: String(p[3]), placeholder: p[2], oninput: function (e) { C.identity[p[0]] = e.target.value; saveDraft(); } }, [C.identity[p[0]] || ""])]));
     });
     return body;
   }
