@@ -28,7 +28,10 @@ WORLDS = [
      "files": ["fulcinis.docx"]},
     {"name": "The Verge", "hidden": True,
      "blurb": "The wider setting: the planets and systems, and the language and terms used across them.",
-     "files": ["the-verge-planets.docx", "the-verge-language.docx"]},
+     "files": ["the-verge-planets.docx"]},
+    {"name": "Language & Terminology",
+     "blurb": "The terminology, vocabulary, syllabary and grammar of the language.",
+     "files": ["the-verge-language.docx"]},
 ]
 # Text on the Worlds pages that the public site leaves out: a paragraph that starts with one of
 # these, plus the list straight after it. (GM-only material that should not be on a public page.)
@@ -393,8 +396,8 @@ def main():
                 li = ' class="indent"' if (s.get("world") and s.get("kind") != "hub") else ""
                 out.append(f'<li{li}><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
-        out.append('<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else ""))
-        return "\n".join(out)
+        tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "")
+        return "\n".join([tools] + out)
 
     for i, s in enumerate(flat):
         body = BeautifulSoup("".join(str(n) for n in s["nodes"]), "html.parser")
