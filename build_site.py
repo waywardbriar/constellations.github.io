@@ -17,15 +17,16 @@ WORLDS = [
      "blurb": "A medium to small world of continents and tight archipelagos, circled by a ring of ancient debris.",
      "pages": ["The World At Large", "Settlements & Civilizations"],
      "files": ["senexoth-calendar.docx"]},
+    # A world with "hidden": True stays in source/worlds but is not built or shown (delete that flag to publish it).
     # Worlds below keep their pages in their own files in source/worlds/. Every H1 in a file is a
     # page. To add or change a world, edit its .docx there (the order of the files is the order here).
-    {"name": "Pri-Domhem",
+    {"name": "Pri-Domhem", "hidden": True,
      "blurb": "The homeworld of the Verge: its history, philosophy, peoples, culture and magic.",
      "files": ["pri-domhem.docx"]},
     {"name": "Fulcinis",
      "blurb": "The Weather Planet, and Anchor, the city built from the lands that were moved to its bay.",
      "files": ["fulcinis.docx"]},
-    {"name": "The Verge",
+    {"name": "The Verge", "hidden": True,
      "blurb": "The wider setting: the planets and systems, and the language and terms used across them.",
      "files": ["the-verge-planets.docx", "the-verge-language.docx"]},
 ]
@@ -335,24 +336,33 @@ def main():
             s["slug"] = slug(t)
             items.append(s)
         nav.append((g, items))
+    hidden_secs = []
     if INCLUDE_WORLD and WORLDS:
-        cards = []
+        cards, witems = [], []
         for w in WORLDS:
+            if w.get("hidden"):          # kept in source/worlds but not built or shown
+                hidden_secs += [by_norm.get(norm(t)) for t in w.get("pages", [])]
+                continue
             pages = []
-            for t in w["pages"]:
+            for t in w.get("pages", []):
                 sec = by_norm.get(norm(t))
                 if not sec: print("  note: no section named", t); continue
                 sec["slug"] = slug(t); sec["world"] = w["name"]; pages.append(sec)
             if not pages: continue
             w["_pages"] = pages
+            hslug = "world-" + slug(w["name"])
             lis = "".join(f'<li><a href="{x["slug"]}.html">{x["title"]}</a></li>' for x in pages)
-            cards.append(f'<section class="card"><h2><a href="{pages[0]["slug"]}.html">{w["name"]}</a></h2><p>{w.get("blurb", "")}</p><ul>{lis}</ul></section>')
+            hub_html = f'<p class="lede">{w.get("blurb", "")}</p><ul class="worldpages">{lis}</ul>'
+            hub = {"title": w["name"], "slug": hslug, "kind": "hub", "world": w["name"],
+                   "nodes": [t for t in BeautifulSoup(hub_html, "html.parser").children if getattr(t, "name", None)]}
+            cards.append(f'<section class="card"><h2><a href="{hslug}.html">{w["name"]}</a></h2><p>{w.get("blurb", "")}</p>'
+                         f'<p class="more"><a href="{hslug}.html">Explore {w["name"]} &rarr;</a></p></section>')
+            witems += [hub] + pages
         intro = ('<p class="lede">Constellations is played across different worlds. Each has its own places, peoples and history.</p>'
                  '<div class="cards">' + "".join(cards) + '</div>')
         index_sec = {"title": "Worlds", "slug": "worlds", "nodes": [t for t in BeautifulSoup(intro, "html.parser").children if getattr(t, "name", None)]}
-        wl = [x for w in WORLDS for x in w.get("_pages", [])]
-        nav.append(("Worlds", [index_sec] + wl))
-    used = {id(s) for _, it in nav for s in it}
+        nav.append(("Worlds", [index_sec] + witems))
+    used = {id(s) for _, it in nav for s in it} | {id(x) for x in hidden_secs if x}
     for s in sections:
         if id(s) not in used and norm(s["title"]) not in ("table of contents", ""):
             print("  note: section not placed in sidebar:", s["title"])
@@ -375,12 +385,13 @@ def main():
         out = []
         for g, items in nav:
             out.append(f'<div class="grp"><h3>{g}</h3><ul>')
-            last = None
+            aw = active.get("world") if isinstance(active, dict) else None
             for s in items:
-                if s.get("world") and s["world"] != last:
-                    out.append(f'<li class="sub">{s["world"]}</li>'); last = s["world"]
+                if g == "Worlds" and s.get("world") and s.get("kind") != "hub" and s["world"] != aw:
+                    continue          # a world's pages show in the sidebar only while you are inside that world
                 cls = ' class="on"' if s is active else ""
-                out.append(f'<li><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
+                li = ' class="indent"' if (s.get("world") and s.get("kind") != "hub") else ""
+                out.append(f'<li{li}><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
         out.append('<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else ""))
         return "\n".join(out)
@@ -444,6 +455,7 @@ def main():
     cards = []
     for g, items in nav:
         if g == "Start Here": continue
+        items = [s for s in items if not (s.get("world") and s.get("kind") != "hub")]
         lis = "".join(f'<li><a href="{s["slug"]}.html">{s["title"]}</a></li>' for s in items)
         cards.append(f'<section class="card"><h2>{g}</h2><ul>{lis}</ul></section>')
     home = (template.replace("{{TITLE}}", "Constellations").replace("{{SIDEBAR}}", sidebar(None))
