@@ -210,6 +210,41 @@ def extract_data(sections, soup):
             it["abilities"] = [{"name": a.split(":")[0].strip(), "text": a.split(":", 1)[1].strip() if ":" in a else ""} for a in re.findall(r"\[([^\]]+)\]", it["desc"])]
     data["items"] = items; data["qualities"] = qualities; data["conditions"] = conditions
     data["guardCap"] = 6
+    # spells: foci qualities and the component tables
+    sp = {"foci": [], "shapes": [], "ranges": [], "elements": [], "durations": [], "augments": [], "afflictions": []}
+    def num(txt, pat, default=0):
+        m = re.search(pat, txt); return int(m.group(1)) if m else default
+    for n in by[norm("Spells")]["nodes"]:
+        for t in tables_in(n):
+            cap, head, body = rows_of(t)
+            if not head: continue
+            h0 = head[0].lower()
+            if h0 == "foci quality":
+                for r in body:
+                    info = r[1] if len(r) > 1 else ""
+                    sp["foci"].append({"id": "foci:" + ("none" if r[0].lower().startswith("no ") else slug(r[0])), "name": r[0],
+                        "cost": num(info, r"Material Requirements:\s*(\d+)\s*Merit"), "bonus": num(info, r"Bonus:\s*\+(\d+)"),
+                        "penalty": num(info, r"Penalty:\s*-(\d+)"), "time": (re.search(r"Time(?:'s|:)\s*(.+?)\s*(?:\s+/\s+|Material Requirements:|$)", info) or [0, ""])[1],
+                        "bids": (re.search(r"Bids:\s*(.+)$", info) or [0, ""])[1]})
+                continue
+            if h0 != "cost": continue
+            key = {"shape": "shapes", "targets & range": "ranges", "element": "elements", "spell duration": "durations", "additional components": "augments"}.get(cap.lower())
+            hd = [x.lower() for x in head]
+            if key is None and len(hd) > 1 and hd[1] == "condition": key = "afflictions"
+            if key is None and cap == "" and len(hd) > 1:
+                key = {"name": "shapes", "type": "elements", "time": "durations", "component": "augments"}.get(hd[1])
+            if key is None: continue
+            for r in body:
+                if not re.fullmatch(r"\d+", r[0].strip()): continue
+                nm = r[1].strip().lstrip("*"); mag = bool(re.search(r" X$", nm)); base = re.sub(r" X$", "", nm)
+                kind = {"shapes": "shape", "ranges": "target", "elements": "element", "durations": "duration", "augments": "addl", "afflictions": "affliction"}[key]
+                e = {"id": kind + ":" + fid(nm), "name": base, "cost": int(r[0]), "mag": mag, "desc": r[2] if len(r) > 2 else ""}
+                if key == "afflictions":
+                    e["effect"] = r[3] if len(r) > 3 else ""; e["resolves"] = r[4] if len(r) > 4 else ""
+                m = re.search(r"Requires Feat:\s*([^.*]+)", e["desc"])
+                if m: e["requires"] = "feat:" + slug(m.group(1).strip()); e["desc"] = re.sub(r"\s*\*?Requires Feat:[^.]*\.?", "", e["desc"]).strip()
+                sp[key].append(e)
+    data["spells"] = sp
     data["choiceOptions"] = extra.get("choiceOptions", {})
     return data
 
