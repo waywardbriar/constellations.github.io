@@ -24,7 +24,7 @@
   function blank() {
     return {
       file: { schemaVersion: SCHEMA, rulesVersion: D.rulesVersion },
-      identity: { name: "", appearance: "", notes: "" },
+      identity: { name: "", appearance: "", notes: "", portrait: "" },
       start: { type: "start:average" },
       role: { id: "", styles: ["", ""] },
       companion: { name: "", creature: "" },
@@ -244,6 +244,7 @@
     var c = JSON.parse(JSON.stringify(o));               // keeps unknown blocks (role, background, equipment, ...) for later slices
     c.file = c.file || {}; c.file.schemaVersion = SCHEMA; c.file.rulesVersion = c.file.rulesVersion || D.rulesVersion;
     c.identity = Object.assign(b.identity, c.identity || {});
+    if (typeof c.identity.portrait !== "string" || c.identity.portrait.indexOf("data:image/") !== 0) c.identity.portrait = "";
     c.start = Object.assign(b.start, c.start || {});
     if (!D.startTypes.some(function (s) { return s.id === c.start.type; })) c.start.type = b.start.type;
     c.stats = Object.assign(b.stats, c.stats || {});
@@ -359,7 +360,7 @@
   /* ----- hub ----- */
   function bubbleStatus(id, t) {
     if (id === "start") return t.st.name + " · " + t.st.merit;
-    if (id === "info") return C.identity.appearance || C.identity.notes ? "Filled in" : "Empty";
+    if (id === "info") return C.identity.appearance || C.identity.notes || C.identity.portrait ? "Filled in" : "Empty";
     if (id === "role") { var r = roleById(C.role.id); return r ? r.name : "None chosen"; }
     if (id === "background") { var b = bgById(C.background.id); return b ? b.name : "Not chosen"; }
     if (id === "stats") return "M" + C.stats.mind + " · B" + C.stats.body + " · S" + C.stats.soul;
@@ -370,6 +371,7 @@
   }
   function hub(t, warns) {
     var wrap = el("div", {});
+    if (C.identity.portrait) wrap.appendChild(el("img", { class: "hubportrait", src: C.identity.portrait, alt: "" }));
     wrap.appendChild(el("p", { class: "hubline", text: (C.identity.name || "Your character") + " · " + t.st.name + " start. Merit so far: stats " + t.stats + ", feats " + t.feats + ", gear " + t.gear + ". Pick a bubble to build that part." }));
     var ring = el("nav", { class: "hub", "aria-label": "Character sections" });
     SECS.forEach(function (s) {
@@ -433,8 +435,55 @@
     return body;
   }
 
+  /* portrait: pick a picture, frame it as a square, keep a 256px copy inside the save file */
+  var PT = 256, pt = { img: null, zoom: 1, ox: 0, oy: 0 };
+  function drawPortrait(cv) {
+    var g = cv.getContext("2d"); g.clearRect(0, 0, PT, PT);
+    if (!pt.img) return;
+    var w = pt.img.naturalWidth, h = pt.img.naturalHeight, side = Math.min(w, h) / pt.zoom;
+    var sx = (w - side) / 2 + pt.ox * (w - side) / 2, sy = (h - side) / 2 + pt.oy * (h - side) / 2;
+    sx = Math.max(0, Math.min(w - side, sx)); sy = Math.max(0, Math.min(h - side, sy));
+    g.drawImage(pt.img, sx, sy, side, side, 0, 0, PT, PT);
+  }
+  function portraitBox() {
+    var box = el("section", { class: "bcard portrait" }, [el("h3", { text: "Portrait" })]);
+    var cv = el("canvas", { width: String(PT), height: String(PT), class: "ptcanvas", role: "img", "aria-label": "Portrait preview" });
+    var tools = el("div", { class: "ptools" });
+    function slider(id, label, min, max, step, key) {
+      return el("label", { class: "fld narrow", for: id }, [el("span", { text: label }),
+        el("input", { id: id, type: "range", min: String(min), max: String(max), step: String(step), value: String(pt[key]), oninput: function (e) { pt[key] = parseFloat(e.target.value); drawPortrait(cv); } })]);
+    }
+    if (C.identity.portrait && !pt.img) {
+      var im = el("img", { src: C.identity.portrait, class: "ptcanvas", alt: "Your portrait" });
+      box.appendChild(im);
+    } else if (pt.img) {
+      box.appendChild(cv); drawPortrait(cv);
+      tools.appendChild(slider("pt-zoom", "Zoom", 1, 3, 0.05, "zoom"));
+      tools.appendChild(slider("pt-x", "Left / right", -1, 1, 0.05, "ox"));
+      tools.appendChild(slider("pt-y", "Up / down", -1, 1, 0.05, "oy"));
+      tools.appendChild(el("button", { type: "button", class: "primary", onclick: function () {
+        C.identity.portrait = cv.toDataURL("image/jpeg", 0.85); pt.img = null; commit();
+      }, text: "Use this portrait" }));
+      tools.appendChild(el("button", { type: "button", onclick: function () { pt.img = null; render(); }, text: "Cancel" }));
+    }
+    box.appendChild(tools);
+    var row = el("div", { class: "ptools" }, [
+      el("label", { class: "btn", for: "pt-file", text: C.identity.portrait ? "Change picture" : "Choose a picture" }),
+      el("input", { id: "pt-file", type: "file", accept: "image/*", class: "sr", onchange: function (e) {
+        var f = e.target.files[0]; if (!f) return;
+        var url = URL.createObjectURL(f), img = new Image();
+        img.onload = function () { pt = { img: img, zoom: 1, ox: 0, oy: 0 }; render(); };
+        img.onerror = function () { ui.notice = "That file could not be read as a picture."; render(); };
+        img.src = url; e.target.value = "";
+      } })
+    ]);
+    if (C.identity.portrait && !pt.img) row.appendChild(el("button", { type: "button", class: "linkbtn", onclick: function () { C.identity.portrait = ""; commit(); }, text: "Remove portrait" }));
+    box.appendChild(row);
+    return box;
+  }
   function infoScreen() {
     var body = el("div", { class: "pane" });
+    body.appendChild(portraitBox());
     [["appearance", "Appearance", "Height, build, eyes, anything people notice."], ["notes", "Notes", "Anything else about your character."]].forEach(function (p) {
       body.appendChild(el("label", { class: "fld", for: "info-" + p[0] }, [el("span", { text: p[1] }),
         el("textarea", { id: "info-" + p[0], rows: "6", placeholder: p[2], oninput: function (e) { C.identity[p[0]] = e.target.value; saveDraft(); } }, [C.identity[p[0]] || ""])]));

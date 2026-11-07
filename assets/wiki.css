@@ -222,3 +222,8 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 .spcard{margin:.7rem 0}
 .spedit{margin-top:.6rem}
 .fsum[aria-pressed=true]{background:color-mix(in srgb,var(--sec) 22%,transparent)}
+
+/* ---- portrait ---- */
+.ptcanvas{display:block;width:12rem;height:12rem;max-width:100%;border-radius:1rem;object-fit:cover;border:1px solid color-mix(in srgb,var(--sec) 45%,transparent);margin:.5rem 0}
+.ptools{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:flex-end;margin:.4rem 0}
+.hubportrait{width:5rem;height:5rem;border-radius:50%;object-fit:cover;display:block;margin:0 0 .4rem;border:2px solid color-mix(in srgb,var(--sec,#FF9E8F) 60%,transparent)}
