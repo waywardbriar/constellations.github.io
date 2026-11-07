@@ -10,8 +10,10 @@
 <link rel="stylesheet" href="assets/wiki.css">
 </head>
 <body class="{{BODYCLASS}}">
+<script>try{if(localStorage.getItem("navOff")==="1")document.body.classList.add("nav-off")}catch(e){}</script>
 <header class="top">
   <button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="side">Menu</button>
+  <button class="navtoggle" aria-label="Hide or show the contents list" aria-pressed="true">Contents</button>
   <a class="brand" href="index.html">Constellations</a>
   <div class="search">
     <label class="sr" for="q">Search the guide</label>

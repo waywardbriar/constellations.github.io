@@ -3,6 +3,14 @@
   if(menu) menu.addEventListener('click',function(){
     var o=body.classList.toggle('open'); menu.setAttribute('aria-expanded',o?'true':'false');
   });
+  var nt=document.querySelector('.navtoggle');
+  if(nt){
+    nt.setAttribute('aria-pressed',body.classList.contains('nav-off')?'false':'true');
+    nt.addEventListener('click',function(){
+      var off=body.classList.toggle('nav-off'); nt.setAttribute('aria-pressed',off?'false':'true');
+      try{localStorage.setItem('navOff',off?'1':'0')}catch(e){}
+    });
+  }
   var q=document.getElementById('q'), box=document.getElementById('results'), idx=null, sel=-1;
   function load(){
     if(idx) return Promise.resolve(idx);

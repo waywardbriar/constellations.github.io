@@ -339,6 +339,9 @@
     app.appendChild(summaryBar(t, warns));
     if (!r) app.appendChild(hub(t, warns));
     else app.appendChild(screen(r, t, warns));
+    Array.prototype.forEach.call(document.querySelectorAll(".tabs"), function (strip) {
+      var on = strip.querySelector("button.on"); if (on) strip.scrollLeft = Math.max(0, on.offsetLeft - 24);
+    });
     if (activeId) { var n = document.getElementById(activeId); if (n) { n.focus(); try { if (selStart != null) n.setSelectionRange(selStart, selStart); } catch (e) {} } }
   }
 
@@ -353,10 +356,11 @@
       el("button", { type: "button", class: "primary", onclick: download, text: "Save file" }),
       el("label", { class: "btn", for: "loadfile", text: "Load file" }),
       el("input", { id: "loadfile", type: "file", accept: ".json,application/json", class: "sr", onchange: function (e) { if (e.target.files[0]) upload(e.target.files[0]); e.target.value = ""; } }),
-      el("button", { type: "button", onclick: function () {
-        if (ui.confirmReset) { C = blank(); ui.confirmReset = false; ui.notice = "Started a new character."; commit(); }
-        else { ui.confirmReset = true; ui.notice = "Press Start over again to clear this character."; render(); }
-      }, text: ui.confirmReset ? "Really start over?" : "Start over" })
+      el("details", { class: "more", open: ui.confirmReset ? "open" : null }, [el("summary", { text: "More" }),
+        el("div", { class: "morebox" }, [el("button", { type: "button", onclick: function () {
+          if (ui.confirmReset) { C = blank(); ui.confirmReset = false; ui.notice = "Started a new character."; commit(); }
+          else { ui.confirmReset = true; ui.notice = "Press Start over again to clear this character."; render(); }
+        }, text: ui.confirmReset ? "Really start over?" : "Start over" })])])
     ]));
     if (ui.notice) bar.appendChild(el("p", { class: "bnote", text: ui.notice }));
     return bar;
@@ -587,7 +591,7 @@
 
 
   /* ---------- equipment ---------- */
-  var eq = { cat: "Weapons", q: "", open: {} };
+  var eq = { cat: "Weapons", q: "", open: {}, inv: {} };
   var HIDDEN_CATS = ["Property"];   // lodging is gated by total merit, not bought
   var CAT_ORDER = ["Weapons", "Armour", "Clothes & Other Items", "Survival Equipment", "Food", "Medical", "Specialized Equipment", "Crafting Materials", "Natural Resources", "Chemicals & Other Consumables", "Illicit Materials", "Vehicle"];
   function nextUid() { var m = 0; C.equipment.inventory.forEach(function (e) { var x = /^i(\d+)$/.exec(e.uid); if (x) m = Math.max(m, +x[1]); }); return "i" + (m + 1); }
@@ -597,7 +601,9 @@
       var same = inv.filter(function (e) { return e.id === it.id; })[0];
       if (same) { same.qty++; commit(); return; }
     }
-    inv.push({ uid: nextUid(), id: it.id, quality: "quality:normal", condition: "", name: "", qty: 1, equipped: false, slots: [] });
+    var uid = nextUid();
+    inv.push({ uid: uid, id: it.id, quality: "quality:normal", condition: "", name: "", qty: 1, equipped: false, slots: [] });
+    if (qualityable(it)) eq.inv[uid] = true;
     commit();
   }
   function removeItem(uid) { C.equipment.inventory = C.equipment.inventory.filter(function (e) { return e.uid !== uid; }); commit(); }
@@ -652,9 +658,15 @@
     var title = e.name || it.name, bits = [];
     if (wearable(it) && it.guard > 0) bits.push("Guard " + effGuard(e, it));
     if (it.cat === "Weapons") bits.push("+" + effBonus(e, it) + " dice");
+    var open = !!eq.inv[e.uid], tags = [];
+    if (wearable(it) && e.equipped) tags.push("worn");
+    if (qualityable(it) && e.quality !== "quality:normal") tags.push(qualityById(e.quality).name.toLowerCase());
+    if (e.condition) tags.push(D.conditions.filter(function (c) { return c.id === e.condition; })[0].name.toLowerCase());
     var head = el("div", { class: "invhead" }, [
-      el("strong", { text: title + (e.name ? " (" + it.name + ")" : "") + (e.qty > 1 ? " ×" + e.qty : "") }),
-      el("span", { class: "dim", text: bits.join(" · ") }), el("span", { class: "fcost", text: entryCost(e) })
+      el("button", { type: "button", class: "invtoggle", "aria-expanded": open ? "true" : "false", onclick: function () { eq.inv[e.uid] = !open; render(); } }, [
+        el("strong", { text: title + (e.name ? " (" + it.name + ")" : "") + (e.qty > 1 ? " ×" + e.qty : "") }),
+        el("span", { class: "dim", text: bits.concat(tags).join(" · ") })]),
+      el("span", { class: "fcost", text: entryCost(e) })
     ]);
     var ctl = el("div", { class: "invctl" });
     if (stackable(it)) {
@@ -681,7 +693,7 @@
       }
     }
     ctl.appendChild(el("button", { type: "button", class: "linkbtn", onclick: function () { removeItem(e.uid); }, text: "Remove" }));
-    return el("article", { class: "frow has invrow" }, [head, ctl]);
+    return el("article", { class: "frow has invrow" + (open ? " open" : "") }, open ? [head, ctl] : [head]);
   }
   function equipmentScreen(t) {
     var body = el("div", { class: "pane" }), gi = guardInfo();
@@ -702,10 +714,10 @@
   }
 
   /* ---------- spells ---------- */
-  var spUi = { open: "", cat: "shapes" };
+  var spUi = { open: "", cat: "shapes", fopen: {} };
   var SP_CATS = [["shapes", "Shape"], ["ranges", "Range"], ["elements", "Element"], ["durations", "Duration"], ["augments", "Augments"], ["afflictions", "Afflictions"]];
   function nextId(prefix, list) { var m = 0; list.forEach(function (e) { var x = new RegExp("^" + prefix + "(\\d+)$").exec(e.uid); if (x) m = Math.max(m, +x[1]); }); return prefix + (m + 1); }
-  function addFoci() { C.spells.foci.push({ uid: nextId("f", C.spells.foci), name: "", quality: "foci:normal" }); commit(); }
+  function addFoci() { var f = { uid: nextId("f", C.spells.foci), name: "", quality: "foci:normal" }; C.spells.foci.push(f); spUi.fopen[f.uid] = true; commit(); }
   function removeFoci(uid) { C.spells.foci = C.spells.foci.filter(function (f) { return f.uid !== uid; }); C.spells.known.forEach(function (k) { if (k.foci === uid) k.foci = ""; }); commit(); }
   function addSpell() {
     var k = { uid: nextId("s", C.spells.known), name: "", foci: C.spells.foci.length ? C.spells.foci[0].uid : "", notes: "", parts: [], duration: null };
@@ -718,10 +730,15 @@
     return out;
   }
   function fociCard(f) {
-    var q = fociById(f.quality);
-    return el("article", { class: "frow has invrow" }, [
-      el("div", { class: "invhead" }, [el("strong", { text: f.name || "Foci" }),
-        el("span", { class: "dim", text: q.bonus ? "+" + q.bonus + " to casting bids" : q.penalty ? "−" + q.penalty + " to any bid" : "no bonus" }), el("span", { class: "fcost", text: q.cost })]),
+    var q = fociById(f.quality), open = !!spUi.fopen[f.uid];
+    var held = C.spells.known.filter(function (k) { return k.foci === f.uid; }).map(function (k) { return k.name || "unnamed spell"; });
+    var perk = q.bonus ? "+" + q.bonus + " to casting bids" : q.penalty ? "−" + q.penalty + " to any bid" : "no bonus";
+    var head = el("div", { class: "invhead" }, [
+      el("button", { type: "button", class: "invtoggle", "aria-expanded": open ? "true" : "false", onclick: function () { spUi.fopen[f.uid] = !open; render(); } }, [
+        el("strong", { text: f.name || "Foci" }), el("span", { class: "dim", text: q.name + " · " + perk + (held.length ? " · " + held.join(", ") : "") })]),
+      el("span", { class: "fcost", text: q.cost })]);
+    if (!open) return el("article", { class: "frow has invrow" }, [head]);
+    return el("article", { class: "frow has invrow open" }, [head,
       el("div", { class: "invctl" }, [
         el("label", { class: "fld narrow", for: "fn-" + f.uid }, [el("span", { text: "What is it?" }),
           el("input", { id: "fn-" + f.uid, type: "text", value: f.name, placeholder: "e.g. a silver ring", oninput: function (e) { f.name = e.target.value; saveDraft(); } })]),
