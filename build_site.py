@@ -8,7 +8,20 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).parent
 SRC = ROOT / "source" / "guide.docx"
 OUT = ROOT / "docs"
-INCLUDE_WORLD = False   # Section IV (World Bible). Set True once it is finished.
+INCLUDE_WORLD = True    # the Worlds section (set False to hide it from the site)
+
+# Worlds. Each world lists the guide sections (H1 titles) that belong to it. To add a world,
+# add an entry here once its sections are in the guide. The sidebar and the Worlds page follow.
+WORLDS = [
+    {"name": "Senexoth",
+     "blurb": "A medium to small world of continents and tight archipelagos, circled by a ring of ancient debris.",
+     "pages": ["The World At Large", "Settlements & Civilizations"]},
+]
+# Text on the Worlds pages that the public site leaves out: a paragraph that starts with one of
+# these, plus the list straight after it. (GM-only material that should not be on a public page.)
+HIDE_AFTER = ["Three truths known to the Ecclesia"]
+# Alt text for pictures, by page slug, in the order they appear.
+IMAGE_ALT = {"the-world-at-large": ["Map of Senexoth: its continents, island chains and star-marked settlements."]}
 
 # Sidebar grouping. Keys are H1 titles in the guide (matched loosely).
 GROUPS = [
@@ -18,7 +31,6 @@ GROUPS = [
     ("Character Creation", ["Advancement - Merit", "Senexoth Role Feats", "Building a Character",
                             "Feats", "Equipment"]),
     ("Gameplay & Magic", ["Scenes", "Spells"]),
-    ("World Bible", ["The World At Large", "Settlements & Civilizations", "Culture, Religion, Lore"]),
 ]
 
 def norm(s): return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
@@ -267,7 +279,6 @@ def main():
 
     nav = []
     for g, titles in GROUPS:
-        if g == "World Bible" and not INCLUDE_WORLD: continue
         items = []
         for t in titles:
             s = by_norm.get(norm(t))
@@ -275,9 +286,26 @@ def main():
             s["slug"] = slug(t)
             items.append(s)
         nav.append((g, items))
+    if INCLUDE_WORLD and WORLDS:
+        cards = []
+        for w in WORLDS:
+            pages = []
+            for t in w["pages"]:
+                sec = by_norm.get(norm(t))
+                if not sec: print("  note: no section named", t); continue
+                sec["slug"] = slug(t); sec["world"] = w["name"]; pages.append(sec)
+            if not pages: continue
+            w["_pages"] = pages
+            lis = "".join(f'<li><a href="{x["slug"]}.html">{x["title"]}</a></li>' for x in pages)
+            cards.append(f'<section class="card"><h2><a href="{pages[0]["slug"]}.html">{w["name"]}</a></h2><p>{w.get("blurb", "")}</p><ul>{lis}</ul></section>')
+        intro = ('<p class="lede">Constellations is played across different worlds. Each has its own places, peoples and history.</p>'
+                 '<div class="cards">' + "".join(cards) + '</div>')
+        index_sec = {"title": "Worlds", "slug": "worlds", "nodes": [t for t in BeautifulSoup(intro, "html.parser").children if getattr(t, "name", None)]}
+        wl = [x for w in WORLDS for x in w.get("_pages", [])]
+        nav.append(("Worlds", [index_sec] + wl))
     used = {id(s) for _, it in nav for s in it}
     for s in sections:
-        if id(s) not in used and norm(s["title"]) != "table of contents":
+        if id(s) not in used and norm(s["title"]) not in ("table of contents", ""):
             print("  note: section not placed in sidebar:", s["title"])
 
     if OUT.exists(): shutil.rmtree(OUT)
@@ -296,7 +324,10 @@ def main():
         out = []
         for g, items in nav:
             out.append(f'<div class="grp"><h3>{g}</h3><ul>')
+            last = None
             for s in items:
+                if s.get("world") and s["world"] != last:
+                    out.append(f'<li class="sub">{s["world"]}</li>'); last = s["world"]
                 cls = ' class="on"' if s is active else ""
                 out.append(f'<li><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
@@ -308,6 +339,15 @@ def main():
         # drop empty headings (empty "section" anchors from the docx)
         for h in body.find_all(re.compile("^h[1-6]$")):
             if not h.get_text(strip=True): h.decompose()
+        # leave out GM-only passages named in HIDE_AFTER
+        for para in body.find_all("p"):
+            txt = para.get_text(" ", strip=True)
+            if any(txt.startswith(h) for h in HIDE_AFTER):
+                nxt = para.find_next_sibling()
+                if nxt is not None and nxt.name in ("ul", "ol"): nxt.decompose()
+                para.decompose(); print("  note: left out a hidden passage:", txt[:50])
+        for img, alt in zip(body.find_all("img"), IMAGE_ALT.get(s["slug"], [])):
+            if not img.get("alt"): img["alt"] = alt
         # wrap tables so wide ones scroll
         for t in body.find_all("table"):
             fix_table(t, soup)
