@@ -1,0 +1,10 @@
+{
+  "_note": "Hand-kept for the Creature Builder. In the Special Abilities table a minus bullet is also used as a plain bullet, so the lines below are the ones that really mean minus. Key = trait name, value = which effect lines (counting from 0) are negative.",
+  "minusLines": {
+    "Fragile": [0],
+    "Nocturnal": [1],
+    "Sting": [1],
+    "Crush": [1]
+  },
+  "traitGuideline": {"Harmless": 1, "Feeble": 1, "Weak": 2, "Ordinary": 2, "Robust": 3, "Powerful": 3, "Mythic": 4}
+}
