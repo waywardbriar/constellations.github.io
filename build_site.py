@@ -283,7 +283,7 @@ def extract_data(sections, soup):
     return data
 
 REPORT = []
-def _find_world_file(fn):
+def _find_world_file(fn, prefer="worlds"):
     def norm(n):
         n = re.sub(r"\s*\(\d+\)", "", n).lower()
         n = re.sub(r"\.docx$", "", n)
@@ -297,11 +297,71 @@ def _find_world_file(fn):
         if norm(f.name) == want: hits.append(f)
     if not hits: return None
     # prefer a folder named worlds (any capitalization) over older copies elsewhere
-    hits.sort(key=lambda f: (0 if any(p.strip().lower() == "worlds" for p in f.relative_to(ROOT).parts[:-1]) else 1, len(f.parts)))
+    hits.sort(key=lambda f: (0 if any(p.strip().lower() == prefer for p in f.relative_to(ROOT).parts[:-1]) else 1, len(f.parts)))
     if len(hits) > 1:
         REPORT.append("NOTE: %d copies of %s: %s -> using %s" % (len(hits), fn, ", ".join(str(h.relative_to(ROOT)) for h in hits), hits[0].relative_to(ROOT)))
     return hits[0]
 
+
+
+def extract_creatures():
+    """Read NPC Rules + Special Abilities docx into the data the Creature Builder uses."""
+    import docx as _docx
+    from docx.oxml.ns import qn
+    extra = json.loads((ROOT / "assets" / "creature-extra.json").read_text(encoding="utf-8"))
+    minus = extra.get("minusLines", {})
+    pn = _find_world_file("npc-rules.docx", prefer="creatures"); ps = _find_world_file("special-abilities.docx", prefer="creatures")
+    for nm, p in (("npc-rules.docx", pn), ("special-abilities.docx", ps)):
+        REPORT.append(("creature source found: %s" % p.relative_to(ROOT)) if p else ("creature source NOT FOUND: " + nm))
+    if not (pn and ps): return None
+    def bullets(d):
+        num = d.part.numbering_part.element; absn = {}
+        for a in num.findall(qn("w:abstractNum")):
+            lv = {}
+            for l in a.findall(qn("w:lvl")):
+                t = l.find(qn("w:lvlText")); lv[l.get(qn("w:ilvl"))] = t.get(qn("w:val")) if t is not None else None
+            absn[a.get(qn("w:abstractNumId"))] = lv
+        nmap = {n.get(qn("w:numId")): n.find(qn("w:abstractNumId")).get(qn("w:val")) for n in num.findall(qn("w:num"))}
+        def glyph(par):
+            pPr = par._p.pPr
+            if pPr is None or pPr.numPr is None or pPr.numPr.numId is None: return ""
+            il = pPr.numPr.ilvl.val if pPr.numPr.ilvl is not None else 0
+            return absn.get(nmap.get(str(pPr.numPr.numId.val)), {}).get(str(il)) or ""
+        return glyph
+    dn = _docx.Document(str(pn)); out = {"tiers": [], "movement": [], "demeanor": [], "traits": []}
+    for t in dn.tables:
+        head = [c.text.strip().lower() for c in t.rows[0].cells]
+        rows = [[c.text.strip() for c in r.cells] for r in t.rows[1:]]
+        if head[:2] == ["difficulty", "vigor"]:
+            for r in rows:
+                if r[0] and r[1].isdigit(): out["tiers"].append({"name": r[0], "vigor": int(r[1]), "ap": int(r[2]), "pool": int(r[3]), "note": r[4] if len(r) > 4 else ""})
+        elif head[:2] == ["speed", "rate"]:
+            for r in rows:
+                if r[0] and r[1].isdigit(): out["movement"].append({"name": r[0], "squares": int(r[1])})
+        elif head[:2] == ["name", "description"]:
+            for r in rows:
+                if r[0]: out["demeanor"].append({"name": r[0], "desc": r[1]})
+    ds = _docx.Document(str(ps)); gl = bullets(ds)
+    for r in ds.tables[0].rows[1:]:
+        cells = r.cells; name = cells[1].text.strip()
+        if not name: continue
+        lines = []
+        for i, par in enumerate([q for q in cells[2].paragraphs if q.text.strip()]):
+            txt = re.sub(r"\s+", " ", par.text).strip(); g = gl(par)
+            if re.match(r"\d", txt):
+                if g == "-" and i in minus.get(name, []): txt = "\u2212" + txt
+                else: txt = "+" + txt
+            elif g in ("+", "-") and False: pass
+            lines.append(txt)
+        tags = [x.strip() for x in re.split(r"[,/.]", cells[4].text) if x.strip()]
+        ap = cells[0].text.strip()
+        eff = " ".join(lines)
+        m = re.match(r"^([+\u2212])(\d+) Injury Pool", lines[0]) if lines else None
+        out["traits"].append({"name": name, "ap": ap if ap not in ("", "-") else "", "effects": lines, "desc": cells[3].text.strip(),
+                              "tags": tags, "poolMod": (int(m.group(2)) * (1 if m.group(1) == "+" else -1)) if m else 0,
+                              "minTier": "Mythic" if tags == ["Mythic"] else ("Powerful" if set(tags) == {"Powerful", "Mythic"} else "")})
+    out["traitGuideline"] = extra.get("traitGuideline", {})
+    return out
 
 def main():
     html_path = ROOT / "build" / "guide.html"
@@ -426,7 +486,7 @@ def main():
                 li = ' class="indent"' if (s.get("world") and s.get("kind") != "hub") else ""
                 out.append(f'<li{li}><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
-        tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "")
+        tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li><li><a%s href="creatures.html">Creature Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "", ' class="on"' if active == "creatures" else "")
         return "\n".join([tools] + out)
 
     for i, s in enumerate(flat):
@@ -487,6 +547,22 @@ def main():
              .replace("<h1>Character Builder</h1>", ""))
     (OUT / "builder.html").write_text(bpage, encoding="utf-8")
     shutil.copy(ROOT / "assets" / "builder.js", OUT / "assets" / "builder.js")
+
+    # creature builder page
+    cdata = extract_creatures()
+    if cdata:
+        (OUT / "creature-data.json").write_text(json.dumps(cdata, ensure_ascii=False), encoding="utf-8")
+        cmark = (ROOT / "assets" / "creatures.html").read_text(encoding="utf-8")
+        cpage = (template.replace("{{TITLE}}", "Creature Builder").replace("{{SIDEBAR}}", sidebar("creatures"))
+                 .replace("{{BODY}}", cmark).replace("{{TOC}}", "").replace("{{PREV}}", "<span></span>")
+                 .replace("{{NEXT}}", "<span></span>").replace("{{BODYCLASS}}", "wide")
+                 .replace("<h1>Creature Builder</h1>", ""))
+        (OUT / "creatures.html").write_text(cpage, encoding="utf-8")
+        for fn in ("creatures.js", "creatures-docx.js", "docx.umd.js"):
+            shutil.copy(ROOT / "assets" / fn, OUT / "assets" / fn)
+        print(f"Creatures: {len(cdata['traits'])} traits, {len(cdata['tiers'])} tiers")
+    else:
+        print("Creature builder skipped: NPC Rules or Special Abilities docx not found")
 
     # home page
     cards = []
