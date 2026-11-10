@@ -19,7 +19,7 @@ jobs:
       - name: Install pandoc and parser
         run: |
           sudo apt-get update && sudo apt-get install -y pandoc
-          pip install beautifulsoup4
+          pip install beautifulsoup4 python-docx
       - name: Build the site
         run: python3 build_site.py
       - uses: actions/upload-pages-artifact@v3
