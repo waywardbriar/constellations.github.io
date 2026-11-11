@@ -599,7 +599,7 @@ def main():
                 li = ' class="indent"' if (s.get("world") and s.get("kind") != "hub") else ""
                 out.append(f'<li{li}><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
-        tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li><li><a%s href="creatures.html">Creature Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "", ' class="on"' if active == "creatures" else "")
+        tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li><li><a%s href="creatures.html">Creature Builder</a></li><li><a%s href="encounter.html">Encounter Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "", ' class="on"' if active == "creatures" else "", ' class="on"' if active == "encounter" else "")
         bes = ""
         if has_bestiary:
             bes = '<div class="grp"><h3>Bestiary</h3><ul><li><a%s href="creature-compendium.html">Creature Compendium</a></li></ul></div>' % (' class="on"' if active == "bestiary" else "")
@@ -682,6 +682,18 @@ def main():
         print(f"Creatures: {len(cdata['traits'])} traits, {len(cdata['tiers'])} tiers")
     else:
         print("Creature builder skipped: NPC Rules or Special Abilities docx not found")
+
+    # encounter builder page
+    if cdata:
+        emark = (ROOT / "assets" / "encounter.html").read_text(encoding="utf-8")
+        epage = (template.replace("{{TITLE}}", "Encounter Builder").replace("{{SIDEBAR}}", sidebar("encounter"))
+                 .replace("{{BODY}}", emark).replace("{{TOC}}", "").replace("{{PREV}}", "<span></span>")
+                 .replace("{{NEXT}}", "<span></span>").replace("{{BODYCLASS}}", "wide").replace("{{ROOTPREFIX}}", "")
+                 .replace("<h1>Encounter Builder</h1>", "", 1))
+        (OUT / "encounter.html").write_text(epage, encoding="utf-8")
+        shutil.copy(ROOT / "assets" / "encounter.js", OUT / "assets" / "encounter.js")
+        cf = ROOT / "source" / "creatures" / "compendium.json"
+        if cf.exists(): shutil.copy(cf, OUT / "compendium.json")
 
     # bestiary page (the compendium file saved from the Creature Builder)
     best = build_bestiary(cdata) if cdata else None
