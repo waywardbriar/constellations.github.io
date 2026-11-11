@@ -16,10 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install pandoc and parser
-        run: |
-          sudo apt-get update && sudo apt-get install -y pandoc
-          pip install beautifulsoup4 python-docx
+      - name: Install pandoc
+        uses: pandoc/actions/setup@v1
+        with:
+          version: 3.7.0.2
+      - name: Install parser
+        run: pip install beautifulsoup4 python-docx
       - name: Build the site
         run: python3 build_site.py
       - uses: actions/upload-pages-artifact@v3
