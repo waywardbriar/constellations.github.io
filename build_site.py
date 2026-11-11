@@ -49,6 +49,17 @@ GROUPS = [
     ("Gameplay & Magic", ["Scenes", "Spells"]),
 ]
 
+# GM Guide: each file in source/gm becomes one or more pages (every H1 is a page; text before the first H1 is a page named here).
+# A short, large line in the file (12pt or bigger) is treated as a heading even if it is not styled as one.
+GM_PAGES = [("scene-construction.docx", "Scene Construction"),
+            ("difficulty-tables.docx", "Difficulty Tables"),
+            ("npcs-companions.docx", "NPCs & Companions"),
+            ("@special-abilities", "Special Abilities"),      # built from source/creatures/special-abilities.docx
+            ("rewarding-merit.docx", "Rewarding Merit"),
+            ("buildings-structures.docx", "Buildings & Structures"),
+            ("modes-of-transportation.docx", "Modes Of Transportation"),
+            ("stability-amelioration.docx", "Stability & Amelioration")]
+
 def norm(s): return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
 def slug(s):
     import unicodedata
@@ -347,7 +358,7 @@ def extract_creatures():
         if not name: continue
         lines = []
         for i, par in enumerate([q for q in cells[2].paragraphs if q.text.strip()]):
-            txt = re.sub(r"\s+", " ", par.text).strip(); g = gl(par)
+            txt = re.sub(r"^[>\s]+", "", re.sub(r"\s+", " ", par.text).strip()); g = gl(par)
             if re.match(r"\d", txt):
                 if g == "-" and i in minus.get(name, []): txt = "\u2212" + txt
                 else: txt = "+" + txt
@@ -380,7 +391,7 @@ def build_bestiary(cdata, soup_unused=None):
         if not group: continue
         tid = "tier-" + slug(t["name"])
         toc.append(("h2", tid, f'{t["name"]} ({len(group)})'))
-        body.append(f'<h2 id="{tid}">{e(t["name"])} Creatures</h2><div class="bestiary">')
+        body.append(f'<details class="tier" id="{tid}-box" open data-tier="{e(t["name"])}"><summary><h2 id="{tid}">{e(t["name"])} Creatures <span class="tcount">{len(group)}</span></h2></summary><div class="bestiary">')
         for c in group:
             pool = max(1, t["pool"] + (c.get("poolAdj") or 0) + sum(int(x.get("poolMod") or 0) for x in c["traits"]))
             vigor, ap = t["vigor"] + (c.get("vigorAdj") or 0), t["ap"] + (c.get("apAdj") or 0)
@@ -391,7 +402,7 @@ def build_bestiary(cdata, soup_unused=None):
             tr = "".join('<div class="sbt"><b>%s</b>%s%s</div>' % (e(x["name"]), (' <span class="sbap">%s AP</span>' % e(x["ap"])) if x.get("ap") else "",
                          (". " + e(x["effect"])) if x.get("effect") else "") for x in c["traits"])
             body.append(
-                f'<article class="sb" id="{cid}"><div class="sbh"><div class="sbn">{e(c["name"])}</div>'
+                f'<article class="sb" id="{cid}" data-name="{e(c["name"].lower())}" data-vigor="{vigor}" data-ap="{ap}" data-pool="{pool}" data-move="{sq if sq is not None else 0}" data-abil="{len(c["traits"])}" data-tier="{e(t["name"])}"><div class="sbh"><div class="sbn">{e(c["name"])}</div>'
                 f'<div class="sbs"><b>{e(t["name"]).upper()}</b>{(" <i>" + e(c["translated"]) + "</i>") if c.get("translated") else ""}</div></div>'
                 f'<div class="sbstrip"><div>{num("VIGOR", vigor)}{num("AP", ap)}{num("POOL", pool)}</div>'
                 f'<div><small>MOVE </small>{e(mvl)}</div><div><small>DEMEANOR </small>{e(", ".join(c.get("demeanor") or []))}</div></div>'
@@ -400,8 +411,60 @@ def build_bestiary(cdata, soup_unused=None):
                 f'<div class="sbi"><small>ITEMS </small>{e(c.get("items") or "None")}</div></div></article>')
             recs.append({"page": "creature-compendium", "page_title": "Creature Compendium", "heading": c["name"], "anchor": cid,
                          "text": f'{t["name"]} creature. ' + " ".join([c.get("desc") or ""] + [x["name"] for x in c["traits"]]).strip()})
-        body.append("</div>")
+        body.append("</div></details>")
+    body.append('<script src="assets/bestiary.js"></script>')
     return "\n".join(body), toc, recs, len(lib)
+
+def gm_prepare(path, title, tmpdir):
+    """Copy a GM docx with its big, short, unstyled lines turned into headings (the first one matching the title becomes H1)."""
+    import docx as _docx
+    d = _docx.Document(str(path)); first = True
+    for p in d.paragraphs:
+        t = p.text.strip()
+        if not t or len(t) > 50 or t.endswith(".") or p.style.name.lower().startswith(("heading", "list")): continue
+        if p._p.pPr is not None and p._p.pPr.numPr is not None: continue
+        sz = next((r.font.size.pt for r in p.runs if r.font.size), None)
+        if sz is None or sz < 12: continue
+        try:
+            p.style = d.styles["Heading 1" if (first and norm(t) == norm(title)) else "Heading 2"]; first = False
+        except KeyError: pass
+    out = tmpdir / path.name; d.save(str(out)); return out
+
+def gm_sections(cdata):
+    """Builds the GM Guide sections. Returns a list of section dicts like the guide's own."""
+    out = []; tmp = ROOT / "build" / "_gm"; tmp.mkdir(parents=True, exist_ok=True)
+    for fn, title in GM_PAGES:
+        if fn == "@special-abilities":
+            src = ROOT / "source" / "creatures" / "special-abilities.docx"
+            if not (src.exists() and cdata): REPORT.append("GM: Special Abilities skipped (no source)"); continue
+            import docx as _docx, html as _h
+            e = lambda x: _h.escape(str(x or ""))
+            paras = [p.text.strip() for p in _docx.Document(str(src)).paragraphs if p.text.strip()]
+            intro = paras[1] if len(paras) > 1 and norm(paras[0]) == norm(title) else (paras[0] if paras else "")
+            rows = "".join("<tr><td>%s</td><td><b>%s</b></td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+                e(t["ap"]), e(t["name"]), "".join("<div>%s</div>" % e(x) for x in t["effects"]), e(t["desc"]), e(", ".join(t["tags"]))) for t in cdata["traits"])
+            html = ('<p>%s</p><div class="tablewrap"><table class="abilities"><thead><tr><th>AP Cost</th><th>Name</th><th>Effects</th><th>Description</th><th>Tags</th></tr></thead><tbody>%s</tbody></table></div>' % (e(intro), rows))
+            out.append({"title": title, "nodes": [n for n in BeautifulSoup(html, "html.parser").children if getattr(n, "name", None)], "gm": True})
+            REPORT.append("GM: Special Abilities built from %d traits" % len(cdata["traits"])); continue
+        p = ROOT / "source" / "gm" / fn
+        if not p.exists(): print("  WARNING: GM file not found:", fn); REPORT.append("NOT FOUND: gm/" + fn); continue
+        q = gm_prepare(p, title, tmp)
+        hp = tmp / (p.stem + ".html")
+        subprocess.run(["pandoc", str(q), "-t", "html", "--wrap=none", "-o", str(hp)], check=True)
+        gs = BeautifulSoup(hp.read_text(encoding="utf-8"), "html.parser")
+        lead = {"title": title, "nodes": [], "gm": True}; cur = lead; secs = [lead]
+        for el in list(gs.body.children if gs.body else gs.children):
+            if getattr(el, "name", None) == "h1":
+                cur = {"title": el.get_text(" ", strip=True), "nodes": [], "gm": True}; secs.append(cur)
+            elif getattr(el, "name", None):
+                cur["nodes"].append(el)
+        # drop a first heading that only repeats the page title
+        if lead["nodes"] and lead["nodes"][0].name in ("h2", "h3", "p") and norm(lead["nodes"][0].get_text(" ", strip=True)) == norm(title):
+            lead["nodes"].pop(0)
+        for x in secs:
+            if x["nodes"]: out.append(x)
+        REPORT.append("GM: %s -> %s" % (fn, ", ".join(x["title"] for x in secs if x["nodes"])))
+    return out
 
 def main():
     html_path = ROOT / "build" / "guide.html"
@@ -454,6 +517,11 @@ def main():
                     wc["nodes"].append(el)
             if (wdir / "media").exists():
                 shutil.copytree(wdir / "media", ROOT / "build" / "_wmedia" / stem, dirs_exist_ok=True)
+    cdata_gm = None
+    try: cdata_gm = extract_creatures()
+    except ImportError: pass
+    gm_secs = gm_sections(cdata_gm)
+    sections += gm_secs
     by_norm = {}
     for s_ in sections:
         k = norm(s_["title"])
@@ -469,6 +537,9 @@ def main():
             s["slug"] = slug(t)
             items.append(s)
         nav.append((g, items))
+    if gm_secs:
+        for g_ in gm_secs: g_["slug"] = slug(g_["title"])
+        nav.append(("GM Guide", gm_secs))
     hidden_secs = []
     if INCLUDE_WORLD and WORLDS:
         cards, witems = [], []
@@ -622,6 +693,7 @@ def main():
                  .replace("{{NEXT}}", "<span></span>").replace("{{BODYCLASS}}", "wide").replace("{{ROOTPREFIX}}", "")
                  .replace("<h1>Creature Compendium</h1>", "", 1))
         (OUT / "creature-compendium.html").write_text(bpage, encoding="utf-8")
+        shutil.copy(ROOT / "assets" / "bestiary.js", OUT / "assets" / "bestiary.js")
         index += brecs
         print(f"Bestiary: {bn} creatures")
 
