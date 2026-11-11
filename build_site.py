@@ -363,6 +363,46 @@ def extract_creatures():
     out["traitGuideline"] = extra.get("traitGuideline", {})
     return out
 
+def build_bestiary(cdata, soup_unused=None):
+    """Renders source/creatures/compendium.json (saved from the Creature Builder) as one page.
+    Returns (body_html, toc, search_records) or None if there is no compendium file."""
+    import html as _h
+    f = ROOT / "source" / "creatures" / "compendium.json"
+    if not f.exists(): return None
+    lib = json.loads(f.read_text(encoding="utf-8")).get("creatures", [])
+    tiers = {t["name"]: t for t in cdata["tiers"]}
+    squares = {m["name"]: m["squares"] for m in cdata["movement"]}
+    e = lambda x: _h.escape(str(x or ""))
+    body, toc, recs = [], [], []
+    body.append('<h1>Creature Compendium</h1><p class="lede">Creatures grouped by tier. Vigor sets the number of dice and Action Points per round; the injury pool is how much damage it takes to put one down.</p>')
+    for t in cdata["tiers"]:
+        group = sorted([c for c in lib if c["tier"] == t["name"]], key=lambda c: c["name"].lower())
+        if not group: continue
+        tid = "tier-" + slug(t["name"])
+        toc.append(("h2", tid, f'{t["name"]} ({len(group)})'))
+        body.append(f'<h2 id="{tid}">{e(t["name"])} Creatures</h2><div class="bestiary">')
+        for c in group:
+            pool = max(1, t["pool"] + (c.get("poolAdj") or 0) + sum(int(x.get("poolMod") or 0) for x in c["traits"]))
+            vigor, ap = t["vigor"] + (c.get("vigorAdj") or 0), t["ap"] + (c.get("apAdj") or 0)
+            mv = c.get("movement", "Normal"); sq = squares.get(mv)
+            mvl = "%s \u00b7 %s square%s" % (mv, sq, "" if sq == 1 else "s") if sq is not None else mv
+            cid = slug(c["name"])
+            num = lambda l, v: f'<span class="sbnum"><small>{l}</small><b>{v}</b></span>'
+            tr = "".join('<div class="sbt"><b>%s</b>%s%s</div>' % (e(x["name"]), (' <span class="sbap">%s AP</span>' % e(x["ap"])) if x.get("ap") else "",
+                         (". " + e(x["effect"])) if x.get("effect") else "") for x in c["traits"])
+            body.append(
+                f'<article class="sb" id="{cid}"><div class="sbh"><div class="sbn">{e(c["name"])}</div>'
+                f'<div class="sbs"><b>{e(t["name"]).upper()}</b>{(" <i>" + e(c["translated"]) + "</i>") if c.get("translated") else ""}</div></div>'
+                f'<div class="sbstrip"><div>{num("VIGOR", vigor)}{num("AP", ap)}{num("POOL", pool)}</div>'
+                f'<div><small>MOVE </small>{e(mvl)}</div><div><small>DEMEANOR </small>{e(", ".join(c.get("demeanor") or []))}</div></div>'
+                f'<div class="sbb">{("<div class=sblab>SPECIAL ABILITIES</div>" + tr) if tr else ""}'
+                f'{("<div class=sbd>" + e(c["desc"]) + "</div>") if c.get("desc") else ""}'
+                f'<div class="sbi"><small>ITEMS </small>{e(c.get("items") or "None")}</div></div></article>')
+            recs.append({"page": "creature-compendium", "page_title": "Creature Compendium", "heading": c["name"], "anchor": cid,
+                         "text": f'{t["name"]} creature. ' + " ".join([c.get("desc") or ""] + [x["name"] for x in c["traits"]]).strip()})
+        body.append("</div>")
+    return "\n".join(body), toc, recs, len(lib)
+
 def main():
     html_path = ROOT / "build" / "guide.html"
     html_path.parent.mkdir(exist_ok=True)
@@ -474,6 +514,8 @@ def main():
     index = []
     template = (ROOT / "assets" / "page.html").read_text(encoding="utf-8")
 
+    has_bestiary = (ROOT / "source" / "creatures" / "compendium.json").exists()
+
     def sidebar(active):
         out = []
         for g, items in nav:
@@ -487,7 +529,10 @@ def main():
                 out.append(f'<li{li}><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
         tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li><li><a%s href="creatures.html">Creature Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "", ' class="on"' if active == "creatures" else "")
-        return "\n".join([tools] + out)
+        bes = ""
+        if has_bestiary:
+            bes = '<div class="grp"><h3>Bestiary</h3><ul><li><a%s href="creature-compendium.html">Creature Compendium</a></li></ul></div>' % (' class="on"' if active == "bestiary" else "")
+        return "\n".join([tools] + out + [bes])
 
     for i, s in enumerate(flat):
         body = BeautifulSoup("".join(str(n) for n in s["nodes"]), "html.parser")
@@ -549,7 +594,10 @@ def main():
     shutil.copy(ROOT / "assets" / "builder.js", OUT / "assets" / "builder.js")
 
     # creature builder page
-    cdata = extract_creatures()
+    try:
+        cdata = extract_creatures()
+    except ImportError as e:
+        print("Creature builder skipped (missing library: %s). Add python-docx to the workflow install step." % e); cdata = None
     if cdata:
         (OUT / "creature-data.json").write_text(json.dumps(cdata, ensure_ascii=False), encoding="utf-8")
         cmark = (ROOT / "assets" / "creatures.html").read_text(encoding="utf-8")
@@ -564,6 +612,19 @@ def main():
     else:
         print("Creature builder skipped: NPC Rules or Special Abilities docx not found")
 
+    # bestiary page (the compendium file saved from the Creature Builder)
+    best = build_bestiary(cdata) if cdata else None
+    if best:
+        bbody, btoc, brecs, bn = best
+        tochtml = "".join(f'<a class="{c}" href="#{a}">{t}</a>' for c, a, t in btoc)
+        bpage = (template.replace("{{TITLE}}", "Creature Compendium").replace("{{SIDEBAR}}", sidebar("bestiary"))
+                 .replace("{{BODY}}", bbody).replace("{{TOC}}", "<h3>Tiers</h3>" + tochtml).replace("{{PREV}}", "<span></span>")
+                 .replace("{{NEXT}}", "<span></span>").replace("{{BODYCLASS}}", "wide").replace("{{ROOTPREFIX}}", "")
+                 .replace("<h1>Creature Compendium</h1>", "", 1))
+        (OUT / "creature-compendium.html").write_text(bpage, encoding="utf-8")
+        index += brecs
+        print(f"Bestiary: {bn} creatures")
+
     # home page
     cards = []
     for g, items in nav:
@@ -571,6 +632,7 @@ def main():
         items = [s for s in items if not (s.get("world") and s.get("kind") != "hub")]
         lis = "".join(f'<li><a href="{s["slug"]}.html">{s["title"]}</a></li>' for s in items)
         cards.append(f'<section class="card"><h2>{g}</h2><ul>{lis}</ul></section>')
+    if best: cards.append('<section class="card"><h2>Bestiary</h2><ul><li><a href="creature-compendium.html">Creature Compendium</a></li></ul></section>')
     home = (template.replace("{{TITLE}}", "Constellations").replace("{{SIDEBAR}}", sidebar(None))
             .replace("{{BODY}}", (ROOT / "assets" / "home.html").read_text(encoding="utf-8").replace("{{CARDS}}", "".join(cards)))
             .replace("{{TOC}}", "").replace("{{PREV}}", "<span></span>").replace("{{BODYCLASS}}", "")
