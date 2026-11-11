@@ -1,0 +1,4800 @@
+{
+ "file": {
+  "kind": "constellations-compendium",
+  "schemaVersion": 1,
+  "rulesVersion": "laurel"
+ },
+ "creatures": [
+  {
+   "id": "db000",
+   "name": "Olive Snail",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": -1,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [
+    "Neutral",
+    "Fearful",
+    "Communal"
+   ],
+   "traits": [
+    {
+     "name": "Withdraw",
+     "ap": "1",
+     "effect": "The creature retreats into its protective covering, gaining an additional bonus dice to any bid requiring it to guard.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "To some, a delicious delicacy or late afternoon snack - the olive snail is an eponymous creature which feasts on the leaves of olive trees and takes refuge in fallen olives. There are a few varieties depending on the location but most share a similar appearance. Their oil colored bodies support two eye stalks which appear similar to olive tree leaves, with a hollowed olive as a shell.",
+   "items": "Olive Shell",
+   "biome": "Mediterranean, Urban, Coastal"
+  },
+  {
+   "id": "db001",
+   "name": "Silverthorn Beetle",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [
+    "Isolated",
+    "Neutral"
+   ],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Resilient",
+     "ap": "1",
+     "effect": "Creature Has Resiliance 1 To Selected Damage Type: Physical",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Beetles which large silver spikes composed of metal. They used to be hunted and their shells melted down for the trace metals present so they could be turned into jewlry.",
+   "items": "",
+   "biome": "Underground/Cave, Savanna"
+  },
+  {
+   "id": "db002",
+   "name": "Honey Beetle",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [
+    "Communal",
+    "Friendly",
+    "Neat"
+   ],
+   "traits": [
+    {
+     "name": "Pollinate",
+     "ap": "1",
+     "effect": "+1 To Applicable Skill Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Pollinators which share a bright yellow almost golden coat. They are common in several warmer regions and act as a major pollinator for fruits and other plants.",
+   "items": "",
+   "biome": "Savanna, Mediterranean"
+  },
+  {
+   "id": "db003",
+   "name": "Bone Boring Beetle",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [
+    "Messy",
+    "Communal",
+    "Neutral"
+   ],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bone Shell",
+     "ap": "",
+     "effect": "+1 To +3 Guard Bids, Depending On The Bones It Has Incorporated",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Decomposers which will take and incorporate the bones of fallen creatures into their shells. Many unique varieites exist and are catagorized based on the bones that they have incorporated.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db004",
+   "name": "Fireflies",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [
+    "Neutral",
+    "Communal",
+    "Curious",
+    "Social"
+   ],
+   "traits": [
+    {
+     "name": "Illuminate",
+     "ap": "1",
+     "effect": "Create a field of light that illuminates a 30ft space or greater around self.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Glowing green and beautiful, these beetles live in largely forested areas and grasslands along the underbrush where they emerge during the night to find mates and light the night.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db005",
+   "name": "Lightning Flies",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [
+    "Neutral",
+    "Social",
+    "Unpredictable",
+    "Communal"
+   ],
+   "traits": [
+    {
+     "name": "Illuminate",
+     "ap": "1",
+     "effect": "Create a field of light that illuminates a 30ft space or greater around self.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Static Shock",
+     "ap": "1",
+     "effect": "+1 Electrical Attack Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Bioluminescent beetles which live in the high atmosphere of mountainous regions and have a striking blue illumination which can be seen from large distances. They produce mild electrical charges which can feel like a static shock to the average person.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db006",
+   "name": "Rooted Worm",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [
+    "Isolated",
+    "Neutral",
+    "Aloof"
+   ],
+   "traits": [
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "A worm that carefully lives alongside the roots by merging with the root systems as a living component of them. They can get fairly large depending on the the plant that is their host.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db007",
+   "name": "Caustic Ants",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [
+    "Messy",
+    "Aggressive",
+    "Communal"
+   ],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Break",
+     "ap": "1",
+     "effect": "+2 Attack Bid; On Win Apply Item Condition To Target Item",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Large colonies of ants which tend to live in harsher stone laden environments. Rather than make their colonies in soft soils, they do so in large rocks and cave walls. They do so by utilizing a naturally produced acid which they use to break down the stone.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db008",
+   "name": "Hydraflies",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [
+    "Isolated",
+    "Neutral"
+   ],
+   "traits": [
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Large flying insects, similair to Dragonflies, which spend equal amounts of time under the water as over it. These beautiful insects have specialized organs and patterns which help them hunt and hide.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db009",
+   "name": "Orchid Mantid",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [
+    "Communal",
+    "Unpredictable",
+    "Neutral"
+   ],
+   "traits": [
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Cut",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Fairly large insects with raptorial fore arms that they used to grab prey and hunt. These varieties live in large colonies among the jungle canopies.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db010",
+   "name": "Lace Spiders",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Craft",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Dainty and glasslike, these spiders create careful patterns in their webs which are similair to lace patterns. They build these patterns and maintain them over generations.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db011",
+   "name": "Boar Cicadas",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Voracious",
+     "ap": "",
+     "effect": "Hungry and willing to eat anything.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    }
+   ],
+   "desc": "Cicadas which take time to grow to large sizes over several years and many molts. Some will raise these \"ground pigs\" as a cheap source of protein.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db012",
+   "name": "Impairment Owl (Crimson Crown)",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Telepath",
+     "ap": "",
+     "effect": "Can communicate via mind visuals and words.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Stun",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Of 2 Or Greater, Target Is Stunned 1",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Psychic Shriek",
+     "ap": "1",
+     "effect": "+2 Social Ranged Attack Bid (Range 6 Squares)",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "They have dark brown feathers with a crown of red feathers on their heads, and deep violet eyes. These massive owls will use their telepathy to psychically scream in the heads of their prey, paralyzing them as the force of the psychic energy hits them. Although extremely intelligent, these creatures seem unwilling to communicate with other beings, unless attempting to paralyze them for an attack.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db013",
+   "name": "Impairment Owl (Golden Crown)",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Illuminate",
+     "ap": "1",
+     "effect": "Create a field of light that illuminates a 30ft space or greater around self.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Similair in some ways to their cousin, this varietal will trap lost travelers and creatures by imitating safety, light and others to lure them close enough to strike. They will also communicate using words that they hear.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db014",
+   "name": "Myxocapra",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Voracious",
+     "ap": "",
+     "effect": "Hungry and willing to eat anything.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Slimy",
+     "ap": "",
+     "effect": "Produces a viscous slime which allows them move more easily over surfaces.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Split",
+     "ap": "3",
+     "effect": "The creature can split itself in half, their base vigor is divided amongst the two halves, rounded up. The halves also divide any points in the injury pool.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "A massive, highly mobile slime mold that consumes most anything. It’s body appears to be a mass of off-white spheres with no discernible front. Outside of occasionally being used as a livestock creature, the Myxocapra are often found alone, wandering along forest floors. Smaller, more infantile versions will combine with others to form larger Myxocapra.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db015",
+   "name": "Bome",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    }
+   ],
+   "desc": "A large terrestrial arthropod that has long been raised and utilized across many systems. Different variants exist depending on the region.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db016",
+   "name": "Otter Snake",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Haggler",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "These large, furred otter-like creatures are collectors by trade, they are often found teeming in areas where ships have capsized or lost cargo has found its way. They have been known to trade from time to time.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db017",
+   "name": "Constrictor Coral",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Strong bodied shelled creatures which grow multiple extra limbs which often serve no purpose. Their bright colors allow them to blend in with the natural features of reefs.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db018",
+   "name": "Arcus Shark",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Stun",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Of 2 Or Greater, Target Is Stunned 1",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Wide Reach",
+     "ap": "",
+     "effect": "Any attack that would only hit one target, can hit two instead.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "They often will dart into large schools of other fish, paralyzing large swathes of them. This generally is an issue in areas that are high in fishing traffic. Their actions often ruin catches. For this the sharks have been nearly hunted to extinction in some areas. Other more unique communities have learned to adapt and use the sharks unique abilities to their own advantage.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db019",
+   "name": "Bibulous",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Absorb",
+     "ap": "2",
+     "effect": "+1 Attack Bid; On A Win Of Two Or Greater, This Creature Gains One Of The Abilities Of The Creature It Absorbed.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Bibulous Cannon",
+     "ap": "1",
+     "effect": "Unlocked At Second Phase: +2 Ranged Attack Bid (Range 6 Squares). The Bibulous Is Able To Fire Materials From Its Body, Either From A Literal Cannon It Swallowed, Or Other Material Within Itself.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Bright colorful arrays adorn their bodies.They often take in the things that they’ve eaten and incorporate it into their own body. Usually as additional defensive means. Legend has it that some go so far as consuming old sea skippers to acquire their cannons.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db020",
+   "name": "Weaver Jellyfish",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Seemingly mindless creatures which follow currents and flows. This particular variety weaves large networks of webs covered in stinging cells.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db021",
+   "name": "Colossal Jellyfish",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Seemingly mindless creatures which follow currents and flows. Massive in scale this variety of jellyfish lives on for many decades - some thought to be centuries old.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db022",
+   "name": "Limelight Jellyfish",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Illuminate",
+     "ap": "1",
+     "effect": "Create a field of light that illuminates a 30ft space or greater around self.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Seemingly mindless creatures which follow currents and flows. This particular variety glows with high intensity and in a multitude of colors. Some groups will capture the creatures for their bioluminescence.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db023",
+   "name": "Envelope Jellyfish",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Swallow",
+     "ap": "1",
+     "effect": "On Win Target is Immobolized; Swallowed Target Takes 1 Magnitude Of Injury Per Turn While It Is Swallowed",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Crush",
+     "ap": "1",
+     "effect": "+2 Attack Bid; −1 Target Guard Until Next Turn",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Seemingly mindless creatures which follow currents and flows. This variety appears in a large near transparent film free floating in the water. They often expand and contract with air to move between depths. Hunting involves creatures becoming trapped within them as they quickly compress, suffocating and/or crushing the creature from pressure.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db024",
+   "name": "Brain Coral",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Dominate",
+     "ap": "",
+     "effect": "Once Per Day, Can Impulse Another Creature In Its Vicinity.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "A pink bulbous brain shaped organism it uses fish to sustain itself, forming a parasitic relationship with the fish by controlling them and their impulses, making them highly loyal to the coral. Isn’t as effective on landlife but has been known to lure some to the water",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db025",
+   "name": "Armour Coral",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Shed Plate",
+     "ap": "",
+     "effect": "Once Per Week, Sheds A Usable Plate Of Armour.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Large swathes of coral known for their metallic hues. They will shed large plates of material which are reused by other creatures for protection.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db026",
+   "name": "White Crab",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Cut",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Sand Walk",
+     "ap": "",
+     "effect": "+2 Tempo On Sand",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "The most common species of crab which are found in island vicinity. Their bright shells can be found littering some beaches.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db027",
+   "name": "Ivory Crab",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Cut",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Sand Walk",
+     "ap": "",
+     "effect": "+2 Tempo On Sand",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Crush",
+     "ap": "1",
+     "effect": "+2 Attack Bid; −1 Target Guard Until Next Turn",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Ivory Crabs are similar to the smaller species of white crab but are far more aggressive than their counterparts.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db028",
+   "name": "Whale Crab",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Crush",
+     "ap": "1",
+     "effect": "+2 Attack Bid; −1 Target Guard Until Next Turn",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Wide Reach",
+     "ap": "",
+     "effect": "Any attack that would only hit one target, can hit two instead.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Sand Walk",
+     "ap": "",
+     "effect": "+2 Tempo On Sand",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Immense in scale, these creatures, native to Fulcinis, are by far the most dangerous crabs known to be alive. They can get upwards of 40 ft. wide and 1200 lbs.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db029",
+   "name": "Giant Crocodile",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Large multicolored semi-aquatic reptiles that generally spend long periods at rest in shallow pools. They have finicky temperaments but will only attack if they feel threatened.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db030",
+   "name": "Cactus Bird",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Desert)",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Water Store",
+     "ap": "",
+     "effect": "Once Per Day, The Water Can Be Shared Or Harvested From This Entity. This Provides Drinking Water For A Whole Day.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "These large birds spend long periods of time in the sun of the deserts. They tend to collect water through the channels between their unusual feather structures. These birds will increase in size as they store more water. During particularly hot seasons they tend to go into a hibernation-like state.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db031",
+   "name": "Pastichave",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Absorb",
+     "ap": "2",
+     "effect": "+1 Attack Bid; On A Win Of Two Or Greater, This Creature Gains One Of The Abilities Of The Creature It Absorbed.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Mutation",
+     "ap": "",
+     "effect": "Unlocked At Second Phase: +2 To All Attack Bids. The Creature's Improved Form Has Allowed It Extra Power.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Large, often monstrous creatures which feed on the fallen in the realms of the desert. The birds, upon consuming a corpse, often take on some of the creature's qualities. The birds are unusually susceptible to changes brought on. Some grow extra limbs, and other features. Few have claimed to see a young chick, uncorrupted by their meals. Some study the creatures to understand the idea of vitiation and changes it brings.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db032",
+   "name": "Daft Sail Wing",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Large thin winged birds which often sail across the desert waiting for their large wings to wrap around a creature and encapsulate them in their grasp. Generally one may find the tumbleweed-like bird wrapped haphazardly around a cactus. They are frequently found in decomposed states. Some use their wing material as a leather like replacement.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db033",
+   "name": "Snow Leopard",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Cold)",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Snow Walk",
+     "ap": "",
+     "effect": "+2 Tempo On Snow",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "These large cats have thick white coats covered in a spotted pattern. They are specially adapted for colder regions.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db034",
+   "name": "Mountain Lion",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "These massive tawny colored cats live in a myriad of environments, their lean builds and specialized features making them efficient hunters.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db035",
+   "name": "Frilupcis",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Snow Walk",
+     "ap": "",
+     "effect": "+2 Tempo On Snow",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Cold)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Native to Fulcinis These odd Creatures are the apex predators of the snowy northern Region. They have long thin bodies with four short and sturdy limbs, their white fur is waxy and water-resistant. Using their unique adaptations they can swim through snow like a predatory fish, while swimming they do not disturb the surface of the snow.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db036",
+   "name": "Calstac",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Cold)",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Heat Source",
+     "ap": "",
+     "effect": "Provides Continuous Heat To Creatures And Other Entities Nearby.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Creatures which naturally produce heat in the cold regions. Relying heavily on the long days of sun their bodies act as heat sinks which they use to survive the nights. These small shelled creatures act as congregating points for other creatures on some cold nights to find some reprieve. Many people in colder regions have domesticated the creatures to be live in heaters on treks through dangerous regions.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db037",
+   "name": "Osinfinave",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pilfer",
+     "ap": "1",
+     "effect": "+2 To Applicable Skill Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Small predatory birds with gray and white banding that eat anything that differentiates from the snow or ice.Their presence is problematic in communities - considered a pest in some regions.They have small hands along their wings to allow them to more easily collect and get into things.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db038",
+   "name": "Ivy Fox",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Forest Walk",
+     "ap": "",
+     "effect": "+2 Tempo In Forests",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Predatory animals that dwell in forests and rural communities. They can stretch out their bodies to help them climb up trees, fences, houses, or almost anything else like creeping Vines. They can also use their ability to stretch to camouflage themselves as vines.\nThe variation in subspecies depends on local flora - with many altering their appearance and makeup based on the clinging plants of the region.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db039",
+   "name": "Ivir Drya",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Found in almost every forest, on every seeded planet, these small creatures are vicious stalkers and predators. Less than a foot tall these stealthy killers resemble a human entirely made out of sinuous vines. The males tend to grow thorns and have a moss like exterior, while the females grow dark blue flowers in the spring and bear poisonous fruit. These tiny terrors are carnivores through and through. Highly mobile and deathly silent these creatures will eat nearly anything and are fearless in numbers.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db040",
+   "name": "Caustic Bees",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Sting",
+     "ap": "1",
+     "effect": "+1 Attack Bid; −1 Target Guard On Attack",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Home Turf",
+     "ap": "",
+     "effect": "+2 Bids While In It’s Home, Lair or Territory",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Bright waves of magenta’s and violets band these bugs who create large colonies in forests. The diversity of tasks performed by the insects is astounding and confounding some. Their homes are unnaturally elaborate, the instincts dividing spaces with careful intention, taking into account location. While generally not aggressive, interrupting a job or intruding in their home's domain is an easy way to get swarmed.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db041",
+   "name": "Moon Crest Lycan",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment (Mountain)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "A unique variation of lycan which grows in mountain climates. In learning to avoid predators at certain periods the lycan has adapted features which allow it to shift color, hue and even structure to fool hungry passerbys. The material is used occasionally for fabrics and other applications.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db042",
+   "name": "Striped Bear",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Botanist",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Alluring Scent",
+     "ap": "1",
+     "effect": "Can Release An Aroma That Attracts Other Creatures And Entities. Once Per Day Can Apply Reverent To 1D8 Creatures.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Large bear-like creatures with deep black coats and white patches, they live deep in the forests primarily in the Southern Hemisphere. They tend to feast on primarily larger insects and the local flora. The creature takes on the smell of the environment to attract the pollinator or insects which eat said plants.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db043",
+   "name": "Chameleon Wolf",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Forest Walk",
+     "ap": "",
+     "effect": "+2 Tempo In Forests",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Large climbing wolves with shimmering green and colored coats. They move slower than other species of wolves, spending most of their time in the treeline. Their unique ability to camouflage allows for great efficacy in hunts. Their hunting technique though often leaves groups in areas for long periods, the wolves naturally adapted to the feast and famine of waiting for prey.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db044",
+   "name": "Rust Root",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Corrosive",
+     "ap": "",
+     "effect": "On Touch, Target Item Takes An Item Condition, Or Creature Takes 1 Decay Damage.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Starting out as bright green bundles growing harmlessly in an area these vines grow out of control quickly when ample moisture is present. At full grown the green shifts to intense reds and yellows and will cover whole acres of land, forests, and even towns. The vines produce acids which aid in the breakdown of the materials they cover. From metals to wood, the vines are a known nuisance.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db045",
+   "name": "Rubber Frog",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Resilient",
+     "ap": "1",
+     "effect": "Creature Has Resiliance 1 To Selected Damage Type: Falling",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Movement Expertise",
+     "ap": "",
+     "effect": "+2 Tempo To Selected Movment Type (Walking)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Unable to adapt to the forest floors of tall jungles these creatures learned to live in the canopies.They descend from their perches infrequently but do so by bouncing, their bodies naturally resistant to injuries by falling.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db046",
+   "name": "Poison Dart Flowers",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Spit",
+     "ap": "1",
+     "effect": "+1 Ranged Attack Bid (3 Squares)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "These Flowers are considered very beautiful and very Dangerous. While some shoot only mildly toxic barbs, or are hard to set off, many are deadly and can kill you with only a single barb without medical attention. Usually quite small these flowers grow on thin vines found all over the lower reaches of the massive trees of their native planet. They can be identified by the Cluster of barbs inside the center of the flower surrounding the stigma, where you would expect the filaments to be.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db047",
+   "name": "Vampire Lemurs",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Nocturnal",
+     "ap": "",
+     "effect": "+2 Bids Made In Dim Light Or Darkness; −1 Bids Made In Bright Light",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Leech",
+     "ap": "1",
+     "effect": "+1 To Attack Bid; On Win Heals User 1 Magnitude",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Native to subtropical regions these nocturnal predators subsist entirely from the blood of their prey. Vampire Lemurs have dark grey fur with black rings on their tails and around their red eyes. Their eyes are much smaller than a normal lemur and their Snout is larger to accommodate their large fangs and nose.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db048",
+   "name": "Destillavers",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Swallow",
+     "ap": "1",
+     "effect": "On Win Target is Immobolized; Swallowed Target Takes 1 Magnitude Of Injury Per Turn While It Is Swallowed",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Wind Walk",
+     "ap": "",
+     "effect": "+2 Tempo With A Tailwind",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "A large pitcher shaped plant with large leaves which it uses to catch gusts of winds to carry it to different places. They produce a sweet nectar on the inside of their pitcher, waiting to trap small prey inside.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db049",
+   "name": "Iron-tail Beavers",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Craft",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Engineer",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Heat)",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Slam",
+     "ap": "1",
+     "effect": "+2 Attack Bid; Margin of 2 or more knocks target prone.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Beaver-like underground creatures which burrow and live in caves, often deep in mountains. They collect metals and other ores from the rocks and forge these into rudimentary tools and pieces of their dens. They are known for disrupting underground networks. Some are adapted for extreme heats and will be found in volcanic regions. Many claim they are the last of the dragons.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db050",
+   "name": "Cave Chicken",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Home Turf",
+     "ap": "",
+     "effect": "+2 Bids While In It’s Home, Lair or Territory",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Underground)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Tunneling birds which live mostly underground. When they do come up it’s short-lived as they’ve generally lost their ability to fly - only now able to make large hops.They create large underground colonies which are often used as food sources for communities nearby.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db051",
+   "name": "Mineral Grass",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Underground, Dim Light)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "A type of grass which has better adapted to living in underground and dimly lit environments.The roots take up minerals producing shells of crystalline substances. They are often used in mines to locate specific minerals.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db052",
+   "name": "Dew Bats",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Nocturnal",
+     "ap": "",
+     "effect": "+2 Bids Made In Dim Light Or Darkness; −1 Bids Made In Bright Light",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Small blind creatures which hop from cave pool to cave pool. They spend time above ground at night, hunting for fish and the like.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db053",
+   "name": "Centurion Bear",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Stun",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Of 2 Or Greater, Target Is Stunned 1",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Acidic Bite",
+     "ap": "1",
+     "effect": "+2 Decay Attack Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Seize",
+     "ap": "",
+     "effect": "Unlocked At Second Phase: On A Win Of 2 Or Greater, The Target Is Stunned 2.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Fast moving, long creatures, unrelated to bears - only incidentally named such. Their jaw unhinges to let loose horrific mandibles dripping with acidic saliva.\nOften they will have a set of legs with claws containing venom sacks. This venom is a neurotoxin which can cause severe seizures and is often fatal.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db054",
+   "name": "Tail-Fisher",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "This bird will sit over ponds and rivers and use it’s long bright tail feathers to catch fish. They are common in forested regions and by rivers and lakes.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db055",
+   "name": "False Cloud Jellyfish",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Stun",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Of 2 Or Greater, Target Is Stunned 1",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Wide Reach",
+     "ap": "",
+     "effect": "Any attack that would only hit one target, can hit two instead.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Less of a bird and more of an odd flying arthropod most of these interesting creatures are less dangerous than they might first appear. High in the upper atmosphere of many planets the hard shelled bodies of these creatures float gracefully on their five pairs of wings. They have long tendrils that hang below the clouds they live in, around 30-60 ft. long, these tendrils carry paralytic venom and are mostly used to ensnare small birds and other flyers.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db056",
+   "name": "Sky Snake",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Egg Thief",
+     "ap": "1",
+     "effect": "+2 To Applicable Skill Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "These Aerial Creatures are not truly snakes, but share a strong resemblance because of their lack of limbs.They lack fangs of any kind and are non venomous, but this is not to say that a bite from one is harmless. The inside of their mouths and throats have rough pallets covered in razor sharp bristles that shred whatever they bite down on.They are mostly scavengers and their main source of food are bird eggs. They come in a variety of colors, with the males being mostly muted blue and green and the females being dark red with green or blue highlights.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db057",
+   "name": "Caterpillar Bird",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Metamorphosis",
+     "ap": "",
+     "effect": "+2 Guard Bids While In Cocoon",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "These amazing creatures start life as a feathered serpent-like creature which lives in fields and light forests. Halfway through its life it will build a cocoon out of a hard mucus it can regurgitate and begin its metamorphosis into a large colorful bird.They are most common in warmer climates. After its change the Caterpillar Bird will fly to a large forest and only return to the fields to lay eggs.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db058",
+   "name": "Pliant Frog",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Frighten",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid; On Win Of 2 Or More, Applies Frightened To Target",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Escapist",
+     "ap": "3",
+     "effect": "Able to flee any scenario without fail.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "A brightly colored variety of frog which has particularly elastic skin. They will inflate to massive sizes to scare off predators and to occasionally escape.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db059",
+   "name": "Ramus Stag",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Living Shield",
+     "ap": "",
+     "effect": "+1 To +3 Guard Bids. It Has Grown A Living Shell, And These Things Provide It Defense.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "A large deer like creature with antlers which continue to grow as long as the creature does. The older ones tend to have colonies of creatures living in the antlers which often resemble fallen trees.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db060",
+   "name": "Bush Spider",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Long Limbed",
+     "ap": "",
+     "effect": "Can Attack Targets Up To 2 Squares Away",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "A spider with unusually long legs which extends upwards above itself. The limbs of which tend to resemble branches. Some species have bare legs closer resembling a dying plant while others have full foliage in their appearance.They wait for creatures to land in their branches before consuming them.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db061",
+   "name": "Silk Cobra",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Frighten",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid; On Win Of 2 Or More, Applies Frightened To Target",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Harvest",
+     "ap": "",
+     "effect": "Once Per Day, Produces One Of A Specific Crop.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Dangerous grassland creatures which are notoriously easy to spot. Their hoods are often adorned with bright decorative patterns to warn other predators. These patterns can often identify what region a creature came from. They produce silk which was used early on but is difficult to refine and collect.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db062",
+   "name": "Scorpion Ants",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Sting",
+     "ap": "1",
+     "effect": "+1 Attack Bid; −1 Target Guard On Attack",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Tiny scorpions that live in large colonies in the ground. Their sting is not deadly in small amounts but extremely painful. These creatures often work in units and are extremely effective predators.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db063",
+   "name": "Umbrave",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Riposte",
+     "ap": "",
+     "effect": "Once per turn, if the user wins a guard bid by 2 or more, that can mae a free attack with + 0.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Alluring Scent",
+     "ap": "1",
+     "effect": "Can Release An Aroma That Attracts Other Creatures And Entities. Once Per Day Can Apply Reverent To 1D8 Creatures.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Massive birds which live in grasslands near water. They often carry with them a number of other creatures which live around it. Its large feathers resemble the leaves of many trees in the area, providing refuge from the heat for other creatures.The creatures often attract the birds prey which it handily consumes and protects them from.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db064",
+   "name": "Alimman Ven",
+   "translated": "",
+   "tier": "Mythic",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Magically Sensitive",
+     "ap": "",
+     "effect": "Can Pick Up On Subtle Uses Of Magic And Sources Of It Within An Area Around Itself.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Sky Borne",
+     "ap": "",
+     "effect": "+2 To All Bids While Creature Is Airborne. This Creature Has Lived Its Entire Life Aloft, And Has Learned How To Use That To Its Advantage.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Tempest",
+     "ap": "1",
+     "effect": "Once Per Day, This Creature Can Unleash A Powerful Storm Which Encompasses As Far As The Eye Can See. They Can Command The Storm To Lash Out At Targets For 1 AP, Doing Either A +3 Energy, Wind, Cold, Heat, Or Liquid Attack Bid.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Final Phase",
+     "ap": "",
+     "effect": "+1 AP At ¼ Injury Pool; +1 Guard At ¼ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Mythic"
+    },
+    {
+     "name": "Gale",
+     "ap": "",
+     "effect": "Unlocked At Second Phase: Creatures Cannot Approach Within 3 Squares Of Target Without Winning A Bid Of +2 Or Be Knocked Prone.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Eye Of The Storm",
+     "ap": "",
+     "effect": "Unlocked At Final Phase: All Enemies Within The Area Of The Storm Get -1 To All Bids, The Creature Gets +2 To All Bids.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Massive birds which live their entire lives in the sky. Even as eggs they float hundreds of feet above the ground. Their size far outclasses their wingspan, using magic to sustain their flight.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db065",
+   "name": "Crystalline Trees",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Stagnant",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Resilient",
+     "ap": "1",
+     "effect": "Creature Has Resiliance 1 To Selected Damage Type: Physical",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Slam",
+     "ap": "1",
+     "effect": "+2 Attack Bid; Margin of 2 or more knocks target prone.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "These Trees are encased in Crystalline bark that is harder than some metal. This helps make them extremely resilient.Although there are many who appreciate the majesty of these trees, there are also many who find their migration an extreme nuisance.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db066",
+   "name": "Geyser Fish",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Movement Expertise",
+     "ap": "",
+     "effect": "+2 Tempo To Selected Movment Type (Jumping)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Vibrant and colorful fish which live on the naturally rich mineral sources within geysers. They are known for leaping between bodies of water and geysers. Early beliefs thought the fish to have mastered flying, others quickly learned they are just really good at jumping.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db067",
+   "name": "Calcilas",
+   "translated": "",
+   "tier": "Mythic",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Heat)",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Flaming Bite",
+     "ap": "1",
+     "effect": "+2 Heat Attack Bid; On A Win Automatically Applies A Burned Injury Of Magnitude 3. The Creature's Mouth Unfurls, Flames Lashing Out.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Final Phase",
+     "ap": "",
+     "effect": "+1 AP At ¼ Injury Pool; +1 Guard At ¼ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Mythic"
+    },
+    {
+     "name": "Overheat",
+     "ap": "",
+     "effect": "Unlocked At Second Phase: Any Creature That Hits It In Melee Range Receives A Burned Injury Of Magnitude 1.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Pyroclastic Flow",
+     "ap": "3",
+     "effect": "Unlocked At Final Phase: The Creature Unleashes A Flow Of Hot Ash And Molten Material In All Directions, All Creatures In The Area Must Win Against A +3 Heat Attack Bid.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "These reptiles reside deep underground near caverns with lava flows and inside of volcanoes.Caliculas are rarely encountered by humans due to their habitat being a danger in and of itself. They mostly eat large crustaceans and worms that live in these same caverns, but will be aggressive to almost anything it comes across.Their Extreme body temperature means those they bit will also suffer severe burns.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db068",
+   "name": "Pigeon",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Homing",
+     "ap": "",
+     "effect": "Always Knows The Way Back To A Place That It Has Been Before.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "With an acute sense of location these birds have found their way into a number of activities across many cities.Early on the birds were used as a poor man's compass, guiding individuals between villages and areas. Nowadays they deliver items, materials, and messages across cities. The birds are getting larger to accommodate higher weight objects over the years.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db069",
+   "name": "Crop Squirrel",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Harvest",
+     "ap": "",
+     "effect": "Once Per Day, Produces One Of A Specific Crop.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Hurl",
+     "ap": "1",
+     "effect": "+1 Ranged Attack Bid To Thrown Objects Or Creatures, Up To 4 Squares Away",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "Squirrels naturally had long acted as a pest to many homes and villages early on. The trouble they caused often led to individuals conjuring up different ways to stop the menaces. The wayward spells of some would lead to a unique population of squirrels which grew the very crops they used to consume.Nowadays, many are kept as pets and used as an easy to maintain year round crop. Some pedigree breeds have gained. More unsavory traits as they have been bred with more and more unique crops.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db070",
+   "name": "Juxpuer",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Nocturnal",
+     "ap": "",
+     "effect": "+2 Bids Made In Dim Light Or Darkness; −1 Bids Made In Bright Light",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pilfer",
+     "ap": "1",
+     "effect": "+2 To Applicable Skill Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Magically Sensitive",
+     "ap": "",
+     "effect": "Can Pick Up On Subtle Uses Of Magic And Sources Of It Within An Area Around Itself.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Small and humanlike in form these urban scavengers may be rarely sighted but are in almost every city. Their dark fur can subtly change color to help them blend into the nightscape of cities.While usually only considered pests, large packs can certainly be dangerous even to groups of people. Experienced Juxpuer tend to be well versed in magic, and are often the leaders of packs.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db071",
+   "name": "Sludge Rat",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Slimy",
+     "ap": "",
+     "effect": "Produces a viscous slime which allows them move more easily over surfaces.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Split",
+     "ap": "3",
+     "effect": "The creature can split itself in half, their base vigor is divided amongst the two halves, rounded up. The halves also divide any points in the injury pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Corrosive",
+     "ap": "",
+     "effect": "On Touch, Target Item Takes An Item Condition, Or Creature Takes 1 Decay Damage.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "While some might still call it a rat, the only feature it has in common with one now, are a set of beady black eyes and whiskers. These ooze like creatures come in a variety of sizes and are frequent in places where there is runoff, sewage or garbage. You can find them solitary or as large colonies which have combined into a larger entity.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db072",
+   "name": "Vanes",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Forecast",
+     "ap": "",
+     "effect": "Has The Ability To Discern Upcoming Changes And Shifts In The Weather.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "A specialized sect of multiple bird species which has been observed across the world. They are larger and tend to vary in plumage depending on their environment. They supposedly preclude different types of weather that are associated with their feather types.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "db073",
+   "name": "Osselion",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Calcium Drain",
+     "ap": "2",
+     "effect": "+1 Attack Bid; On Win Of 2 Or Greater, Creature Gains +1 Guard. This Effect Stacks.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "A large feline that resembles a panther. It has bony plating that covers several sections of its body to ensure its survival. The older the osselion, often the more extravagant and large the bony armour. The creatures have a special secretion in their saliva which allows them to liquify the bones of the creatures they bite and absorb the calcium for their own use.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-kraken",
+   "name": "Kraken",
+   "translated": "",
+   "tier": "Mythic",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [
+    "Aggressive"
+   ],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Crush",
+     "ap": "1",
+     "effect": "+2 Attack Bid; −1 Target Guard Until Next Turn",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Wide Reach",
+     "ap": "",
+     "effect": "Any attack that would only hit one target, can hit two instead.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Final Phase",
+     "ap": "",
+     "effect": "+1 AP At ¼ Injury Pool; +1 Guard At ¼ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Mythic"
+    },
+    {
+     "name": "Ink Cloud",
+     "ap": "",
+     "effect": "Unlocked At Second Phase: The Creature Clouds The Water Around It. Enemies Within The Cloud Get -2 To Bids Against It.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Drag Under",
+     "ap": "",
+     "effect": "Unlocked At Final Phase: On A Win Of 2 Or Greater, The Target Is Pulled Below The Surface And Immobilized.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Hidden in the depths, this creature slithers through the inky black abyss. It usually does not come to surface unless something catastrophic was to follow. Rumors claim is has sunken many ships over the course of centuries.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-griffin",
+   "name": "Griffin",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [
+    "Aggressive"
+   ],
+   "traits": [
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Diving Strike",
+     "ap": "",
+     "effect": "Unlocked At Second Phase: +3 Attack Bid After A Long Move From The Air; On A Win Of 2 Or Greater, The Target Is Knocked Prone.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "Traditionally, this might be a blend of lion and an eagle. Other varieties exist but are rarer. These creatures have been frequently hunted as prize game to show off ones skill.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-orca",
+   "name": "Orca",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [
+    "Social"
+   ],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Communication",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    }
+   ],
+   "desc": "Among the oceans mightiest predators, the orca is a powerful creature.",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-venus-flytrap",
+   "name": "Venus Flytrap",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-stinging-nettle",
+   "name": "Stinging Nettle",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Sting",
+     "ap": "1",
+     "effect": "+1 Attack Bid; −1 Target Guard On Attack",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Poisonous",
+     "ap": "1",
+     "effect": "Has some kind of compound in their form that makes them dangerous to consume.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-jumping-cholla",
+   "name": "Jumping Cholla",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Sting",
+     "ap": "1",
+     "effect": "+1 Attack Bid; −1 Target Guard On Attack",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-corpse-flower",
+   "name": "Corpse Flower",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Alluring Scent",
+     "ap": "1",
+     "effect": "Can Release An Aroma That Attracts Other Creatures And Entities. Once Per Day Can Apply Reverent To 1D8 Creatures.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-strangler-fig",
+   "name": "Strangler Fig",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Crush",
+     "ap": "1",
+     "effect": "+2 Attack Bid; −1 Target Guard Until Next Turn",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-hedgehog",
+   "name": "Hedgehog",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Nocturnal",
+     "ap": "",
+     "effect": "+2 Bids Made In Dim Light Or Darkness; −1 Bids Made In Bright Light",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-pill-bug",
+   "name": "Pill Bug",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Slow",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Withdraw",
+     "ap": "1",
+     "effect": "The creature retreats into its protective covering, gaining an additional bonus dice to any bid requiring it to guard.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-meerkat",
+   "name": "Meerkat",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Communication",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-army-ant",
+   "name": "Army Ant",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Voracious",
+     "ap": "",
+     "effect": "Hungry and willing to eat anything.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-giant-sequoia",
+   "name": "Giant Sequoia",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Slam",
+     "ap": "1",
+     "effect": "+2 Attack Bid; Margin of 2 or more knocks target prone.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-banyan-tree",
+   "name": "Banyan Tree",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Home Turf",
+     "ap": "",
+     "effect": "+2 Bids While In It’s Home, Lair or Territory",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-kudzu-vine",
+   "name": "Kudzu Vine",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Voracious",
+     "ap": "",
+     "effect": "Hungry and willing to eat anything.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-poison-ivy",
+   "name": "Poison Ivy",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Poisonous",
+     "ap": "1",
+     "effect": "Has some kind of compound in their form that makes them dangerous to consume.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-polar-bear",
+   "name": "Polar Bear",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Fury",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +2 Guard At ½ Injury Pool",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Climate Adaption",
+     "ap": "",
+     "effect": "Ignores and difficulties imposed by a specific environment. (Cold)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-hippopotamus",
+   "name": "Hippopotamus",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-honey-badger",
+   "name": "Honey Badger",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Fury",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +2 Guard At ½ Injury Pool",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-hydra",
+   "name": "Hydra",
+   "translated": "",
+   "tier": "Mythic",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Wide Reach",
+     "ap": "",
+     "effect": "Any attack that would only hit one target, can hit two instead.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Final Phase",
+     "ap": "",
+     "effect": "+1 AP At ¼ Injury Pool; +1 Guard At ¼ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Mythic"
+    },
+    {
+     "name": "Twin Heads",
+     "ap": "",
+     "effect": "Unlocked At Second Phase: The Creature Makes A Second Attack Each Round.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Regrowth",
+     "ap": "",
+     "effect": "Unlocked At Final Phase: Once, When Downed, The Creature Returns At 1 Injury Pool Remaining And Gains +2 To Attack Bids.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-house-mouse",
+   "name": "House Mouse",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pilfer",
+     "ap": "1",
+     "effect": "+2 To Applicable Skill Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-fly-agaric",
+   "name": "Fly Agaric",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Poisonous",
+     "ap": "1",
+     "effect": "Has some kind of compound in their form that makes them dangerous to consume.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-giant-bamboo",
+   "name": "Giant Bamboo",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Slam",
+     "ap": "1",
+     "effect": "+2 Attack Bid; Margin of 2 or more knocks target prone.",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-water-lily",
+   "name": "Water Lily",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-phoenix",
+   "name": "Phoenix",
+   "translated": "",
+   "tier": "Mythic",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Illuminate",
+     "ap": "1",
+     "effect": "Create a field of light that illuminates a 30ft space or greater around self.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Second Phase",
+     "ap": "",
+     "effect": "+1 AP At ½ Injury Pool; +1 Guard At ½ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Powerful"
+    },
+    {
+     "name": "Final Phase",
+     "ap": "",
+     "effect": "+1 AP At ¼ Injury Pool; +1 Guard At ¼ Injury Pool; Unlock Additional Ability",
+     "poolMod": 0,
+     "minTier": "Mythic"
+    },
+    {
+     "name": "Rebirth",
+     "ap": "",
+     "effect": "Unlocked At Final Phase: Once, When Downed, The Creature Returns With Half Of Its Injury Pool Restored.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Flare",
+     "ap": "1",
+     "effect": "Unlocked At Second Phase: +2 Heat Attack Bid Against All Adjacent Creatures.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-wyvern",
+   "name": "Wyvern",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Venomous",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win Applies Poisoned In Addition To Injury",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-troll",
+   "name": "Troll",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Slam",
+     "ap": "1",
+     "effect": "+2 Attack Bid; Margin of 2 or more knocks target prone.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Crush",
+     "ap": "1",
+     "effect": "+2 Attack Bid; −1 Target Guard Until Next Turn",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-capybara",
+   "name": "Capybara",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Home Turf",
+     "ap": "",
+     "effect": "+2 Bids While In It’s Home, Lair or Territory",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-garter-snake",
+   "name": "Garter Snake",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-hummingbird",
+   "name": "Hummingbird",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Movement Expertise",
+     "ap": "",
+     "effect": "+2 Tempo To Selected Movment Type (Flying)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-saguaro-cactus",
+   "name": "Saguaro Cactus",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Sting",
+     "ap": "1",
+     "effect": "+1 Attack Bid; −1 Target Guard On Attack",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Water Store",
+     "ap": "",
+     "effect": "Once Per Day, The Water Can Be Shared Or Harvested From This Entity. This Provides Drinking Water For A Whole Day.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-giant-kelp",
+   "name": "Giant Kelp",
+   "translated": "",
+   "tier": "Weak",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Regenerative",
+     "ap": "",
+     "effect": "At the start of each of it’s turn, remove 1 magnitude from the Injury Pool.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-sundew",
+   "name": "Sundew",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-gray-wolf",
+   "name": "Gray Wolf",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-cheetah",
+   "name": "Cheetah",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-african-elephant",
+   "name": "African Elephant",
+   "translated": "",
+   "tier": "Powerful",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Slam",
+     "ap": "1",
+     "effect": "+2 Attack Bid; Margin of 2 or more knocks target prone.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Armoured",
+     "ap": "",
+     "effect": "+2 Guard Bids",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-great-white-shark",
+   "name": "Great White Shark",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-raccoon",
+   "name": "Raccoon",
+   "translated": "",
+   "tier": "Feeble",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pilfer",
+     "ap": "1",
+     "effect": "+2 To Applicable Skill Bid",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-dragonfly",
+   "name": "Dragonfly",
+   "translated": "",
+   "tier": "Harmless",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Movement Expertise",
+     "ap": "",
+     "effect": "+2 Tempo To Selected Movment Type (Flying)",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-coyote",
+   "name": "Coyote",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-wild-boar",
+   "name": "Wild Boar",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-cassowary",
+   "name": "Cassowary",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Brisk",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Perceptive",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-kitsune",
+   "name": "Kitsune",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Captivate",
+     "ap": "1",
+     "effect": "+2 To Appicable Skill Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Magically Sensitive",
+     "ap": "",
+     "effect": "Can Pick Up On Subtle Uses Of Magic And Sources Of It Within An Area Around Itself.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-rafflesia",
+   "name": "Rafflesia",
+   "translated": "",
+   "tier": "Ordinary",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Immobile",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Poisonous",
+     "ap": "1",
+     "effect": "Has some kind of compound in their form that makes them dangerous to consume.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Alluring Scent",
+     "ap": "1",
+     "effect": "Can Release An Aroma That Attracts Other Creatures And Entities. Once Per Day Can Apply Reverent To 1D8 Creatures.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Pestilent",
+     "ap": "",
+     "effect": "On Contact, Target Must Bid Grit Or Contract The Disease",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-brown-bear",
+   "name": "Brown Bear",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-bengal-tiger",
+   "name": "Bengal Tiger",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Nimble",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Bite",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Claw",
+     "ap": "1",
+     "effect": "+2 Attack Bid",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Charge",
+     "ap": "1",
+     "effect": "+2 Attack Bid After Using An Action To Move",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-anaconda",
+   "name": "Anaconda",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Casual",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Crush",
+     "ap": "1",
+     "effect": "+2 Attack Bid; −1 Target Guard Until Next Turn",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Ambush",
+     "ap": "1",
+     "effect": "+3 Attack Bid Against Targets That Have Not Spotted The Creature",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-gorilla",
+   "name": "Gorilla",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Normal",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Slam",
+     "ap": "1",
+     "effect": "+2 Attack Bid; Margin of 2 or more knocks target prone.",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Thick Skinned",
+     "ap": "",
+     "effect": "+4 Injury Pool",
+     "poolMod": 4,
+     "minTier": ""
+    },
+    {
+     "name": "Hurl",
+     "ap": "1",
+     "effect": "+1 Ranged Attack Bid To Thrown Objects Or Creatures, Up To 4 Squares Away",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Pack Tactics",
+     "ap": "",
+     "effect": "+1 Attack Bid For Each Adjacent Ally, Up To +2",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  },
+  {
+   "id": "new-kelpie",
+   "name": "Kelpie",
+   "translated": "",
+   "tier": "Robust",
+   "vigorAdj": 0,
+   "apAdj": 0,
+   "poolAdj": 0,
+   "movement": "Fast",
+   "demeanor": [],
+   "traits": [
+    {
+     "name": "Mimicry",
+     "ap": "1",
+     "effect": "+2 Concealed Bids",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Alluring Scent",
+     "ap": "1",
+     "effect": "Can Release An Aroma That Attracts Other Creatures And Entities. Once Per Day Can Apply Reverent To 1D8 Creatures.",
+     "poolMod": 0,
+     "minTier": "",
+     "custom": true
+    },
+    {
+     "name": "Ensnare",
+     "ap": "1",
+     "effect": "+1 Attack Bid; On Win, Target Is Immobilized",
+     "poolMod": 0,
+     "minTier": ""
+    },
+    {
+     "name": "Amphibious",
+     "ap": "",
+     "effect": "+2 Bids Made In Or Under Water",
+     "poolMod": 0,
+     "minTier": ""
+    }
+   ],
+   "desc": "",
+   "items": "",
+   "biome": ""
+  }
+ ]
+}
