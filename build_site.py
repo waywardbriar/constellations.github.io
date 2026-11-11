@@ -415,10 +415,36 @@ def build_bestiary(cdata, soup_unused=None):
     body.append('<script src="assets/bestiary.js"></script>')
     return "\n".join(body), toc, recs, len(lib)
 
+def _list_glyph(d, par):
+    from docx.oxml.ns import qn
+    n = par._p.find('.//' + qn('w:numId'))
+    if n is None: return None
+    nid = n.get(qn('w:val')); il = par._p.find('.//' + qn('w:ilvl')); lv = il.get(qn('w:val')) if il is not None else "0"
+    num = d.part.numbering_part.element
+    for nm in num.findall(qn('w:num')):
+        if nm.get(qn('w:numId')) == nid:
+            aid = nm.find(qn('w:abstractNumId')).get(qn('w:val'))
+            for a in num.findall(qn('w:abstractNum')):
+                if a.get(qn('w:abstractNumId')) == aid:
+                    for l in a.findall(qn('w:lvl')):
+                        if l.get(qn('w:ilvl')) == lv: return l.find(qn('w:lvlText')).get(qn('w:val'))
+    return None
+
 def gm_prepare(path, title, tmpdir):
     """Copy a GM docx with its big, short, unstyled lines turned into headings (the first one matching the title becomes H1)."""
     import docx as _docx
     d = _docx.Document(str(path)); first = True
+    # a bare number in a table cell that sits on a "+" or "-" bullet is a signed number: write the sign in
+    for tb in d.tables:
+        for row in tb.rows:
+            for cell in row.cells:
+                for par in cell.paragraphs:
+                    if re.fullmatch(r"\d+", par.text.strip() or "x") and par.runs:
+                        g = _list_glyph(d, par)
+                        if g in ("+", "-"):
+                            par.runs[0].text = ("+" if g == "+" else "\u2212") + par.runs[0].text.lstrip()
+                            npr = par._p.pPr.find('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}numPr')
+                            if npr is not None: par._p.pPr.remove(npr)
     for p in d.paragraphs:
         t = p.text.strip()
         if not t or len(t) > 50 or t.endswith(".") or p.style.name.lower().startswith(("heading", "list")): continue
@@ -599,7 +625,7 @@ def main():
                 li = ' class="indent"' if (s.get("world") and s.get("kind") != "hub") else ""
                 out.append(f'<li{li}><a{cls} href="{s["slug"]}.html">{s["title"]}</a></li>')
             out.append("</ul></div>")
-        tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li><li><a%s href="creatures.html">Creature Builder</a></li><li><a%s href="encounter.html">Encounter Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "", ' class="on"' if active == "creatures" else "", ' class="on"' if active == "encounter" else "")
+        tools = '<div class="grp"><h3>Tools</h3><ul><li><a%s href="builder.html">Character Builder</a></li><li><a%s href="creatures.html">Creature Builder</a></li><li><a%s href="encounter.html">Encounter Builder</a></li><li><a%s href="clock.html">Track Clock Builder</a></li></ul></div>' % (' class="on"' if active == "builder" else "", ' class="on"' if active == "creatures" else "", ' class="on"' if active == "encounter" else "", ' class="on"' if active == "clock" else "")
         bes = ""
         if has_bestiary:
             bes = '<div class="grp"><h3>Bestiary</h3><ul><li><a%s href="creature-compendium.html">Creature Compendium</a></li></ul></div>' % (' class="on"' if active == "bestiary" else "")
@@ -694,6 +720,14 @@ def main():
         shutil.copy(ROOT / "assets" / "encounter.js", OUT / "assets" / "encounter.js")
         cf = ROOT / "source" / "creatures" / "compendium.json"
         if cf.exists(): shutil.copy(cf, OUT / "compendium.json")
+
+    # track clock builder page
+    cl = (template.replace("{{TITLE}}", "Track Clock Builder").replace("{{SIDEBAR}}", sidebar("clock"))
+          .replace("{{BODY}}", (ROOT / "assets" / "clock.html").read_text(encoding="utf-8")).replace("{{TOC}}", "").replace("{{PREV}}", "<span></span>")
+          .replace("{{NEXT}}", "<span></span>").replace("{{BODYCLASS}}", "wide").replace("{{ROOTPREFIX}}", "")
+          .replace("<h1>Track Clock Builder</h1>", "", 1))
+    (OUT / "clock.html").write_text(cl, encoding="utf-8")
+    shutil.copy(ROOT / "assets" / "clock.js", OUT / "assets" / "clock.js")
 
     # bestiary page (the compendium file saved from the Creature Builder)
     best = build_bestiary(cdata) if cdata else None
