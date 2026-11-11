@@ -330,3 +330,13 @@ details.tier[open]>summary h2::before{transform:rotate(90deg)}
 .ebuild .erow{display:flex;flex-wrap:wrap;gap:.3rem 1rem;align-items:center;padding:.5rem .2rem;border-bottom:1px dashed var(--line)}
 .ebuild .erow .cact{margin-left:auto;display:flex;gap:.4rem;align-items:center} .ebuild .erow button{padding:.2rem .7rem;font-size:.82rem}
 .ebuild .readout p{margin:.3rem 0}
+/* track clock builder */
+.clockb .cl{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;margin:.6rem 0}
+.clockb .cl>strong{min-width:7rem}
+.clockb .segs{display:flex;gap:.35rem;flex-wrap:wrap}
+.clockb .seg{width:2.2rem;height:1.4rem;border-radius:6px;border:1px solid var(--line);background:var(--panel)}
+.clockb .seg.used{background:var(--accent);border-color:var(--accent)}
+.clockb .gbar{flex:1;min-width:12rem;height:1.1rem;border-radius:999px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
+.clockb .gbar span{display:block;height:100%;background:var(--accent-2)}
+.clockb .addrow{display:flex;gap:.8rem;align-items:flex-end;flex-wrap:wrap;margin:.8rem 0}
+.clockb .clog{margin:.8rem 0 0;padding-left:1.2rem;color:var(--ink-dim);font-size:.9rem}
