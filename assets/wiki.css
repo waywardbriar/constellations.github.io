@@ -308,3 +308,7 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 .sb .sblab{font-size:.62rem;font-weight:700;letter-spacing:.14em;color:#1F7A6B;margin-bottom:.25rem}
 .sb .sbt{margin:.2rem 0} .sb .sbt b{font-family:Georgia,serif;color:#143C3C} .sb .sbap{font-size:.72rem;font-weight:700;color:#5B4A9E}
 .sb .sbd{font-style:italic;font-size:.8rem;color:#5E7C78;margin:.5rem 0 .3rem} .sb .sbi small{color:#1F7A6B}
+
+/* bestiary page */
+.bestiary{display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:1.3rem;align-items:start;margin:1rem 0 2rem}
+.bestiary .sb{max-width:none}
