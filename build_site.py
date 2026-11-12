@@ -605,6 +605,7 @@ def main():
         shutil.copytree(ROOT / "build" / "_wmedia", OUT / "media", dirs_exist_ok=True)
     shutil.copy(ROOT / "assets" / "wiki.css", OUT / "assets" / "wiki.css")
     shutil.copy(ROOT / "assets" / "wiki.js", OUT / "assets" / "wiki.js")
+    shutil.copytree(ROOT / "assets" / "fonts", OUT / "assets" / "fonts", dirs_exist_ok=True)
     (OUT / ".nojekyll").write_text("")
 
     flat = [s for _, it in nav for s in it]

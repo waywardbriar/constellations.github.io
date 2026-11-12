@@ -315,17 +315,17 @@
 
   /* ---------- sections, colors, routing ---------- */
   var SECS = [
-    { id: "start", title: "Start", color: "#FF9E8F", blurb: "Merit start and name" },
-    { id: "role", title: "Role", color: "#F2D98A", blurb: "Your place in the household" },
-    { id: "background", title: "Background", color: "#FFB48F", blurb: "Who you are, size, senses, languages" },
-    { id: "stats", title: "Stats", color: "#F28AB8", blurb: "Mind, Body, Soul" },
-    { id: "feats", title: "Feats", color: "#B79CF2", blurb: "Skills and talents" },
-    { id: "equipment", title: "Equipment", color: "#FF9B71", blurb: "Gear, armour, weapons" },
-    { id: "spells", title: "Spells", color: "#8FC9F2", blurb: "Foci and spell building" },
-    { id: "info", title: "Info", color: "#E58FD0", blurb: "Looks and notes" }
+    { id: "start", title: "Start", color: "#f2be55", blurb: "Merit start and name" },
+    { id: "role", title: "Role", color: "#e8dcc0", blurb: "Your place in the household" },
+    { id: "background", title: "Background", color: "#e8955a", blurb: "Who you are, size, senses, languages" },
+    { id: "stats", title: "Stats", color: "#e0705a", blurb: "Mind, Body, Soul" },
+    { id: "feats", title: "Feats", color: "#b896d4", blurb: "Skills and talents" },
+    { id: "equipment", title: "Equipment", color: "#9cc27a", blurb: "Gear, armour, weapons" },
+    { id: "spells", title: "Spells", color: "#8dbbe6", blurb: "Foci and spell building" },
+    { id: "info", title: "Info", color: "#d9a86c", blurb: "Looks and notes" }
   ];
   var SOON = {};   // dim placeholder bubbles, shown after the named section
-  var TREE_COLORS = ["#FF8F7E", "#FFC27A", "#F2D98A", "#F28AB8", "#B79CF2", "#FFB48F", "#E56DB1"];
+  var TREE_COLORS = ["#e0705a", "#f2be55", "#9cc27a", "#8dbbe6", "#b896d4", "#e8955a", "#e8dcc0"];
   function secById(id) { return SECS.filter(function (s) { return s.id === id; })[0]; }
   function route() { var h = (location.hash || "").replace("#", ""); return secById(h) ? h : ""; }
   function treeColor(tree) { var i = trees().indexOf(tree); return TREE_COLORS[(i < 0 ? 0 : i) % TREE_COLORS.length]; }

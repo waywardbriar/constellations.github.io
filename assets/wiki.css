@@ -1,31 +1,33 @@
-/* Ember Aurora: warm rose, coral and amber light over a deep plum ground.
-   Panels are translucent so the aurora shows through. */
+/* Hearth Tapestry: warm walnut, vellum lettering, gold rules, gules banners.
+   Shared with the Constellations Foundry system (styles/constellations.css). Fonts are bundled (OFL). */
+@font-face{font-family:"Cinzel";font-weight:400;src:url("fonts/cinzel-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Cinzel";font-weight:700;src:url("fonts/cinzel-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"EB Garamond";font-weight:400;src:url("fonts/eb-garamond-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"EB Garamond";font-weight:600;src:url("fonts/eb-garamond-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"EB Garamond";font-weight:700;src:url("fonts/eb-garamond-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"EB Garamond";font-weight:400;font-style:italic;src:url("fonts/eb-garamond-latin-400-italic.woff2") format("woff2")}
+@font-face{font-family:"UnifrakturCook";font-weight:700;src:url("fonts/unifrakturcook-latin-700-normal.woff2") format("woff2")}
 :root{
-  --bg:#FFF6F1; --bg-glow-1:rgba(255,150,130,.35); --bg-glow-2:rgba(255,196,140,.35); --bg-glow-3:rgba(244,150,190,.28);
-  --panel:rgba(255,255,255,.55); --panel-solid:#FFEDE5; --panel-2:rgba(255,190,170,.38); --line:rgba(180,80,70,.28);
-  --ink:#3A1620; --ink-dim:#7A4048; --accent:#B8402F; --accent-ink:#FFF6F1; --accent-2:#A02D62;
-  --code:rgba(244,150,190,.28); --warn:#8A5A0C;
-  --font:"Bitter",Georgia,"Palatino Linotype",serif; --mono:"Courier New",Consolas,monospace;
-  color-scheme:light;
+  --bg:#54321f; --vignette:rgba(20,8,4,.5);
+  --panel:rgba(107,65,40,.72); --panel-solid:#6b4128; --panel-2:rgba(168,50,31,.38); --line:rgba(227,168,63,.42);
+  --ink:#f7e7c6; --ink-dim:#d8bf94; --accent:#f2be55; --accent-ink:#2a150b; --accent-2:#e3a83f;
+  --banner:#a8321f; --banner-ink:#fbe9c2; --bad:#ff9272; --opp:#8dbbe6;
+  --code:rgba(0,0,0,.22); --warn:#ff9272; color-scheme:dark;
+  --grain:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'220'%20height%3D'220'%3E%3Cfilter%20id%3D'n'%3E%3CfeTurbulence%20type%3D'fractalNoise'%20baseFrequency%3D'.75'%20numOctaves%3D'3'%20stitchTiles%3D'stitch'%2F%3E%3CfeColorMatrix%20values%3D'0%200%200%200%200.3%200%200%200%200%200.18%200%200%200%200%200.08%200%200%200%200.22%200'%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D'100%25'%20height%3D'100%25'%20filter%3D'url(%23n)'%2F%3E%3C%2Fsvg%3E");
+  --font:"EB Garamond",Georgia,"Palatino Linotype",serif; --display:"Cinzel",Georgia,serif; --black:"UnifrakturCook","Cinzel",serif;
+  --mono:"Courier New",Consolas,monospace;
 }
-/* dark is the default; add data-theme="light" to <html> to get the light palette back */
-:root:not([data-theme="light"]){
-  --bg:#240F1B; --bg-glow-1:rgba(255,110,90,.30); --bg-glow-2:rgba(255,170,100,.22); --bg-glow-3:rgba(240,120,170,.30);
-  --panel:rgba(255,200,190,.08); --panel-solid:#34182A; --panel-2:rgba(255,160,140,.18); --line:rgba(255,170,150,.28);
-  --ink:#FFF0E8; --ink-dim:#F2BFB2; --accent:#FFB4A2; --accent-ink:#2A1018; --accent-2:#F7A8C8;
-  --code:rgba(240,120,170,.22); --warn:#FFD9A0; color-scheme:dark;}
-:root[data-theme="dark"]{
-  --bg:#240F1B; --bg-glow-1:rgba(255,110,90,.30); --bg-glow-2:rgba(255,170,100,.22); --bg-glow-3:rgba(240,120,170,.30);
-  --panel:rgba(255,200,190,.08); --panel-solid:#34182A; --panel-2:rgba(255,160,140,.18); --line:rgba(255,170,150,.28);
-  --ink:#FFF0E8; --ink-dim:#F2BFB2; --accent:#FFB4A2; --accent-ink:#2A1018; --accent-2:#F7A8C8;
-  --code:rgba(240,120,170,.22); --warn:#FFD9A0; color-scheme:dark;}
+/* optional light variant (vellum page); add data-theme="light" to <html> */
+:root[data-theme="light"]{
+  --bg:#efdfbd; --vignette:rgba(84,50,31,.22);
+  --panel:rgba(255,248,230,.7); --panel-solid:#f7ebd0; --panel-2:rgba(168,50,31,.16); --line:rgba(122,74,30,.4);
+  --ink:#3a2212; --ink-dim:#6b4a2c; --accent:#8a2a18; --accent-ink:#fbe9c2; --accent-2:#9a6a1c;
+  --banner:#a8321f; --banner-ink:#fbe9c2; --bad:#b2301c; --opp:#2f6a9e;
+  --code:rgba(84,50,31,.12); --warn:#9a4a10; color-scheme:light;}
 
-/* the aurora: three soft bands of light behind everything */
+/* walnut page: soft vignette over paper grain */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:
-   radial-gradient(60rem 28rem at 12% -6%, var(--bg-glow-1), transparent 70%),
-   radial-gradient(52rem 26rem at 88% 8%, var(--bg-glow-3), transparent 70%),
-   radial-gradient(64rem 30rem at 50% 108%, var(--bg-glow-2), transparent 70%);}
+  background:radial-gradient(ellipse at center, transparent 50%, var(--vignette) 100%), var(--grain);}
 
 *{box-sizing:border-box}
 html{scroll-padding-top:4.5rem}
@@ -36,13 +38,13 @@ a{color:var(--accent-2)} a:hover{text-decoration-thickness:2px}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:1rem;
   padding:.6rem max(16px,env(safe-area-inset-right)) .6rem max(16px,env(safe-area-inset-left));
   background:var(--panel);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.brand{font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:var(--accent);text-decoration:none}
+.brand{font-family:var(--black);font-weight:700;font-size:1.45rem;letter-spacing:.02em;color:var(--accent);text-decoration:none}
 .menu{display:none;font:inherit;background:var(--panel-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.3rem .7rem}
 .search{position:relative;margin-left:auto;width:min(26rem,100%)}
 .search input{width:100%;font:inherit;padding:.45rem .75rem;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
 .search input:focus,.menu:focus-visible,a:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 #results{position:absolute;right:0;left:0;top:calc(100% + 6px);max-height:70vh;overflow:auto;background:var(--panel-solid);
-  border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(40,10,20,.28)}
+  border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(20,8,4,.4)}
 #results a{display:block;padding:.6rem .85rem;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line)}
 #results a:last-child{border-bottom:0}
 #results a:hover,#results a.sel{background:var(--panel-2)}
@@ -108,7 +110,7 @@ body.wide .doc{max-width:none}
 .builder .bsum{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;align-items:center;position:sticky;top:3.9rem;z-index:5;margin:1rem 0 1.4rem;padding:.65rem 1rem;
   background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px}
 .bcell{display:flex;flex-direction:column;min-width:4.5rem;line-height:1.15} .bcell .bl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
-.bcell strong{font-size:1.3rem;font-variant-numeric:tabular-nums} .bcell.bad strong{color:#E5484D} .bcell.warn strong{color:var(--warn)}
+.bcell strong{font-size:1.3rem;font-variant-numeric:tabular-nums} .bcell.bad strong{color:var(--bad)} .bcell.warn strong{color:var(--warn)}
 .btools{display:flex;gap:.5rem;margin-left:auto;flex-wrap:wrap}
 .bnote{flex-basis:100%;margin:0 0 0 .4rem;color:var(--ink-dim);font-size:.88rem}
 .builder button,.builder .btn,.builder select,.builder input,.builder textarea{font:inherit;color:var(--ink)}
@@ -164,7 +166,7 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
   background:conic-gradient(var(--sec) calc(var(--p)*1%),color-mix(in srgb,var(--sec) 16%,transparent) 0);box-shadow:0 0 2.6rem color-mix(in srgb,var(--sec) 40%,transparent)}
 .orb::before{content:"";position:absolute;inset:.7rem;border-radius:50%;background:var(--panel-solid)}
 .orb output{position:relative;font-size:3.2rem;font-variant-numeric:tabular-nums}
-.orb.over{background:conic-gradient(#E5484D calc(var(--p)*1%),color-mix(in srgb,#E5484D 18%,transparent) 0)} .orb.over output{color:#E5484D}
+.orb.over{background:conic-gradient(var(--bad) calc(var(--p)*1%),color-mix(in srgb,var(--bad) 18%,transparent) 0)} .orb.over output{color:var(--bad)}
 .ostep{display:flex;align-items:center;gap:.8rem}
 .ostep button{width:2.4rem;height:2.4rem;padding:0;font-size:1.3rem;line-height:1}
 .dvals{list-style:none;margin:1rem 0 0;padding:0;width:100%;max-width:14rem}
@@ -189,7 +191,7 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 .fdesc{margin:.3rem 0;font-size:.95rem} .ftags{display:flex;flex-wrap:wrap;gap:.3rem;margin:.4rem 0}
 .chip{font-size:.72rem;padding:.05rem .55rem;border-radius:999px;background:color-mix(in srgb,var(--sec) 22%,transparent);color:var(--ink)}
 .fact{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:.5rem} .fact input{flex:1 1 10rem;width:auto}
-.tag{background:var(--sec);color:#2A1018;border-radius:999px;padding:0 .55rem;font-size:.75rem;font-weight:700}
+.tag{background:var(--sec);color:var(--accent-ink);border-radius:999px;padding:0 .55rem;font-size:.75rem;font-weight:700}
 .chosenpanel{position:sticky;top:8rem;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;max-height:calc(100vh - 10rem);overflow:auto}
 .chosenpanel h3{margin:.1rem 0 .5rem;font-size:1rem}
 .chosen{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
@@ -229,7 +231,7 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 /* ---- portrait ---- */
 .ptcanvas{display:block;width:12rem;height:12rem;max-width:100%;border-radius:1rem;object-fit:cover;border:1px solid color-mix(in srgb,var(--sec) 45%,transparent);margin:.5rem 0}
 .ptools{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:flex-end;margin:.4rem 0}
-.hubportrait{width:5rem;height:5rem;border-radius:50%;object-fit:cover;display:block;margin:0 0 .4rem;border:2px solid color-mix(in srgb,var(--sec,#FF9E8F) 60%,transparent)}
+.hubportrait{width:5rem;height:5rem;border-radius:50%;object-fit:cover;display:block;margin:0 0 .4rem;border:2px solid color-mix(in srgb,var(--sec,#f2be55) 60%,transparent)}
 
 /* ---- lighter interface ---- */
 .builder .bsum{padding:.4rem .8rem;gap:.3rem 1.1rem;margin:.7rem 0 1rem}
@@ -342,3 +344,7 @@ details.tier[open]>summary h2::before{transform:rotate(90deg)}
 .clockb .gbar span{display:block;height:100%;background:var(--accent-2)}
 .clockb .addrow{display:flex;gap:.8rem;align-items:flex-end;flex-wrap:wrap;margin:.8rem 0}
 .clockb .clog{margin:.8rem 0 0;padding-left:1.2rem;color:var(--ink-dim);font-size:.9rem}
+
+/* Hearth Tapestry headings */
+h1,h2,h3,.doc h1,.doc h2,.doc h3,.card h3,.side h3,.toc h3{font-family:var(--display);letter-spacing:.03em}
+.doc h2{border-bottom:1px solid var(--line);box-shadow:0 3px 0 -2px var(--line)}
