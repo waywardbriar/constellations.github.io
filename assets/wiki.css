@@ -302,17 +302,17 @@ a.bub:hover,a.bub:focus-visible{box-shadow:0 0 3.4rem color-mix(in srgb,var(--se
 .cbuild .crow{display:flex;flex-wrap:wrap;gap:.3rem 1rem;align-items:center;padding:.45rem .2rem;border-bottom:1px dashed var(--line)}
 .cbuild .crow .cact{margin-left:auto;display:flex;gap:.4rem} .cbuild .crow button{padding:.2rem .7rem;font-size:.82rem}
 /* the stat block preview (same look as the Word export) */
-.sb{width:100%;max-width:23rem;font-family:"Calibri","Segoe UI",system-ui,sans-serif;font-size:.92rem;line-height:1.4;border-radius:2px;overflow:hidden;box-shadow:0 .4rem 1.4rem rgba(13,42,46,.22)}
-.sb .sbh{background:#0D2A2E;color:#E7FBF5;padding:.85rem 1.1rem .3rem}
-.sb .sbn{font-family:Georgia,serif;font-weight:700;font-size:1.55rem;line-height:1.15}
-.sb .sbs{font-size:.72rem;color:#7FA9A2;padding-bottom:.35rem} .sb .sbs b{color:#C5B2F0;letter-spacing:.06em} .sb .sbs i{margin-left:.2rem}
-.sb .sbstrip{background:#163A3A;color:#E7FBF5;padding:.4rem 1.1rem .5rem;font-size:.85rem}
-.sb small{font-size:.62rem;font-weight:700;letter-spacing:.08em;color:#8FE3D0}
-.sb .sbnum{margin-right:1.1rem} .sb .sbnum b{font-family:Georgia,serif;font-size:1.35rem;margin-left:.3rem;color:#E7FBF5}
-.sb .sbb{background:#F4FBF9;color:#2C4A48;padding:.75rem 1.1rem .8rem;border:1px solid #BFE9DF;border-top:0}
-.sb .sblab{font-size:.62rem;font-weight:700;letter-spacing:.14em;color:#1F7A6B;margin-bottom:.25rem}
-.sb .sbt{margin:.2rem 0} .sb .sbt b{font-family:Georgia,serif;color:#143C3C} .sb .sbap{font-size:.72rem;font-weight:700;color:#5B4A9E}
-.sb .sbd{font-style:italic;font-size:.8rem;color:#5E7C78;margin:.5rem 0 .3rem} .sb .sbi small{color:#1F7A6B}
+.sb{width:100%;max-width:23rem;font-family:var(--font);font-size:.98rem;line-height:1.4;border-radius:2px;overflow:hidden;box-shadow:0 .4rem 1.4rem rgba(20,8,4,.4)}
+.sb .sbh{background:#54321F;color:#F7E7C6;padding:.85rem 1.1rem .3rem}
+.sb .sbn{font-family:var(--display);font-weight:700;font-size:1.55rem;line-height:1.15}
+.sb .sbs{font-size:.72rem;color:#D8BF94;padding-bottom:.35rem} .sb .sbs b{color:#F2BE55;letter-spacing:.06em} .sb .sbs i{margin-left:.2rem}
+.sb .sbstrip{background:#6B4128;color:#F7E7C6;border-top:1px solid #E3A83F;padding:.4rem 1.1rem .5rem;font-size:.85rem}
+.sb small{font-size:.62rem;font-weight:700;letter-spacing:.08em;color:#F2BE55}
+.sb .sbnum{margin-right:1.1rem} .sb .sbnum b{font-family:var(--display);font-size:1.35rem;margin-left:.3rem;color:#F7E7C6}
+.sb .sbb{background:#FBF3E0;color:#3A2212;padding:.75rem 1.1rem .8rem;border:1px solid #E3A83F;border-top:0}
+.sb .sblab{font-size:.62rem;font-weight:700;letter-spacing:.14em;color:#A8321F;margin-bottom:.25rem}
+.sb .sbt{margin:.2rem 0} .sb .sbt b{font-family:var(--display);color:#2A150B} .sb .sbap{font-size:.72rem;font-weight:700;color:#2F6A9E}
+.sb .sbd{font-style:italic;font-size:.8rem;color:#6B4A2C;margin:.5rem 0 .3rem} .sb .sbi small{color:#A8321F}
 
 /* bestiary page */
 .bestiary{display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:1.3rem;align-items:start;margin:1rem 0 2rem}

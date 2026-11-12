@@ -2,8 +2,8 @@
    compact stat blocks flowing in two columns, each block kept whole. Needs the docx library (docx.umd.js). */
 (function (root) {
   "use strict";
-  var C = { BASE: "0D2A2E", PANEL: "163A3A", INK: "E7FBF5", ACC: "8FE3D0", ACC2: "C5B2F0", LIGHT: "F4FBF9", TXT: "2C4A48", DARK: "143C3C",
-            EDGE: "BFE9DF", LABEL: "1F7A6B", VIO: "5B4A9E", DIM: "5E7C78", MUTE: "7FA9A2" };
+  var C = { BASE: "54321F", PANEL: "6B4128", INK: "F7E7C6", ACC: "F2BE55", ACC2: "F2BE55", LIGHT: "FBF3E0", TXT: "3A2212", DARK: "2A150B",
+            EDGE: "E3A83F", LABEL: "A8321F", VIO: "2F6A9E", DIM: "6B4A2C", MUTE: "D8BF94" };
   var BLOCK_W = 4800;   // dxa; two blocks plus a gap fit the 7 inch text width
 
   function build(list, tiers, opts) {
@@ -15,7 +15,7 @@
 
     function run(t, o) {
       o = o || {};
-      return new TextRun({ text: t, font: o.font || "Calibri", size: Math.round((o.size || 10) * 2), bold: !!o.bold, italics: !!o.italic,
+      return new TextRun({ text: t, font: o.font || "Garamond", size: Math.round((o.size || 10) * 2), bold: !!o.bold, italics: !!o.italic,
                            color: o.color || C.TXT, allCaps: !!o.caps, characterSpacing: o.sp || 0 });
     }
     function para(runs, o) {
@@ -81,7 +81,7 @@
     var sections = [];
     var intro = [
       new Paragraph({ children: [new TextRun({ text: opts.title || "Creature Compendium", font: "Georgia", size: 48, bold: true, color: C.DARK })], spacing: { after: 120 } }),
-      new Paragraph({ children: [new TextRun({ text: opts.subtitle || "Creatures across the systems, grouped by tier. Every block is built from the NPC rules: Vigor sets every bid, and the injury pool is how much damage it takes to put it down.", font: "Calibri", size: 21, italics: true, color: C.DIM })], spacing: { after: 200 } })
+      new Paragraph({ children: [new TextRun({ text: opts.subtitle || "Creatures across the systems, grouped by tier. Every block is built from the NPC rules: Vigor sets every bid, and the injury pool is how much damage it takes to put it down.", font: "Garamond", size: 21, italics: true, color: C.DIM })], spacing: { after: 200 } })
     ];
     sections.push({ properties: Object.assign({}, PAGE), children: intro });
     var any = false;
