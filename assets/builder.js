@@ -426,9 +426,13 @@
     ]));
     var mine = warns.filter(function (w) { return w.sec === id; });
     if (mine.length) wrap.appendChild(warningList(mine, false));
-    wrap.appendChild({ start: startScreen, role: roleScreen, background: backgroundScreen, equipment: equipmentScreen, spells: spellsScreen, info: infoScreen, stats: statsScreen, feats: featsScreen }[id](t));
+    var build = SCREENS.get(id);
+    if (typeof build === "function") wrap.appendChild(build(t));
     return wrap;
   }
+  /* section id -> screen builder; a Map so an unexpected id from the URL can never reach another method */
+  var SCREENS = new Map([["start", startScreen], ["role", roleScreen], ["background", backgroundScreen], ["equipment", equipmentScreen],
+    ["spells", spellsScreen], ["info", infoScreen], ["stats", statsScreen], ["feats", featsScreen]]);
   function onRoute() { render(); var h = document.getElementById("stitle"); window.scrollTo(0, 0); if (h) h.focus({ preventScroll: true }); }
 
   function startScreen(t) {
